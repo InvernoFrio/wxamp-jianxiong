@@ -31,7 +31,6 @@
       <view class="section-index">{{index + 1}}</view>
       <view class="section-info">
         <text class="section-name">{{item.title}}</text>
-        <text class="section-page">第{{item.startPage}}页</text>
       </view>
       <text class="section-arrow">›</text>
     </view>

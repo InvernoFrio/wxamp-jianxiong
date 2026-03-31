@@ -78,7 +78,7 @@ Page({
   },
 
   _initCanvas() {
-    const query = this.createSelectorQuery();
+    const query = wx.createSelectorQuery();
     query.select('#physicsCanvas').fields({ node: true, size: true }).exec((res) => {
       if (res && res[0] && res[0].node) {
         // Node-based canvas (preferred)
@@ -98,8 +98,7 @@ Page({
       } else {
         // Fallback: use wx.createCanvasContext
         const ctx = wx.createCanvasContext('physicsCanvas', this);
-        const sysInfo = wx.getSystemInfoSync();
-        const query2 = this.createSelectorQuery();
+        const query2 = wx.createSelectorQuery();
         query2.select('#physicsCanvas').boundingClientRect().exec((res2) => {
           if (res2 && res2[0]) {
             this._ctx = ctx;
