@@ -42,23 +42,20 @@
 
   <!-- 四个模块入口 - 书签式卡片 -->
   <view class="module-entrance {{showModules ? 'visible' : ''}}">
-    <glass-card 
-      class="bookmark-card {{showModules ? 'scale-fade-in' : ''}}" 
+    <view 
+      class="bookmark-card glass-card {{showModules ? 'scale-fade-in' : ''}}" 
       wx:for="{{modules}}" 
       wx:key="id"
-      customClass="bookmark-card"
-      customStyle="--delay: {{index * 0.1}}s; animation-delay: {{index * 0.1}}s"
-      bind:tap="onModuleTap"
+      bindtap="onModuleTap"
       data-path="{{item.path}}"
+      style="animation-delay: {{index * 0.1}}s"
     >
-      <view class="bookmark-inner" bindtap="onModuleTap" data-path="{{item.path}}">
-        <view class="bookmark-icon">{{item.icon}}</view>
-        <view class="bookmark-info">
-          <text class="bookmark-title">{{item.title}}</text>
-          <text class="bookmark-desc">{{item.desc}}</text>
-        </view>
-        <view class="bookmark-arrow">›</view>
+      <view class="bookmark-icon">{{item.icon}}</view>
+      <view class="bookmark-info">
+        <text class="bookmark-title">{{item.title}}</text>
+        <text class="bookmark-desc">{{item.desc}}</text>
       </view>
-    </glass-card>
+      <view class="bookmark-arrow">›</view>
+    </view>
   </view>
 </view>

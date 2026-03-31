@@ -68,177 +68,6 @@
   padding: 40rpx 0;
 }
 
-.book-container {
-  perspective: 1500rpx;
-  perspective-origin: 10% 50%;
-  width: 360rpx;
-  height: 480rpx;
-  position: relative;
-  cursor: pointer;
-}
-
-/* 书本封面 */
-.book-cover {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  transform-origin: 0% 50%;
-  transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
-  transform-style: preserve-3d;
-  z-index: 2;
-}
-
-.book-container.opening .book-cover {
-  transform: rotateY(-165deg);
-}
-
-.book-front {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #2C2C2C 0%, #1a1a1a 100%);
-  border-radius: 8rpx 16rpx 16rpx 8rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 
-    4rpx 4rpx 20rpx rgba(0,0,0,0.3),
-    inset 0 0 40rpx rgba(196, 30, 58, 0.1);
-  backface-visibility: hidden;
-  overflow: hidden;
-}
-
-/* 封面纹理 */
-.book-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 2rpx,
-      rgba(255,255,255,0.02) 2rpx,
-      rgba(255,255,255,0.02) 4rpx
-    );
-  pointer-events: none;
-}
-
-/* 封面标题 */
-.book-title {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 40rpx;
-}
-
-.book-title-main {
-  font-family: var(--font-serif);
-  font-size: 72rpx;
-  color: #F5F0E8;
-  font-weight: 700;
-  letter-spacing: 16rpx;
-  text-shadow: 0 2rpx 8rpx rgba(0,0,0,0.3);
-}
-
-.book-title-sub {
-  font-family: var(--font-serif);
-  font-size: 48rpx;
-  color: #C41E3A;
-  font-weight: 600;
-  letter-spacing: 12rpx;
-  margin-top: 8rpx;
-}
-
-/* 装饰线 */
-.book-decoration {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12rpx;
-}
-
-.book-line {
-  width: 120rpx;
-  height: 2rpx;
-  background: linear-gradient(90deg, transparent, #D4A574, transparent);
-}
-
-.book-author {
-  font-size: 20rpx;
-  color: rgba(245, 240, 232, 0.6);
-  letter-spacing: 4rpx;
-}
-
-/* 书脊 */
-.book-spine {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 24rpx;
-  height: 100%;
-  background: linear-gradient(90deg, #1a1a1a, #2C2C2C);
-  transform: rotateY(90deg) translateZ(12rpx);
-  transform-origin: left;
-  border-radius: 4rpx 0 0 4rpx;
-}
-
-/* 书页侧面 */
-.book-pages-side {
-  position: absolute;
-  left: 20rpx;
-  top: 8rpx;
-  right: 8rpx;
-  bottom: 8rpx;
-  background: repeating-linear-gradient(
-    0deg,
-    #F5F0E8,
-    #F5F0E8 2rpx,
-    #E8E0D0 2rpx,
-    #E8E0D0 4rpx
-  );
-  transform: translateZ(-4rpx);
-  border-radius: 0 8rpx 8rpx 0;
-}
-
-/* 翻开后的内页 */
-.book-inner {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: #F5F0E8;
-  border-radius: 0 16rpx 16rpx 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
-  box-shadow: inset 4rpx 0 12rpx rgba(0,0,0,0.1);
-}
-
-.inner-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40rpx;
-}
-
-.inner-title {
-  font-family: var(--font-serif);
-  font-size: 40rpx;
-  color: var(--ink-black);
-  margin-bottom: 16rpx;
-}
-
-.inner-subtitle {
-  font-size: 26rpx;
-  color: var(--gray-blue);
-  text-align: center;
-}
-
 /* 点击提示 */
 .tap-hint {
   margin-top: 32rpx;
@@ -280,6 +109,7 @@
   margin-bottom: 20rpx;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .bookmark-card::before {
@@ -291,6 +121,10 @@
   width: 6rpx;
   background: var(--vermillion);
   border-radius: 3rpx 0 0 3rpx;
+}
+
+.bookmark-card:active {
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .bookmark-icon {
