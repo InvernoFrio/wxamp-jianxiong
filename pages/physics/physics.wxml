@@ -83,11 +83,11 @@
         </view>
         <!-- 不对称比例条 -->
         <view class="ratio-bar">
-          <view class="ratio-fill-up" style="width: {{totalCount > 0 ? (countUp / totalCount * 100) : 50}}%"></view>
+          <view class="ratio-fill-up" style="width: {{upPercent}}%"></view>
         </view>
         <view class="ratio-labels">
-          <text class="ratio-label">{{totalCount > 0 ? Math.round(countUp / totalCount * 100) : 50}}%</text>
-          <text class="ratio-label">{{totalCount > 0 ? Math.round(countDown / totalCount * 100) : 50}}%</text>
+          <text class="ratio-label">{{upPercent}}%</text>
+          <text class="ratio-label">{{downPercent}}%</text>
         </view>
       </view>
 

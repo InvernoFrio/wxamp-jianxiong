@@ -13,7 +13,10 @@ Page({
     countDown: 0,
     totalCount: 0,
     showResult: false,
-    asymmetryRatio: ''
+    asymmetryRatio: '',
+    // 预计算百分比（wxml不能用Math）
+    upPercent: 50,
+    downPercent: 50
   },
 
   onLoad() {
@@ -198,7 +201,9 @@ Page({
       countDown: 0,
       totalCount: 0,
       showResult: false,
-      asymmetryRatio: ''
+      asymmetryRatio: '',
+      upPercent: 50,
+      downPercent: 50
     });
     this.particles = [];
     this.detectorFlashes = [];
@@ -334,10 +339,15 @@ Page({
 
     // 更新计数
     if (newCountUp > 0 || newCountDown > 0) {
+      const countUp = this.data.countUp + newCountUp;
+      const countDown = this.data.countDown + newCountDown;
+      const total = countUp + countDown;
       this.setData({
-        countUp: this.data.countUp + newCountUp,
-        countDown: this.data.countDown + newCountDown,
-        totalCount: this.data.totalCount + newCountUp + newCountDown
+        countUp: countUp,
+        countDown: countDown,
+        totalCount: total,
+        upPercent: total > 0 ? Math.round(countUp / total * 100) : 50,
+        downPercent: total > 0 ? Math.round(countDown / total * 100) : 50
       });
     }
 
