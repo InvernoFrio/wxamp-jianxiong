@@ -1,0 +1,101 @@
+<!--pages/about/about.wxml-->
+<view class="page-container paper-bg">
+  <view class="page-header fade-slide-up">
+    <text class="page-title title-text">关于</text>
+  </view>
+
+  <!-- 项目介绍 -->
+  <view class="section glass-card scale-fade-in">
+    <view class="section-header">
+      <text class="section-icon">📖</text>
+      <text class="section-title title-text">健雄书韵</text>
+    </view>
+    <text class="section-desc">
+      以"书韵"为魂，以代码为笔，用数字化的语言重新书写一位伟大科学家的一生。
+      小程序以「翻开一本书」的意象贯穿始终，探索吴健雄教授的传奇人生。
+    </text>
+    <view class="version-badge">
+      <text>v1.0.0</text>
+    </view>
+  </view>
+
+  <!-- 团队介绍 -->
+  <view class="section glass-card scale-fade-in" style="animation-delay: 0.1s">
+    <text class="section-title title-text">团队成员</text>
+    <view class="team-list">
+      <view class="team-member">
+        <view class="member-avatar glass-card">
+          <text>俊</text>
+        </view>
+        <view class="member-info">
+          <text class="member-name">俊贤</text>
+          <text class="member-role">项目负责人 · 物理实验可视化</text>
+        </view>
+      </view>
+      <view class="team-member">
+        <view class="member-avatar glass-card">
+          <text>B</text>
+        </view>
+        <view class="member-info">
+          <text class="member-name">成员B</text>
+          <text class="member-role">生平年表 · 首页设计</text>
+        </view>
+      </view>
+      <view class="team-member">
+        <view class="member-avatar glass-card">
+          <text>C</text>
+        </view>
+        <view class="member-info">
+          <text class="member-name">成员C</text>
+          <text class="member-role">书韵阅读器 · 关于页</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 设计理念 -->
+  <view class="section glass-card scale-fade-in" style="animation-delay: 0.2s">
+    <text class="section-title title-text">设计理念</text>
+    <view class="design-list">
+      <view class="design-item">
+        <text class="design-icon">🎨</text>
+        <text class="design-text">宣纸纹理 + 墨色 + 朱红点缀，致敬中国传统文化</text>
+      </view>
+      <view class="design-item">
+        <text class="design-icon">💎</text>
+        <text class="design-text">液态玻璃 UI，打造高级质感</text>
+      </view>
+      <view class="design-item">
+        <text class="design-icon">📚</text>
+        <text class="design-text">"翻开一本书"的完整叙事体验</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 致谢 -->
+  <view class="section glass-card scale-fade-in" style="animation-delay: 0.3s">
+    <text class="section-title title-text">致谢</text>
+    <text class="thanks-text">
+      感谢南京大学物理系、太仓市浏河镇、以及所有为吴健雄教授留下珍贵史料的机构和个人。
+    </text>
+    <text class="thanks-text">
+      特别感谢张怀亮先生编著的《吴健雄传》，为本项目提供了丰富的一手资料。
+    </text>
+  </view>
+
+  <!-- 联系方式 -->
+  <view class="section glass-card scale-fade-in" style="animation-delay: 0.4s">
+    <text class="section-title title-text">联系我们</text>
+    <view class="contact-list">
+      <view class="contact-item">
+        <text class="contact-icon">📧</text>
+        <text class="contact-text">GitHub: invernofrio</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="footer">
+    <text class="footer-text">© 2026 健雄书韵团队</text>
+    <text class="footer-text">以代码致敬科学</text>
+  </view>
+</view>

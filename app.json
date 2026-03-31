@@ -1,0 +1,56 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/timeline/timeline",
+    "pages/reader/reader",
+    "pages/physics/physics",
+    "pages/about/about"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#2C2C2C",
+    "navigationBarTitleText": "健雄书韵",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F5F0E8",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#8B9DAF",
+    "selectedColor": "#C41E3A",
+    "backgroundColor": "#F5F0E8",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "书卷",
+        "iconPath": "assets/icons/home.png",
+        "selectedIconPath": "assets/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/timeline/timeline",
+        "text": "年表",
+        "iconPath": "assets/icons/timeline.png",
+        "selectedIconPath": "assets/icons/timeline-active.png"
+      },
+      {
+        "pagePath": "pages/reader/reader",
+        "text": "阅读",
+        "iconPath": "assets/icons/reader.png",
+        "selectedIconPath": "assets/icons/reader-active.png"
+      },
+      {
+        "pagePath": "pages/physics/physics",
+        "text": "物理",
+        "iconPath": "assets/icons/physics.png",
+        "selectedIconPath": "assets/icons/physics-active.png"
+      },
+      {
+        "pagePath": "pages/about/about",
+        "text": "关于",
+        "iconPath": "assets/icons/about.png",
+        "selectedIconPath": "assets/icons/about-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

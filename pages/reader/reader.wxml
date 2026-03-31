@@ -1,0 +1,108 @@
+<!--pages/reader/reader.wxml-->
+<view class="page-container paper-bg">
+  <!-- 章节导航 -->
+  <scroll-view 
+    class="chapter-nav" 
+    scroll-x 
+    enhanced 
+    show-scrollbar="{{false}}"
+  >
+    <view class="chapter-tabs">
+      <view 
+        class="chapter-tab {{activeChapter === index ? 'active' : ''}}" 
+        wx:for="{{chapters}}" 
+        wx:key="id"
+        bindtap="onChapterTap"
+        data-index="{{index}}"
+      >
+        <text>{{item.title}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 阅读区域 -->
+  <view class="reader-container">
+    <!-- 章节标题 -->
+    <view class="chapter-header scale-fade-in">
+      <text class="chapter-number">第{{activeChapter + 1}}章</text>
+      <text class="chapter-title title-text">{{currentChapter.title}}</text>
+      <text class="chapter-subtitle">{{currentChapter.subtitle}}</text>
+      <view class="chapter-divider">
+        <view class="divider-line"></view>
+        <text class="divider-icon">✦</text>
+        <view class="divider-line"></view>
+      </view>
+    </view>
+
+    <!-- 正文内容 -->
+    <scroll-view 
+      class="content-scroll" 
+      scroll-y 
+      enhanced 
+      show-scrollbar="{{false}}"
+      bindscroll="onContentScroll"
+      scroll-top="{{scrollTop}}"
+    >
+      <view class="content-body">
+        <view class="section-list">
+          <view 
+            class="section-item" 
+            wx:for="{{currentChapter.sections}}" 
+            wx:key="id"
+            bindtap="onSectionTap"
+            data-section="{{item}}"
+          >
+            <view class="section-bullet vermillion">§</view>
+            <view class="section-content">
+              <text class="section-title">{{item.title}}</text>
+              <text class="section-hint">点击阅读</text>
+            </view>
+            <view class="section-arrow">›</view>
+          </view>
+        </view>
+
+        <!-- 示例正文段落 -->
+        <view class="paragraph" wx:if="{{chapterContent}}">
+          <text class="paragraph-text" 
+            bindlongpress="onTextLongPress"
+            data-text="{{chapterContent}}"
+          >
+            {{chapterContent}}
+          </text>
+        </view>
+        
+        <view class="chapter-end" wx:if="{{!chapterContent}}">
+          <text class="end-text">选择上方章节开始阅读</text>
+          <text class="end-hint">内容待电子书数据导入后填充</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 阅读进度 -->
+  <view class="reading-progress">
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{readProgress}}%"></view>
+    </view>
+    <text class="progress-text">{{readProgress}}%</text>
+  </view>
+
+  <!-- 高亮/批注弹窗 -->
+  <view class="highlight-popup" wx:if="{{showHighlightPopup}}">
+    <view class="popup-mask" bindtap="onPopupClose"></view>
+    <view class="popup-content glass-card">
+      <text class="popup-title">选择操作</text>
+      <view class="popup-actions">
+        <view class="popup-btn glass-btn" bindtap="onHighlight">
+          <text>🖍️ 划线高亮</text>
+        </view>
+        <view class="popup-btn glass-btn" bindtap="onAddNote">
+          <text>📝 写笔记</text>
+        </view>
+        <view class="popup-btn glass-btn" bindtap="onCopyText">
+          <text>📋 复制文字</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

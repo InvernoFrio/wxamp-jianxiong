@@ -1,0 +1,67 @@
+<!--pages/timeline/timeline.wxml-->
+<view class="page-container paper-bg">
+  <view class="page-header fade-slide-up">
+    <text class="page-title title-text">生平年表</text>
+    <text class="page-subtitle">1912 — 1997</text>
+  </view>
+
+  <!-- 筛选标签 -->
+  <view class="filter-bar">
+    <view 
+      class="filter-tag {{activeFilter === item.key ? 'active' : ''}}" 
+      wx:for="{{filters}}" 
+      wx:key="key"
+      bindtap="onFilterTap"
+      data-key="{{item.key}}"
+    >
+      <text>{{item.label}}</text>
+    </view>
+  </view>
+
+  <!-- 时间轴 -->
+  <scroll-view 
+    class="timeline-scroll" 
+    scroll-y 
+    enhanced 
+    show-scrollbar="{{false}}"
+  >
+    <view class="timeline-container">
+      <!-- 时间轴竖线 -->
+      <view class="timeline-line"></view>
+      
+      <view 
+        class="timeline-item scale-fade-in" 
+        wx:for="{{filteredTimeline}}" 
+        wx:key="year"
+        style="animation-delay: {{index * 0.05}}s"
+      >
+        <!-- 节点圆点 -->
+        <view 
+          class="timeline-node {{item.type === 'award' ? 'award' : ''}}"
+          style="--node-color: {{getNodeColor(item.type)}}"
+        >
+          <text class="node-icon">{{item.icon}}</text>
+        </view>
+        
+        <!-- 事件卡片 -->
+        <view 
+          class="timeline-card glass-card" 
+          bindtap="onCardTap"
+          data-index="{{index}}"
+        >
+          <view class="card-header">
+            <text class="card-year vermillion">{{item.year}}</text>
+            <text class="card-type">{{getTypeLabel(item.type)}}</text>
+          </view>
+          <text class="card-title title-text">{{item.title}}</text>
+          <text class="card-detail {{expandedIndex === index ? 'expanded' : ''}}">
+            {{item.detail}}
+          </text>
+          <view class="card-expand" wx:if="{{item.detail.length > 60}}">
+            <text>{{expandedIndex === index ? '收起' : '展开'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

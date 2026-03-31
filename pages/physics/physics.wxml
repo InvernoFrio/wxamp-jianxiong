@@ -1,0 +1,133 @@
+<!--pages/physics/physics.wxml-->
+<view class="page-container paper-bg">
+  <view class="page-header fade-slide-up">
+    <text class="page-title title-text">物理之光</text>
+    <text class="page-subtitle">β衰变与宇称不守恒</text>
+  </view>
+
+  <!-- 实验流程导航 -->
+  <view class="experiment-nav">
+    <view 
+      class="exp-step {{activeStep >= index ? 'active' : ''}} {{activeStep === index ? 'current' : ''}}" 
+      wx:for="{{steps}}" 
+      wx:key="index"
+    >
+      <view class="step-dot">{{index + 1}}</view>
+      <text class="step-label">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 步骤1: 介绍 -->
+  <view class="step-content {{activeStep === 0 ? 'visible' : ''}}">
+    <view class="glass-card intro-card scale-fade-in">
+      <text class="intro-title title-text">为什么这个实验如此重要？</text>
+      <text class="intro-text">
+        1956年，杨振宁和李政道提出了一个大胆的理论：在弱相互作用中，宇称可能不守恒。
+        但当时的物理学家都认为宇称守恒是天经地义的，没人愿意做这个实验。
+      </text>
+      <text class="intro-text">
+        吴健雄独具慧眼，决定承担这个挑战。她在华盛顿国家标准局设计并进行了著名的钴-60 β衰变实验。
+      </text>
+    </view>
+  </view>
+
+  <!-- 步骤2: 宇称概念 -->
+  <view class="step-content {{activeStep === 1 ? 'visible' : ''}}">
+    <view class="glass-card concept-card scale-fade-in">
+      <text class="concept-title title-text">什么是宇称守恒？</text>
+      <view class="mirror-demo">
+        <view class="mirror-left">
+          <view class="demo-ball"></view>
+          <view class="demo-arrow-up"></view>
+        </view>
+        <view class="mirror-line"></view>
+        <view class="mirror-right">
+          <view class="demo-ball"></view>
+          <view class="demo-arrow-up"></view>
+        </view>
+      </view>
+      <text class="concept-desc">
+        宇称守恒意味着：物理定律在镜像世界中应该完全相同。
+        就像照镜子，镜子里的你做同样的动作，物理规律应该一致。
+      </text>
+    </view>
+  </view>
+
+  <!-- 步骤3: 实验可视化 -->
+  <view class="step-content {{activeStep === 2 ? 'visible' : ''}}">
+    <view class="experiment-container">
+      <canvas 
+        type="2d" 
+        id="experimentCanvas" 
+        class="experiment-canvas"
+        bindtouchstart="onCanvasTouch"
+      ></canvas>
+      
+      <view class="experiment-controls">
+        <view class="control-btn glass-btn" bindtap="startExperiment" wx:if="{{!experimentRunning}}">
+          <text>🔬 开始实验</text>
+        </view>
+        <view class="control-btn glass-btn" bindtap="stopExperiment" wx:if="{{experimentRunning}}">
+          <text>⏹️ 停止实验</text>
+        </view>
+        <view class="control-btn glass-btn" bindtap="resetExperiment">
+          <text>🔄 重置</text>
+        </view>
+      </view>
+
+      <!-- 实验说明 -->
+      <view class="experiment-info glass-card">
+        <text class="info-title">钴-60 β衰变实验</text>
+        <view class="info-row">
+          <text class="info-label">实验原理：</text>
+          <text class="info-value">钴-60原子核在磁场中衰变，发射β粒子</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">关键发现：</text>
+          <text class="info-value">β粒子发射方向不对称 → 宇称不守恒！</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">实验温度：</text>
+          <text class="info-value">0.01K（极低温）</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 步骤4: 结论 -->
+  <view class="step-content {{activeStep === 3 ? 'visible' : ''}}">
+    <view class="glass-card conclusion-card scale-fade-in">
+      <text class="conclusion-icon">⭐</text>
+      <text class="conclusion-title title-text">震惊世界的发现</text>
+      <text class="conclusion-text">
+        吴健雄的实验证实：在弱相互作用中，宇称确实不守恒！
+      </text>
+      <text class="conclusion-text">
+        这一发现推翻了数百年来被视为天经地义的物理定律，是人类对物质世界认识的一块新里程碑。
+      </text>
+      <view class="conclusion-quote">
+        <text class="quote-mark">"</text>
+        <text class="quote-text">
+          宇称守恒即使不被推翻，这一基本规律也应被检验。这是她的过人之处。
+        </text>
+        <text class="quote-author">—— 杨振宁</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 步骤控制 -->
+  <view class="step-controls">
+    <view 
+      class="step-btn glass-btn {{activeStep === 0 ? 'disabled' : ''}}" 
+      bindtap="prevStep"
+    >
+      <text>← 上一步</text>
+    </view>
+    <view 
+      class="step-btn glass-btn vermillion {{activeStep === 3 ? 'disabled' : ''}}" 
+      bindtap="nextStep"
+    >
+      <text>下一步 →</text>
+    </view>
+  </view>
+</view>

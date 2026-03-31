@@ -1,0 +1,161 @@
+/* pages/timeline/timeline.wxss */
+
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header {
+  padding: 40rpx 32rpx 20rpx;
+  text-align: center;
+}
+
+.page-title {
+  font-size: 44rpx;
+  display: block;
+}
+
+.page-subtitle {
+  font-size: 26rpx;
+  color: var(--gray-blue);
+  margin-top: 8rpx;
+}
+
+/* 筛选栏 */
+.filter-bar {
+  display: flex;
+  justify-content: center;
+  gap: 16rpx;
+  padding: 16rpx 32rpx;
+  flex-wrap: wrap;
+}
+
+.filter-tag {
+  padding: 12rpx 28rpx;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 40rpx;
+  font-size: 24rpx;
+  color: var(--gray-blue);
+  transition: all 0.3s ease;
+}
+
+.filter-tag.active {
+  background: var(--vermillion);
+  color: #fff;
+}
+
+/* 时间轴滚动区域 */
+.timeline-scroll {
+  flex: 1;
+  height: 0;
+}
+
+.timeline-container {
+  padding: 20rpx 32rpx 120rpx;
+  position: relative;
+}
+
+/* 时间轴竖线 */
+.timeline-line {
+  position: absolute;
+  left: 56rpx;
+  top: 0;
+  bottom: 0;
+  width: 4rpx;
+  background: linear-gradient(
+    180deg,
+    var(--vermillion) 0%,
+    var(--amber) 50%,
+    var(--gray-blue) 100%
+  );
+  border-radius: 2rpx;
+}
+
+/* 时间轴节点 */
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 32rpx;
+  position: relative;
+}
+
+.timeline-node {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: var(--radius-full);
+  background: var(--paper-white);
+  border: 4rpx solid var(--node-color, var(--vermillion));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 24rpx;
+  margin-left: 12rpx;
+  z-index: 1;
+}
+
+.timeline-node.award {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.node-icon {
+  font-size: 24rpx;
+}
+
+/* 事件卡片 */
+.timeline-card {
+  flex: 1;
+  margin-left: 0;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+
+.card-year {
+  font-family: var(--font-serif);
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+.card-type {
+  font-size: 22rpx;
+  color: var(--gray-blue);
+  padding: 4rpx 16rpx;
+  background: rgba(139, 157, 175, 0.1);
+  border-radius: 20rpx;
+}
+
+.card-title {
+  font-size: 30rpx;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.card-detail {
+  font-size: 26rpx;
+  color: #555;
+  line-height: 1.8;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-detail.expanded {
+  -webkit-line-clamp: unset;
+}
+
+.card-expand {
+  margin-top: 12rpx;
+  text-align: right;
+}
+
+.card-expand text {
+  font-size: 24rpx;
+  color: var(--vermillion);
+}

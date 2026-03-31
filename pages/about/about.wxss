@@ -1,0 +1,177 @@
+/* pages/about/about.wxss */
+
+.page-container {
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+}
+
+.page-header {
+  padding: 40rpx 32rpx 20rpx;
+  text-align: center;
+}
+
+.page-title {
+  font-size: 44rpx;
+}
+
+/* 卡片区块 */
+.section {
+  margin: 20rpx 32rpx;
+  padding: 32rpx;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.section-icon {
+  font-size: 40rpx;
+  margin-right: 16rpx;
+}
+
+.section-title {
+  font-size: 36rpx;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.section-desc {
+  font-family: var(--font-serif);
+  font-size: 28rpx;
+  color: var(--ink-black);
+  line-height: 2;
+  text-indent: 2em;
+}
+
+.version-badge {
+  margin-top: 16rpx;
+  display: inline-block;
+  padding: 8rpx 20rpx;
+  background: rgba(196, 30, 58, 0.1);
+  border-radius: 20rpx;
+}
+
+.version-badge text {
+  font-size: 22rpx;
+  color: var(--vermillion);
+}
+
+/* 团队成员 */
+.team-list {
+  margin-top: 20rpx;
+}
+
+.team-member {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid rgba(139, 157, 175, 0.1);
+}
+
+.team-member:last-child {
+  border-bottom: none;
+}
+
+.member-avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+  background: rgba(196, 30, 58, 0.1);
+}
+
+.member-avatar text {
+  font-family: var(--font-serif);
+  font-size: 32rpx;
+  color: var(--vermillion);
+  font-weight: 700;
+}
+
+.member-info {
+  flex: 1;
+}
+
+.member-name {
+  font-family: var(--font-serif);
+  font-size: 30rpx;
+  color: var(--ink-black);
+  display: block;
+}
+
+.member-role {
+  font-size: 24rpx;
+  color: var(--gray-blue);
+  margin-top: 4rpx;
+}
+
+/* 设计理念 */
+.design-list {
+  margin-top: 20rpx;
+}
+
+.design-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 16rpx 0;
+}
+
+.design-icon {
+  font-size: 32rpx;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.design-text {
+  font-size: 26rpx;
+  color: var(--ink-black);
+  line-height: 1.8;
+}
+
+/* 致谢 */
+.thanks-text {
+  font-family: var(--font-serif);
+  font-size: 26rpx;
+  color: var(--ink-black);
+  line-height: 1.8;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+/* 联系方式 */
+.contact-list {
+  margin-top: 16rpx;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 0;
+}
+
+.contact-icon {
+  font-size: 32rpx;
+  margin-right: 16rpx;
+}
+
+.contact-text {
+  font-size: 26rpx;
+  color: var(--ink-black);
+}
+
+/* 页脚 */
+.footer {
+  text-align: center;
+  padding: 40rpx 32rpx;
+}
+
+.footer-text {
+  font-size: 24rpx;
+  color: var(--gray-blue);
+  display: block;
+  margin-bottom: 8rpx;
+}
