@@ -189,6 +189,130 @@
   font-size: 28rpx;
 }
 
+/* 粒子统计面板 */
+.stats-panel {
+  width: 100%;
+  margin-bottom: 24rpx;
+  padding: 24rpx;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: var(--gray-blue);
+  margin-bottom: 4rpx;
+}
+
+.stat-value {
+  font-family: var(--font-serif);
+  font-size: 40rpx;
+  font-weight: 700;
+  color: var(--ink-black);
+}
+
+.up-value {
+  color: #3c78d8;
+}
+
+.down-value {
+  color: var(--vermillion);
+}
+
+.stat-divider {
+  width: 1rpx;
+  height: 48rpx;
+  background: rgba(139, 157, 175, 0.2);
+}
+
+/* 比例条 */
+.ratio-bar {
+  height: 12rpx;
+  background: var(--vermillion);
+  border-radius: 6rpx;
+  overflow: hidden;
+  display: flex;
+  margin-bottom: 8rpx;
+}
+
+.ratio-fill-up {
+  height: 100%;
+  background: #3c78d8;
+  border-radius: 6rpx 0 0 6rpx;
+  transition: width 0.3s ease;
+}
+
+.ratio-labels {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ratio-label {
+  font-size: 20rpx;
+  color: var(--gray-blue);
+}
+
+/* 实验结果卡片 */
+.result-card {
+  width: 100%;
+  margin-bottom: 24rpx;
+  padding: 32rpx;
+  text-align: center;
+  border: 2rpx solid rgba(196, 30, 58, 0.2);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.result-icon {
+  font-size: 56rpx;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.result-title {
+  font-size: 32rpx;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.result-ratio {
+  margin: 16rpx 0;
+}
+
+.ratio-number {
+  font-family: var(--font-serif);
+  font-size: 72rpx;
+  font-weight: 700;
+  color: var(--vermillion);
+  letter-spacing: 4rpx;
+}
+
+.result-desc {
+  font-family: var(--font-serif);
+  font-size: 28rpx;
+  color: var(--ink-black);
+  line-height: 1.8;
+  display: block;
+  margin-top: 12rpx;
+}
+
+.result-hint {
+  font-size: 24rpx;
+  color: var(--gray-blue);
+  display: block;
+  margin-top: 8rpx;
+}
+
 /* 实验说明 */
 .experiment-info {
   width: 100%;

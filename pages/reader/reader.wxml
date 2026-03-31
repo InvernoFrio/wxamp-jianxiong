@@ -102,4 +102,96 @@
       </view>
     </view>
   </view>
+
+  <!-- 笔记/高亮入口按钮 -->
+  <view class="notes-fab glass-btn" bindtap="onOpenNotesPanel">
+    <text class="notes-fab-icon">📒</text>
+  </view>
+
+  <!-- 笔记/高亮列表面板 -->
+  <view class="notes-panel-overlay" wx:if="{{showNotesPanel}}">
+    <view class="notes-panel-mask" bindtap="onCloseNotesPanel"></view>
+    <view class="notes-panel glass-card" catchtouchmove="onPanelTouchMove">
+      <!-- 面板头部 -->
+      <view class="notes-panel-header">
+        <text class="notes-panel-title title-text">我的笔记</text>
+        <view class="notes-panel-close" bindtap="onCloseNotesPanel">
+          <text>✕</text>
+        </view>
+      </view>
+
+      <!-- Tab 切换 -->
+      <view class="notes-tabs">
+        <view 
+          class="notes-tab {{notesPanelTab === 'highlights' ? 'active' : ''}}" 
+          bindtap="onNotesPanelTabChange" 
+          data-tab="highlights"
+        >
+          <text>🖍️ 高亮 ({{highlightsList.length}})</text>
+        </view>
+        <view 
+          class="notes-tab {{notesPanelTab === 'notes' ? 'active' : ''}}" 
+          bindtap="onNotesPanelTabChange" 
+          data-tab="notes"
+        >
+          <text>📝 笔记 ({{notesList.length}})</text>
+        </view>
+      </view>
+
+      <!-- 高亮列表 -->
+      <scroll-view class="notes-list-scroll" scroll-y enhanced show-scrollbar="{{false}}" wx:if="{{notesPanelTab === 'highlights'}}">
+        <block wx:if="{{highlightsList.length > 0}}">
+          <view 
+            class="note-item glass-card" 
+            wx:for="{{highlightsList}}" 
+            wx:key="id"
+          >
+            <view class="note-item-body" bindtap="onJumpToHighlight" data-index="{{index}}">
+              <text class="note-item-text">"{{item.text}}"</text>
+              <view class="note-item-meta">
+                <text class="note-item-chapter">📖 {{item.chapter}}</text>
+                <text class="note-item-time">{{item.timeFormatted}}</text>
+              </view>
+            </view>
+            <view class="note-item-delete" bindtap="onDeleteHighlight" data-index="{{index}}">
+              <text class="delete-icon">🗑️</text>
+            </view>
+          </view>
+        </block>
+        <view class="notes-empty" wx:else>
+          <text class="notes-empty-icon">🖍️</text>
+          <text class="notes-empty-text">还没有高亮</text>
+          <text class="notes-empty-hint">长按文字即可划线高亮</text>
+        </view>
+      </scroll-view>
+
+      <!-- 笔记列表 -->
+      <scroll-view class="notes-list-scroll" scroll-y enhanced show-scrollbar="{{false}}" wx:if="{{notesPanelTab === 'notes'}}">
+        <block wx:if="{{notesList.length > 0}}">
+          <view 
+            class="note-item glass-card" 
+            wx:for="{{notesList}}" 
+            wx:key="id"
+          >
+            <view class="note-item-body" bindtap="onJumpToHighlight" data-index="{{index}}">
+              <text class="note-item-quote">"{{item.text}}"</text>
+              <text class="note-item-note">💡 {{item.note}}</text>
+              <view class="note-item-meta">
+                <text class="note-item-chapter">📖 {{item.chapter}}</text>
+                <text class="note-item-time">{{item.timeFormatted}}</text>
+              </view>
+            </view>
+            <view class="note-item-delete" bindtap="onDeleteNote" data-index="{{index}}">
+              <text class="delete-icon">🗑️</text>
+            </view>
+          </view>
+        </block>
+        <view class="notes-empty" wx:else>
+          <text class="notes-empty-icon">📝</text>
+          <text class="notes-empty-text">还没有笔记</text>
+          <text class="notes-empty-hint">选中文字后点击"写笔记"开始记录</text>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
 </view>

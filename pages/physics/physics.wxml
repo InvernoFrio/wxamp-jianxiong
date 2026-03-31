@@ -63,6 +63,49 @@
         bindtouchstart="onCanvasTouch"
       ></canvas>
       
+      <!-- 粒子计数统计 -->
+      <view class="stats-panel glass-card" wx:if="{{totalCount > 0}}">
+        <view class="stats-row">
+          <view class="stat-item">
+            <text class="stat-label">↑ 向上</text>
+            <text class="stat-value up-value">{{countUp}}</text>
+          </view>
+          <view class="stat-divider"></view>
+          <view class="stat-item">
+            <text class="stat-label">↓ 向下</text>
+            <text class="stat-value down-value">{{countDown}}</text>
+          </view>
+          <view class="stat-divider"></view>
+          <view class="stat-item">
+            <text class="stat-label">总计</text>
+            <text class="stat-value">{{totalCount}}</text>
+          </view>
+        </view>
+        <!-- 不对称比例条 -->
+        <view class="ratio-bar">
+          <view class="ratio-fill-up" style="width: {{totalCount > 0 ? (countUp / totalCount * 100) : 50}}%"></view>
+        </view>
+        <view class="ratio-labels">
+          <text class="ratio-label">{{totalCount > 0 ? Math.round(countUp / totalCount * 100) : 50}}%</text>
+          <text class="ratio-label">{{totalCount > 0 ? Math.round(countDown / totalCount * 100) : 50}}%</text>
+        </view>
+      </view>
+
+      <!-- 实验结束结果 -->
+      <view class="result-card glass-card scale-fade-in" wx:if="{{showResult}}">
+        <text class="result-icon">⚡</text>
+        <text class="result-title title-text">实验结果</text>
+        <view class="result-ratio">
+          <text class="ratio-number">{{asymmetryRatio}}</text>
+        </view>
+        <text class="result-desc">
+          β粒子明显偏向下方发射，宇称不守恒得到验证！
+        </text>
+        <text class="result-hint">
+          宇称若守恒，上下比例应为 50:50
+        </text>
+      </view>
+      
       <view class="experiment-controls">
         <view class="control-btn glass-btn" bindtap="startExperiment" wx:if="{{!experimentRunning}}">
           <text>🔬 开始实验</text>
@@ -80,7 +123,7 @@
         <text class="info-title">钴-60 β衰变实验</text>
         <view class="info-row">
           <text class="info-label">实验原理：</text>
-          <text class="info-value">钴-60原子核在磁场中衰变，发射β粒子</text>
+          <text class="info-value">钴-60原子核在磁场中衰变，发射β粒子（电子）</text>
         </view>
         <view class="info-row">
           <text class="info-label">关键发现：</text>
@@ -92,7 +135,7 @@
         </view>
         <view class="info-row">
           <text class="info-label">观察要点：</text>
-          <text class="info-value">粒子向磁场反方向发射更多</text>
+          <text class="info-value">蓝色电子（e⁻）向磁场反方向发射更多</text>
         </view>
       </view>
     </view>

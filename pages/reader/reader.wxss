@@ -327,3 +327,222 @@
 .popup-btn text {
   font-size: 26rpx;
 }
+
+/* ========== 笔记浮动按钮 ========== */
+.notes-fab {
+  position: fixed;
+  right: 32rpx;
+  bottom: 180rpx;
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 90;
+  box-shadow: 0 6rpx 24rpx rgba(0, 0, 0, 0.15);
+}
+
+.notes-fab-icon {
+  font-size: 40rpx;
+}
+
+/* ========== 笔记面板 ========== */
+.notes-panel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 300;
+}
+
+.notes-panel-mask {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.notes-panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 75vh;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 面板头部 */
+.notes-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32rpx 32rpx 16rpx;
+}
+
+.notes-panel-title {
+  font-size: 36rpx;
+}
+
+.notes-panel-close {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: var(--radius-full);
+  background: rgba(139, 157, 175, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notes-panel-close text {
+  font-size: 28rpx;
+  color: var(--gray-blue);
+}
+
+/* Tab 切换 */
+.notes-tabs {
+  display: flex;
+  padding: 0 32rpx 16rpx;
+  gap: 12rpx;
+}
+
+.notes-tab {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx;
+  border-radius: var(--radius-md);
+  background: rgba(139, 157, 175, 0.08);
+  transition: all 0.2s ease;
+}
+
+.notes-tab.active {
+  background: var(--vermillion);
+}
+
+.notes-tab text {
+  font-size: 26rpx;
+  color: var(--ink-black);
+}
+
+.notes-tab.active text {
+  color: #fff;
+}
+
+/* 列表滚动区 */
+.notes-list-scroll {
+  flex: 1;
+  padding: 0 32rpx 32rpx;
+  max-height: 55vh;
+}
+
+/* 单条笔记/高亮 */
+.note-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 16rpx;
+  padding: 20rpx;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.note-item-body {
+  flex: 1;
+}
+
+.note-item-text,
+.note-item-quote {
+  font-family: var(--font-serif);
+  font-size: 26rpx;
+  color: var(--ink-black);
+  line-height: 1.8;
+  display: block;
+  margin-bottom: 8rpx;
+  /* 限制显示行数 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.note-item-note {
+  font-size: 26rpx;
+  color: var(--vermillion);
+  line-height: 1.8;
+  display: block;
+  margin-bottom: 8rpx;
+  padding: 12rpx;
+  background: rgba(196, 30, 58, 0.05);
+  border-radius: var(--radius-sm);
+}
+
+.note-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.note-item-chapter {
+  font-size: 22rpx;
+  color: var(--gray-blue);
+}
+
+.note-item-time {
+  font-size: 22rpx;
+  color: var(--gray-blue);
+}
+
+.note-item-delete {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 12rpx;
+}
+
+.delete-icon {
+  font-size: 28rpx;
+  opacity: 0.6;
+}
+
+/* 空状态 */
+.notes-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 0;
+}
+
+.notes-empty-icon {
+  font-size: 72rpx;
+  margin-bottom: 16rpx;
+}
+
+.notes-empty-text {
+  font-family: var(--font-serif);
+  font-size: 30rpx;
+  color: var(--ink-black);
+  margin-bottom: 8rpx;
+}
+
+.notes-empty-hint {
+  font-size: 24rpx;
+  color: var(--gray-blue);
+}

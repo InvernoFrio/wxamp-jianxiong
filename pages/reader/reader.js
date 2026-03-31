@@ -23,7 +23,12 @@ Page({
     showHighlightPopup: false,
     selectedText: '',
     activeSection: -1,
-    isLoading: false
+    isLoading: false,
+    // 笔记/高亮面板
+    showNotesPanel: false,
+    notesPanelTab: 'highlights', // 'highlights' | 'notes'
+    highlightsList: [],
+    notesList: []
   },
 
   onLoad() {
@@ -74,12 +79,10 @@ Page({
   onSectionTap(e) {
     const index = e.currentTarget.dataset.index;
     this.setData({ activeSection: index });
-    // 滚动到对应内容
     this.setData({ scrollTop: 0 });
   },
 
   onContentScroll(e) {
-    // 计算阅读进度
     const { scrollTop, scrollHeight, detail } = e.detail;
     const query = wx.createSelectorQuery();
     query.select('.content-scroll').boundingClientRect(rect => {
@@ -115,7 +118,6 @@ Page({
         activeSection: this.data.activeSection + 1,
         scrollTop: 0
       });
-      // 重置reader-view组件滚动
       const rv = this.selectComponent('#readerView');
       if (rv) rv.resetScroll();
     }
@@ -157,11 +159,12 @@ Page({
   },
 
   onHighlight() {
-    // 存储高亮
     const highlights = wx.getStorageSync('highlights') || [];
     highlights.push({
+      id: Date.now(),
       text: this.data.selectedText,
       chapter: this.data.currentChapter.title,
+      chapterIndex: this.data.activeChapter,
       sectionIndex: this.data.activeSection,
       time: new Date().toISOString()
     });
@@ -179,9 +182,12 @@ Page({
         if (res.confirm && res.content) {
           const notes = wx.getStorageSync('notes') || [];
           notes.push({
+            id: Date.now(),
             text: this.data.selectedText,
             note: res.content,
             chapter: this.data.currentChapter.title,
+            chapterIndex: this.data.activeChapter,
+            sectionIndex: this.data.activeSection,
             time: new Date().toISOString()
           });
           wx.setStorageSync('notes', notes);
@@ -200,5 +206,116 @@ Page({
       }
     });
     this.onPopupClose();
-  }
+  },
+
+  // ========== 笔记/高亮面板 ==========
+
+  // 打开笔记面板
+  onOpenNotesPanel() {
+    const highlights = wx.getStorageSync('highlights') || [];
+    const notes = wx.getStorageSync('notes') || [];
+    // 格式化时间显示
+    const formatList = (list) => list.reverse().map(item => {
+      const d = new Date(item.time);
+      const m = d.getMonth() + 1;
+      const day = d.getDate();
+      const h = d.getHours().toString().padStart(2, '0');
+      const min = d.getMinutes().toString().padStart(2, '0');
+      return { ...item, timeFormatted: `${m}月${day}日 ${h}:${min}` };
+    });
+    this.setData({
+      showNotesPanel: true,
+      highlightsList: formatList(highlights),
+      notesList: formatList(notes)
+    });
+  },
+
+  // 关闭笔记面板
+  onCloseNotesPanel() {
+    this.setData({ showNotesPanel: false });
+  },
+
+  // 切换面板 tab
+  onNotesPanelTabChange(e) {
+    const tab = e.currentTarget.dataset.tab;
+    this.setData({ notesPanelTab: tab });
+  },
+
+  // 阻止面板内部滚动穿透
+  onPanelTouchMove() {
+    // 阻止冒泡
+  },
+
+  // 跳转到高亮/笔记对应章节
+  onJumpToHighlight(e) {
+    const idx = e.currentTarget.dataset.index;
+    const tab = this.data.notesPanelTab;
+    const item = tab === 'highlights' ? this.data.highlightsList[idx] : this.data.notesList[idx];
+    
+    if (item) {
+      const chapterIdx = item.chapterIndex !== undefined ? item.chapterIndex : 0;
+      const sectionIdx = item.sectionIndex !== undefined ? item.sectionIndex : -1;
+      
+      this.setData({
+        showNotesPanel: false,
+        activeChapter: chapterIdx,
+        currentChapter: chaptersIndex[chapterIdx],
+        activeSection: sectionIdx,
+        scrollTop: 0
+      });
+      this.loadChapterContent(chapterIdx);
+    }
+  },
+
+  // 删除高亮
+  onDeleteHighlight(e) {
+    const idx = e.currentTarget.dataset.index;
+    const highlights = this.data.highlightsList;
+    const item = highlights[idx];
+    if (!item) return;
+
+    wx.showModal({
+      title: '确认删除',
+      content: '确定删除这条高亮吗？',
+      success: (res) => {
+        if (res.confirm) {
+          // 从存储中删除
+          let stored = wx.getStorageSync('highlights') || [];
+          stored = stored.filter(h => h.id !== item.id);
+          wx.setStorageSync('highlights', stored);
+          
+          // 更新面板列表
+          highlights.splice(idx, 1);
+          this.setData({ highlightsList: highlights });
+          wx.showToast({ title: '已删除', icon: 'success' });
+        }
+      }
+    });
+  },
+
+  // 删除笔记
+  onDeleteNote(e) {
+    const idx = e.currentTarget.dataset.index;
+    const notes = this.data.notesList;
+    const item = notes[idx];
+    if (!item) return;
+
+    wx.showModal({
+      title: '确认删除',
+      content: '确定删除这条笔记吗？',
+      success: (res) => {
+        if (res.confirm) {
+          let stored = wx.getStorageSync('notes') || [];
+          stored = stored.filter(n => n.id !== item.id);
+          wx.setStorageSync('notes', stored);
+          
+          notes.splice(idx, 1);
+          this.setData({ notesList: notes });
+          wx.showToast({ title: '已删除', icon: 'success' });
+        }
+      }
+    });
+  },
+
+
 });
