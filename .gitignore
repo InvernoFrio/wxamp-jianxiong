@@ -1,0 +1,17 @@
+# 微信小程序
+miniprogram_npm/
+node_modules/
+.wxproject/
+package-lock.json
+
+# IDE
+.vscode/
+.idea/
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# 临时
+*.tmp
+*.log
