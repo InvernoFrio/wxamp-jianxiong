@@ -25,6 +25,11 @@
   flex-shrink: 0;
 }
 
+.timeline-dot.birth {
+  background: var(--vermillion);
+  box-shadow: 0 0 0 2rpx var(--vermillion);
+}
+
 .timeline-dot.education {
   background: #4A90D9;
   box-shadow: 0 0 0 2rpx #4A90D9;
@@ -35,9 +40,14 @@
   box-shadow: 0 0 0 2rpx var(--vermillion);
 }
 
-.timeline-dot.honor {
+.timeline-dot.award {
   background: var(--amber);
   box-shadow: 0 0 0 2rpx var(--amber);
+}
+
+.timeline-dot.other {
+  background: var(--gray-blue);
+  box-shadow: 0 0 0 2rpx var(--gray-blue);
 }
 
 .timeline-line {
@@ -78,6 +88,11 @@
   font-size: 20rpx;
 }
 
+.timeline-badge.birth {
+  background: rgba(196, 30, 58, 0.15);
+  color: var(--vermillion);
+}
+
 .timeline-badge.education {
   background: rgba(74, 144, 217, 0.15);
   color: #4A90D9;
@@ -88,9 +103,14 @@
   color: var(--vermillion);
 }
 
-.timeline-badge.honor {
+.timeline-badge.award {
   background: rgba(212, 165, 116, 0.15);
   color: var(--amber);
+}
+
+.timeline-badge.other {
+  background: rgba(139, 157, 175, 0.15);
+  color: var(--gray-blue);
 }
 
 .timeline-title {
