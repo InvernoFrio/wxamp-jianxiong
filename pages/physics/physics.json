@@ -1,3 +1,7 @@
 {
-  "navigationBarTitleText": "物理之光"
+  "navigationBarTitleText": "物理之光",
+  "usingComponents": {
+    "glass-card": "/components/glass-card/glass-card",
+    "glass-button": "/components/glass-button/glass-button"
+  }
 }

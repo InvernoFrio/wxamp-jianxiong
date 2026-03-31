@@ -1,0 +1,126 @@
+/* components/timeline-item/timeline-item.wxss */
+.timeline-item {
+  display: flex;
+  padding: 16rpx 0;
+  transition: all 0.3s ease;
+}
+
+/* 竖线轨道 */
+.timeline-track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 60rpx;
+  flex-shrink: 0;
+}
+
+.timeline-dot {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+  background: var(--gray-blue);
+  border: 4rpx solid #fff;
+  box-shadow: 0 0 0 2rpx var(--gray-blue);
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.timeline-dot.education {
+  background: #4A90D9;
+  box-shadow: 0 0 0 2rpx #4A90D9;
+}
+
+.timeline-dot.research {
+  background: var(--vermillion);
+  box-shadow: 0 0 0 2rpx var(--vermillion);
+}
+
+.timeline-dot.honor {
+  background: var(--amber);
+  box-shadow: 0 0 0 2rpx var(--amber);
+}
+
+.timeline-line {
+  width: 2rpx;
+  flex: 1;
+  background: rgba(139, 157, 175, 0.3);
+  margin-top: 8rpx;
+}
+
+.timeline-item:last-child .timeline-line {
+  display: none;
+}
+
+/* 内容区 */
+.timeline-content {
+  flex: 1;
+  padding-left: 16rpx;
+  padding-bottom: 24rpx;
+}
+
+.timeline-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.timeline-year {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 32rpx;
+  color: var(--ink-black);
+  font-weight: 700;
+  margin-right: 12rpx;
+}
+
+.timeline-badge {
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 20rpx;
+}
+
+.timeline-badge.education {
+  background: rgba(74, 144, 217, 0.15);
+  color: #4A90D9;
+}
+
+.timeline-badge.research {
+  background: rgba(196, 30, 58, 0.15);
+  color: var(--vermillion);
+}
+
+.timeline-badge.honor {
+  background: rgba(212, 165, 116, 0.15);
+  color: var(--amber);
+}
+
+.timeline-title {
+  font-family: var(--font-serif);
+  font-size: 28rpx;
+  color: var(--ink-black);
+  line-height: 1.6;
+  display: block;
+}
+
+/* 展开详情 */
+.timeline-detail {
+  margin-top: 16rpx;
+  padding: 20rpx;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 16rpx;
+  border-left: 4rpx solid var(--vermillion);
+}
+
+.detail-text {
+  font-size: 26rpx;
+  color: var(--dark-ink);
+  line-height: 1.8;
+}
+
+.expand-hint {
+  margin-top: 12rpx;
+}
+
+.expand-hint text {
+  font-size: 22rpx;
+  color: var(--gray-blue);
+}

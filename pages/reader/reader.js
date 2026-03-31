@@ -115,7 +115,26 @@ Page({
         activeSection: this.data.activeSection + 1,
         scrollTop: 0
       });
+      // 重置reader-view组件滚动
+      const rv = this.selectComponent('#readerView');
+      if (rv) rv.resetScroll();
     }
+  },
+
+  // 阅读进度回调
+  onReadProgress(e) {
+    const progress = e.detail.progress;
+    this.setData({ readProgress: progress });
+    this.saveProgress(this.data.activeChapter, progress);
+  },
+
+  // 文字选中回调
+  onTextSelect(e) {
+    const { text } = e.detail;
+    this.setData({
+      showHighlightPopup: true,
+      selectedText: text
+    });
   },
 
   saveProgress(chapterIndex, percent) {

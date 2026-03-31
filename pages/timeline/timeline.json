@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "生平年表"
+  "navigationBarTitleText": "生平年表",
+  "usingComponents": {
+    "timeline-item": "/components/timeline-item/timeline-item"
+  }
 }

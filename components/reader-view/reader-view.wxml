@@ -1,0 +1,49 @@
+<!--components/reader-view/reader-view.wxml-->
+<view class="reader-view">
+  <!-- 章节标题 -->
+  <view class="reader-header" wx:if="{{sectionTitle}}">
+    <text class="section-label">{{chapterTitle}}</text>
+    <text class="section-name">{{sectionTitle}}</text>
+  </view>
+  
+  <!-- 正文段落 -->
+  <scroll-view 
+    class="reader-body"
+    scroll-y
+    scroll-top="{{scrollTop}}"
+    bindscroll="onScroll"
+    enable-back-to-top
+  >
+    <view class="paragraphs">
+      <view 
+        class="paragraph" 
+        wx:for="{{paragraphs}}" 
+        wx:key="index"
+        bindlongpress="onLongPress"
+        data-index="{{index}}"
+        data-text="{{item}}"
+      >
+        <text class="para-text">{{item}}</text>
+      </view>
+    </view>
+    
+    <!-- 底部导航 -->
+    <view class="reader-footer" wx:if="{{showNav}}">
+      <view class="nav-prev" wx:if="{{hasPrev}}" bindtap="onPrev">
+        <text>← 上一节</text>
+      </view>
+      <view class="nav-spacer" wx:else></view>
+      <view class="nav-next primary" wx:if="{{hasNext}}" bindtap="onNext">
+        <text>下一节 →</text>
+      </view>
+    </view>
+  </scroll-view>
+  
+  <!-- 阅读进度 -->
+  <view class="progress-bar-wrap">
+    <view class="progress-track">
+      <view class="progress-fill" style="width: {{progress}}%"></view>
+    </view>
+    <text class="progress-text">{{progress}}%</text>
+  </view>
+</view>

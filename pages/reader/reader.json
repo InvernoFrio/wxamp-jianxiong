@@ -1,3 +1,7 @@
 {
-  "navigationBarTitleText": "书韵阅读"
+  "navigationBarTitleText": "书韵阅读",
+  "usingComponents": {
+    "reader-view": "/components/reader-view/reader-view",
+    "glass-card": "/components/glass-card/glass-card"
+  }
 }

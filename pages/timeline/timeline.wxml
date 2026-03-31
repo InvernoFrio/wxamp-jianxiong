@@ -26,41 +26,20 @@
     show-scrollbar="{{false}}"
   >
     <view class="timeline-container">
-      <!-- 时间轴竖线 -->
-      <view class="timeline-line"></view>
-      
-      <view 
-        class="timeline-item scale-fade-in" 
-        wx:for="{{filteredTimeline}}" 
+      <timeline-item
+        wx:for="{{filteredTimeline}}"
         wx:key="year"
-        style="animation-delay: {{index * 0.05}}s"
-      >
-        <!-- 节点圆点 -->
-        <view 
-          class="timeline-node {{item.type === 'award' ? 'award' : ''}}"
-          style="--node-color: {{getNodeColor(item.type)}}"
-        >
-          <text class="node-icon">{{item.icon}}</text>
-        </view>
-        
-        <!-- 事件卡片 -->
-        <view 
-          class="timeline-card glass-card" 
-          bindtap="onCardTap"
-          data-index="{{index}}"
-        >
-          <view class="card-header">
-            <text class="card-year vermillion">{{item.year}}</text>
-            <text class="card-type">{{getTypeLabel(item.type)}}</text>
-          </view>
-          <text class="card-title title-text">{{item.title}}</text>
-          <text class="card-detail {{expandedIndex === index ? 'expanded' : ''}}">
-            {{item.detail}}
-          </text>
-          <view class="card-expand" wx:if="{{item.detail.length > 60}}">
-            <text>{{expandedIndex === index ? '收起' : '展开'}}</text>
-          </view>
-        </view>
+        year="{{item.year}}"
+        title="{{item.title}}"
+        detail="{{item.detail}}"
+        category="{{item.type}}"
+        hasDetail="{{item.detail.length > 0}}"
+        bind:toggle="onItemToggle"
+        data-index="{{index}}"
+      />
+      
+      <view class="timeline-end" wx:if="{{filteredTimeline.length === 0}}">
+        <text class="end-text">暂无此类事件</text>
       </view>
     </view>
   </scroll-view>

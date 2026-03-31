@@ -43,6 +43,11 @@ Page({
     });
   },
 
+  onItemToggle(e) {
+    // timeline-item 组件的展开/收起事件
+    // 可用于统计或其他交互
+  },
+
   getNodeColor(type) {
     const colors = {
       birth: '#C41E3A',

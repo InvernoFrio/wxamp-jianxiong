@@ -1,0 +1,28 @@
+<!--components/timeline-item/timeline-item.wxml-->
+<view class="timeline-item {{expanded ? 'expanded' : ''}}" bindtap="onTap">
+  <!-- 时间轴竖线 -->
+  <view class="timeline-track">
+    <view class="timeline-dot {{category}}"></view>
+    <view class="timeline-line"></view>
+  </view>
+  
+  <!-- 内容 -->
+  <view class="timeline-content">
+    <view class="timeline-header">
+      <text class="timeline-year">{{year}}</text>
+      <view class="timeline-badge {{category}}">
+        <text>{{categoryText}}</text>
+      </view>
+    </view>
+    <text class="timeline-title">{{title}}</text>
+    
+    <!-- 展开详情 -->
+    <view class="timeline-detail" wx:if="{{expanded}}">
+      <text class="detail-text">{{detail}}</text>
+    </view>
+    
+    <view class="expand-hint" wx:if="{{hasDetail}}">
+      <text>{{expanded ? '收起 ▲' : '展开详情 ▼'}}</text>
+    </view>
+  </view>
+</view>

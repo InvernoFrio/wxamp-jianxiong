@@ -24,37 +24,15 @@
 
   <!-- 中央书本 - 翻书动画 -->
   <view class="book-area">
-    <view 
-      class="book-container {{bookOpening ? 'opening' : ''}}" 
-      bindtap="onBookTap"
-    >
-      <!-- 书本封面 -->
-      <view class="book-cover" id="bookCover">
-        <view class="book-front">
-          <view class="book-title">
-            <text class="book-title-main">健雄</text>
-            <text class="book-title-sub">书韵</text>
-          </view>
-          <view class="book-decoration">
-            <view class="book-line"></view>
-            <text class="book-author">吴健雄数字纪念馆</text>
-            <view class="book-line"></view>
-          </view>
-        </view>
-        <!-- 书脊 -->
-        <view class="book-spine"></view>
-        <!-- 书页侧面 -->
-        <view class="book-pages-side"></view>
-      </view>
-      
-      <!-- 翻开后的内页 -->
-      <view class="book-inner" id="bookInner">
-        <view class="inner-content">
-          <text class="inner-title">翻开书卷</text>
-          <text class="inner-subtitle">探索一位伟大科学家的一生</text>
-        </view>
-      </view>
-    </view>
+    <book-cover 
+      id="bookCover"
+      title="健 雄"
+      subtitle="书 韵"
+      author="吴健雄数字纪念馆"
+      innerTitle="翻开书卷"
+      innerSubtitle="探索一位伟大科学家的一生"
+      bind:toggle="onBookToggle"
+    />
     
     <!-- 点击提示 -->
     <view class="tap-hint {{bookOpening ? 'hidden' : ''}}">
@@ -64,20 +42,23 @@
 
   <!-- 四个模块入口 - 书签式卡片 -->
   <view class="module-entrance {{showModules ? 'visible' : ''}}">
-    <view 
-      class="bookmark-card glass-card {{showModules ? 'scale-fade-in' : ''}}" 
+    <glass-card 
+      class="bookmark-card {{showModules ? 'scale-fade-in' : ''}}" 
       wx:for="{{modules}}" 
       wx:key="id"
-      bindtap="onModuleTap"
+      customClass="bookmark-card"
+      customStyle="--delay: {{index * 0.1}}s; animation-delay: {{index * 0.1}}s"
+      bind:tap="onModuleTap"
       data-path="{{item.path}}"
-      style="--delay: {{index * 0.1}}s; animation-delay: {{index * 0.1}}s"
     >
-      <view class="bookmark-icon">{{item.icon}}</view>
-      <view class="bookmark-info">
-        <text class="bookmark-title">{{item.title}}</text>
-        <text class="bookmark-desc">{{item.desc}}</text>
+      <view class="bookmark-inner" bindtap="onModuleTap" data-path="{{item.path}}">
+        <view class="bookmark-icon">{{item.icon}}</view>
+        <view class="bookmark-info">
+          <text class="bookmark-title">{{item.title}}</text>
+          <text class="bookmark-desc">{{item.desc}}</text>
+        </view>
+        <view class="bookmark-arrow">›</view>
       </view>
-      <view class="bookmark-arrow">›</view>
-    </view>
+    </glass-card>
   </view>
 </view>

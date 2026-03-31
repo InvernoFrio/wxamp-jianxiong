@@ -22,88 +22,66 @@
 
   <!-- 阅读区域 -->
   <view class="reader-container">
-    <!-- 章节标题 -->
-    <view class="chapter-header scale-fade-in">
-      <text class="chapter-number">第{{activeChapter + 1}}章</text>
-      <text class="chapter-title title-text">{{currentChapter.title}}</text>
-      <text class="chapter-subtitle">{{currentChapter.subtitle}}</text>
-      <view class="chapter-divider">
-        <view class="divider-line"></view>
-        <text class="divider-icon">✦</text>
-        <view class="divider-line"></view>
-      </view>
-    </view>
-
-    <!-- 正文内容 -->
-    <scroll-view 
-      class="content-scroll" 
-      scroll-y 
-      enhanced 
-      show-scrollbar="{{false}}"
-      bindscroll="onContentScroll"
-      scroll-top="{{scrollTop}}"
-    >
-      <view class="content-body">
-    <!-- 章节小节列表 -->
-    <view class="section-list" wx:if="{{activeSection === -1}}">
-      <view 
-        class="section-item scale-fade-in" 
-        wx:for="{{currentSections}}" 
-        wx:key="id"
-        bindtap="onSectionTap"
-        data-index="{{index}}"
-        style="animation-delay: {{index * 0.05}}s"
-      >
-        <view class="section-bullet vermillion">§</view>
-        <view class="section-content">
-          <text class="section-title">{{item.title}}</text>
-          <text class="section-hint">{{item.paragraphs.length}} 段 · 点击阅读</text>
+    <!-- 小节列表模式 -->
+    <block wx:if="{{activeSection === -1}}">
+      <!-- 章节标题 -->
+      <view class="chapter-header scale-fade-in">
+        <text class="chapter-number">第{{activeChapter + 1}}章</text>
+        <text class="chapter-title title-text">{{currentChapter.title}}</text>
+        <text class="chapter-subtitle">{{currentChapter.subtitle}}</text>
+        <view class="chapter-divider">
+          <view class="divider-line"></view>
+          <text class="divider-icon">✦</text>
+          <view class="divider-line"></view>
         </view>
-        <view class="section-arrow">›</view>
       </view>
-    </view>
+      
+      <!-- 小节列表 -->
+      <scroll-view class="content-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+        <view class="section-list">
+          <view 
+            class="section-item scale-fade-in" 
+            wx:for="{{currentSections}}" 
+            wx:key="id"
+            bindtap="onSectionTap"
+            data-index="{{index}}"
+            style="animation-delay: {{index * 0.05}}s"
+          >
+            <view class="section-bullet vermillion">§</view>
+            <view class="section-content">
+              <text class="section-title">{{item.title}}</text>
+              <text class="section-hint">{{item.paragraphs.length}} 段 · 点击阅读</text>
+            </view>
+            <view class="section-arrow">›</view>
+          </view>
+        </view>
+        <view class="chapter-end" wx:if="{{currentSections.length === 0 && !isLoading}}">
+          <text class="end-text">内容加载中...</text>
+        </view>
+      </scroll-view>
+    </block>
 
-    <!-- 正文内容 -->
-    <view class="chapter-content" wx:if="{{activeSection >= 0}}">
-      <view class="section-header-bar">
-        <view class="back-btn glass-btn" bindtap="onBackToSections">
+    <!-- 正文阅读模式 -->
+    <block wx:else>
+      <view class="section-header-bar glass-card">
+        <view class="back-btn" bindtap="onBackToSections">
           <text>← 返回目录</text>
         </view>
         <text class="current-section-title">{{currentSections[activeSection].title}}</text>
       </view>
-      
-      <view class="paragraph" wx:for="{{currentSections[activeSection].paragraphs}}" wx:key="index">
-        <text class="paragraph-text" 
-          bindlongpress="onTextLongPress"
-          data-text="{{item}}"
-        >{{item}}</text>
-      </view>
-
-      <!-- 上下小节导航 -->
-      <view class="section-nav">
-        <view class="nav-btn glass-btn" wx:if="{{activeSection > 0}}" bindtap="onPrevSection">
-          <text>← 上一节</text>
-        </view>
-        <view class="nav-placeholder" wx:else></view>
-        <view class="nav-btn glass-btn vermillion" wx:if="{{activeSection < currentSections.length - 1}}" bindtap="onNextSection">
-          <text>下一节 →</text>
-        </view>
-      </view>
-    </view>
-    
-    <view class="chapter-end" wx:if="{{currentSections.length === 0 && !isLoading}}">
-      <text class="end-text">内容加载中...</text>
-    </view>
-      </view>
-    </scroll-view>
-  </view>
-
-  <!-- 阅读进度 -->
-  <view class="reading-progress">
-    <view class="progress-bar">
-      <view class="progress-fill" style="width: {{readProgress}}%"></view>
-    </view>
-    <text class="progress-text">{{readProgress}}%</text>
+      <reader-view
+        id="readerView"
+        chapterTitle="{{currentChapter.title}}"
+        sectionTitle="{{currentSections[activeSection].title}}"
+        paragraphs="{{currentSections[activeSection].paragraphs}}"
+        hasPrev="{{activeSection > 0}}"
+        hasNext="{{activeSection < currentSections.length - 1}}"
+        bind:select="onTextSelect"
+        bind:prev="onPrevSection"
+        bind:next="onNextSection"
+        bind:progress="onReadProgress"
+      />
+    </block>
   </view>
 
   <!-- 高亮/批注弹窗 -->

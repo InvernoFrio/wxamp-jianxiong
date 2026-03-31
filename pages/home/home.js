@@ -49,20 +49,23 @@ Page({
     }
   },
 
-  onBookTap() {
-    if (this.data.bookOpening) return;
-    
-    this.setData({ bookOpening: true });
-    wx.setStorageSync('bookOpened', true);
-    
-    // 等翻书动画完成后显示模块
-    setTimeout(() => {
-      this.setData({ showModules: true });
-    }, 600);
+  onBookToggle(e) {
+    const opening = e.detail.opening;
+    if (opening && !this.data.bookOpening) {
+      this.setData({ bookOpening: true });
+      wx.setStorageSync('bookOpened', true);
+      // 等翻书动画完成后显示模块
+      setTimeout(() => {
+        this.setData({ showModules: true });
+      }, 600);
+    }
   },
 
   onModuleTap(e) {
-    const path = e.currentTarget.dataset.path;
-    wx.switchTab({ url: path });
+    // 事件可能来自组件内部或直接绑定
+    const path = e.currentTarget.dataset.path || e.currentTarget._dataset.path;
+    if (path) {
+      wx.switchTab({ url: path });
+    }
   }
 });

@@ -1,0 +1,8 @@
+<!--components/glass-button/glass-button.wxml-->
+<view 
+  class="glass-btn {{type === 'primary' ? 'primary' : ''}} {{disabled ? 'disabled' : ''}} {{customClass}}" 
+  style="{{customStyle}}"
+  bindtap="onTap"
+>
+  <slot></slot>
+</view>
