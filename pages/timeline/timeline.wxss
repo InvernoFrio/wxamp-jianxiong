@@ -48,7 +48,7 @@
 /* 时间轴滚动区域 */
 .timeline-scroll {
   flex: 1;
-  height: 0;
+  height: calc(100vh - 300rpx);
 }
 
 .timeline-container {
