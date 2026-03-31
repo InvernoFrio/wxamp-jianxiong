@@ -1,8 +1,16 @@
 // pages/reader/reader.js
 const chaptersIndex = require('../../data/chapters/index.json');
 
-// 章节数据缓存
-const chaptersCache = {};
+// 静态导入所有章节数据（微信小程序不支持动态require）
+const chaptersData = {
+  ch01: require('../../data/chapters/ch01.json'),
+  ch02: require('../../data/chapters/ch02.json'),
+  ch03: require('../../data/chapters/ch03.json'),
+  ch04: require('../../data/chapters/ch04.json'),
+  ch05: require('../../data/chapters/ch05.json'),
+  ch06: require('../../data/chapters/ch06.json'),
+  ch07: require('../../data/chapters/ch07.json')
+};
 
 Page({
   data: {
@@ -35,34 +43,18 @@ Page({
     if (!chapter) return;
 
     const chapterId = chapter.id;
+    const chapterData = chaptersData[chapterId];
     
-    // 检查缓存
-    if (chaptersCache[chapterId]) {
-      this.setData({
-        currentSections: chaptersCache[chapterId].sections,
-        isLoading: false
-      });
-      return;
-    }
-
-    this.setData({ isLoading: true });
-
-    // 动态加载章节JSON
-    try {
-      // 微信小程序中使用 require 动态加载
-      const chapterData = require(`../../data/chapters/${chapterId}.json`);
-      chaptersCache[chapterId] = chapterData;
+    if (chapterData) {
       this.setData({
         currentSections: chapterData.sections,
         isLoading: false
       });
-    } catch (err) {
-      console.error('加载章节失败:', err);
+    } else {
       this.setData({
         currentSections: [],
         isLoading: false
       });
-      wx.showToast({ title: '内容加载中', icon: 'none' });
     }
   },
 
