@@ -1,46 +1,36 @@
-<!--pages/timeline/timeline.wxml-->
-<view class="page-container paper-bg">
-  <view class="page-header fade-slide-up">
-    <text class="page-title title-text">生平年表</text>
-    <text class="page-subtitle">1912 — 1997</text>
-  </view>
-
+<view class="timeline-page page-enter">
   <!-- 筛选标签 -->
-  <view class="filter-bar">
-    <view 
-      class="filter-tag {{activeFilter === item.key ? 'active' : ''}}" 
-      wx:for="{{filters}}" 
+  <scroll-view class="filter-bar" scroll-x="{{true}}" show-scrollbar="{{false}}">
+    <view
+      wx:for="{{filterTabs}}"
       wx:key="key"
-      bindtap="onFilterTap"
+      class="filter-tab {{activeFilter === item.key ? 'active' : ''}}"
       data-key="{{item.key}}"
+      bindtap="onFilterTap"
     >
       <text>{{item.label}}</text>
     </view>
-  </view>
+  </scroll-view>
 
-  <!-- 时间轴 -->
-  <scroll-view 
-    class="timeline-scroll" 
-    scroll-y 
-    enhanced 
-    show-scrollbar="{{false}}"
-  >
-    <view class="timeline-container">
-      <timeline-item
-        wx:for="{{filteredTimeline}}"
+  <!-- 时间轴列表 -->
+  <view class="timeline-list">
+    <view class="tl-axis">
+      <view
+        wx:for="{{filteredItems}}"
         wx:key="year"
-        year="{{item.year}}"
-        title="{{item.title}}"
-        detail="{{item.detail}}"
-        category="{{item.type}}"
-        hasDetail="{{item.detail.length > 0}}"
-        bind:toggle="onItemToggle"
-        data-index="{{index}}"
-      />
-      
-      <view class="timeline-end" wx:if="{{filteredTimeline.length === 0}}">
-        <text class="end-text">暂无此类事件</text>
+        class="tl-wrapper"
+        style="animation-delay: {{index * 0.05}}s;"
+      >
+        <timeline-item
+          item="{{item}}"
+          index="{{index}}"
+          expanded="{{expandedIndex === index}}"
+          bind:toggle="onItemToggle"
+        />
       </view>
     </view>
-  </scroll-view>
+    <view class="empty-tip" wx:if="{{filteredItems.length === 0}}">
+      <text>暂无数据</text>
+    </view>
+  </view>
 </view>

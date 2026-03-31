@@ -1,20 +1,16 @@
-<!--pages/home/home.wxml-->
-<view class="page-container paper-bg">
-  <!-- 水墨背景装饰 -->
-  <view class="ink-wash"></view>
-  
-  <!-- 吴健雄名言轮播 -->
-  <view class="quote-section fade-slide-up">
-    <swiper 
-      class="quote-swiper" 
-      autoplay 
-      circular 
-      interval="5000" 
-      duration="800"
-      vertical
+<view class="home-page {{pageReady ? 'page-enter' : ''}}">
+  <!-- 名言轮播 -->
+  <view class="quote-section">
+    <swiper
+      class="quote-swiper"
+      autoplay="{{true}}"
+      interval="{{5000}}"
+      circular="{{true}}"
+      current="{{currentQuote}}"
+      bindchange="onQuoteChange"
     >
       <swiper-item wx:for="{{quotes}}" wx:key="index">
-        <view class="quote-item">
+        <view class="quote-item glass">
           <text class="quote-text">"{{item.text}}"</text>
           <text class="quote-source">—— {{item.source}}</text>
         </view>
@@ -22,40 +18,35 @@
     </swiper>
   </view>
 
-  <!-- 中央书本 - 翻书动画 -->
-  <view class="book-area">
-    <book-cover 
-      id="bookCover"
-      title="健 雄"
-      subtitle="书 韵"
-      author="吴健雄数字纪念馆"
-      innerTitle="翻开书卷"
-      innerSubtitle="探索一位伟大科学家的一生"
-      bind:toggle="onBookToggle"
-    />
-    
-    <!-- 点击提示 -->
-    <view class="tap-hint {{bookOpening ? 'hidden' : ''}}">
-      <text>点击翻开</text>
+  <!-- 翻书动画 -->
+  <view class="book-section">
+    <book-cover isOpen="{{bookOpen}}" bind:toggle="onBookToggle" />
+  </view>
+
+  <!-- 模块入口（书本打开后显示） -->
+  <view class="modules {{bookOpen ? 'modules-visible' : 'modules-hidden'}}">
+    <view class="module-grid">
+      <view class="module-item glass" data-page="timeline" bindtap="onModuleTap">
+        <text class="module-icon">📜</text>
+        <text class="module-name">生平年表</text>
+      </view>
+      <view class="module-item glass" data-page="reader" bindtap="onModuleTap">
+        <text class="module-icon">📖</text>
+        <text class="module-name">书韵阅读</text>
+      </view>
+      <view class="module-item glass" data-page="physics" bindtap="onModuleTap">
+        <text class="module-icon">⚛️</text>
+        <text class="module-name">物理之光</text>
+      </view>
+      <view class="module-item glass" data-page="about" bindtap="onModuleTap">
+        <text class="module-icon">ℹ️</text>
+        <text class="module-name">关于纪念馆</text>
+      </view>
     </view>
   </view>
 
-  <!-- 四个模块入口 - 书签式卡片 -->
-  <view class="module-entrance {{showModules ? 'visible' : ''}}">
-    <view 
-      class="bookmark-card glass-card {{showModules ? 'scale-fade-in' : ''}}" 
-      wx:for="{{modules}}" 
-      wx:key="id"
-      bindtap="onModuleTap"
-      data-path="{{item.path}}"
-      style="animation-delay: {{index * 0.1}}s"
-    >
-      <view class="bookmark-icon">{{item.icon}}</view>
-      <view class="bookmark-info">
-        <text class="bookmark-title">{{item.title}}</text>
-        <text class="bookmark-desc">{{item.desc}}</text>
-      </view>
-      <view class="bookmark-arrow">›</view>
-    </view>
+  <!-- 底部标语 -->
+  <view class="footer-slogan">
+    <text>科学是没有国界的，但科学家有自己的祖国。</text>
   </view>
 </view>

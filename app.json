@@ -7,11 +7,11 @@
     "pages/about/about"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#2C2C2C",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#F5F0E8",
     "navigationBarTitleText": "健雄书韵",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#F5F0E8",
-    "backgroundTextStyle": "dark"
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F5F0E8"
   },
   "tabBar": {
     "color": "#8B9DAF",
@@ -21,7 +21,7 @@
     "list": [
       {
         "pagePath": "pages/home/home",
-        "text": "书卷",
+        "text": "首页",
         "iconPath": "assets/icons/home.png",
         "selectedIconPath": "assets/icons/home-active.png"
       },
@@ -51,6 +51,7 @@
       }
     ]
   },
-  "style": "v2",
-  "sitemapLocation": "sitemap.json"
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
 }

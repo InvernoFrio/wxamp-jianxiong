@@ -1,52 +1,68 @@
+// components/reader-view/reader-view.js
 Component({
   properties: {
-    chapterTitle: { type: String, value: '' },
-    sectionTitle: { type: String, value: '' },
-    paragraphs: { type: Array, value: [] },
-    showNav: { type: Boolean, value: true },
-    hasPrev: { type: Boolean, value: false },
-    hasNext: { type: Boolean, value: true }
+    paragraphs: {
+      type: Array,
+      value: []
+    },
+    fontSize: {
+      type: Number,
+      value: 30
+    },
+    lineHeight: {
+      type: Number,
+      value: 2.2
+    },
+    highlights: {
+      type: Array,
+      value: []
+    }
   },
-
   data: {
-    scrollTop: 0,
-    progress: 0
+    menuVisible: false,
+    menuX: 0,
+    menuY: 0,
+    selectedText: '',
+    selectedParaIndex: -1
   },
-
   methods: {
-    onScroll(e) {
-      const { scrollTop, scrollHeight } = e.detail;
-      wx.createSelectorQuery().in(this).select('.reader-body').boundingClientRect(rect => {
-        if (rect) {
-          const viewH = rect.height;
-          const maxScroll = scrollHeight - viewH;
-          if (maxScroll > 0) {
-            const p = Math.min(100, Math.round((scrollTop / maxScroll) * 100));
-            this.setData({ progress: p });
-            this.triggerEvent('progress', { progress: p });
-          }
-        }
-      }).exec();
-    },
-
     onLongPress(e) {
-      const { text, index } = e.currentTarget.dataset;
-      this.triggerEvent('select', { text, index });
+      const dataset = e.currentTarget.dataset;
+      const paraIndex = dataset.index;
+      const text = this.properties.paragraphs[paraIndex] || '';
+      this.setData({
+        menuVisible: true,
+        menuX: e.touches[0].clientX,
+        menuY: e.touches[0].clientY,
+        selectedText: text,
+        selectedParaIndex: paraIndex
+      });
     },
-
-    onPrev() {
-      this.setData({ scrollTop: 0, progress: 0 });
-      this.triggerEvent('prev');
+    onHighlight() {
+      this.triggerEvent('highlight', {
+        text: this.data.selectedText,
+        paraIndex: this.data.selectedParaIndex
+      });
+      this.setData({ menuVisible: false });
     },
-
-    onNext() {
-      this.setData({ scrollTop: 0, progress: 0 });
-      this.triggerEvent('next');
+    onNote() {
+      this.triggerEvent('note', {
+        text: this.data.selectedText,
+        paraIndex: this.data.selectedParaIndex
+      });
+      this.setData({ menuVisible: false });
     },
-
-    // 外部调用：重置滚动位置
-    resetScroll() {
-      this.setData({ scrollTop: 0, progress: 0 });
+    onCopy() {
+      wx.setClipboardData({
+        data: this.data.selectedText,
+        success: () => {
+          wx.showToast({ title: '已复制', icon: 'success' });
+        }
+      });
+      this.setData({ menuVisible: false });
+    },
+    onCloseMenu() {
+      this.setData({ menuVisible: false });
     }
   }
 });

@@ -1,146 +1,100 @@
-/* components/timeline-item/timeline-item.wxss */
-.timeline-item {
+.tl-item {
   display: flex;
-  padding: 16rpx 0;
-  transition: all 0.3s ease;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-bottom: 24rpx;
 }
 
-/* 竖线轨道 */
-.timeline-track {
+.tl-left {
+  width: 120rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 60rpx;
   flex-shrink: 0;
 }
 
-.timeline-dot {
-  width: 20rpx;
-  height: 20rpx;
-  border-radius: 50%;
-  background: var(--gray-blue);
-  border: 4rpx solid #fff;
-  box-shadow: 0 0 0 2rpx var(--gray-blue);
-  z-index: 1;
-  flex-shrink: 0;
-}
-
-.timeline-dot.birth {
-  background: var(--vermillion);
-  box-shadow: 0 0 0 2rpx var(--vermillion);
-}
-
-.timeline-dot.education {
-  background: #4A90D9;
-  box-shadow: 0 0 0 2rpx #4A90D9;
-}
-
-.timeline-dot.research {
-  background: var(--vermillion);
-  box-shadow: 0 0 0 2rpx var(--vermillion);
-}
-
-.timeline-dot.award {
-  background: var(--amber);
-  box-shadow: 0 0 0 2rpx var(--amber);
-}
-
-.timeline-dot.other {
-  background: var(--gray-blue);
-  box-shadow: 0 0 0 2rpx var(--gray-blue);
-}
-
-.timeline-line {
-  width: 2rpx;
-  flex: 1;
-  background: rgba(139, 157, 175, 0.3);
-  margin-top: 8rpx;
-}
-
-.timeline-item:last-child .timeline-line {
-  display: none;
-}
-
-/* 内容区 */
-.timeline-content {
-  flex: 1;
-  padding-left: 16rpx;
-  padding-bottom: 24rpx;
-}
-
-.timeline-header {
-  display: flex;
-  align-items: center;
+.tl-year {
+  font-size: 24rpx;
+  color: #C41E3A;
+  font-weight: bold;
   margin-bottom: 8rpx;
 }
 
-.timeline-year {
-  font-family: 'Noto Serif SC', serif;
+.tl-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  border: 3rpx solid #fff;
+  box-shadow: 0 0 0 2rpx rgba(0,0,0,0.1);
+  z-index: 1;
+}
+
+.tl-line {
+  width: 2rpx;
+  flex: 1;
+  background: rgba(139, 157, 175, 0.3);
+  margin-top: 4rpx;
+  min-height: 40rpx;
+}
+
+.tl-card {
+  flex: 1;
+  margin-left: 16rpx;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(16rpx);
+  -webkit-backdrop-filter: blur(16rpx);
+  border: 1rpx solid rgba(255, 255, 255, 0.6);
+  border-radius: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.tl-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.tl-icon {
   font-size: 32rpx;
-  color: var(--ink-black);
-  font-weight: 700;
   margin-right: 12rpx;
 }
 
-.timeline-badge {
+.tl-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #2C2C2C;
+  flex: 1;
+}
+
+.tl-tag {
+  display: inline-block;
   padding: 4rpx 16rpx;
-  border-radius: 20rpx;
+  border-radius: 8rpx;
+  margin-bottom: 12rpx;
+}
+
+.tl-tag text {
   font-size: 20rpx;
+  color: #fff;
 }
 
-.timeline-badge.birth {
-  background: rgba(196, 30, 58, 0.15);
-  color: var(--vermillion);
+.tl-detail {
+  padding-top: 12rpx;
+  border-top: 1rpx solid rgba(0, 0, 0, 0.06);
+  margin-top: 8rpx;
 }
 
-.timeline-badge.education {
-  background: rgba(74, 144, 217, 0.15);
-  color: #4A90D9;
-}
-
-.timeline-badge.research {
-  background: rgba(196, 30, 58, 0.15);
-  color: var(--vermillion);
-}
-
-.timeline-badge.award {
-  background: rgba(212, 165, 116, 0.15);
-  color: var(--amber);
-}
-
-.timeline-badge.other {
-  background: rgba(139, 157, 175, 0.15);
-  color: var(--gray-blue);
-}
-
-.timeline-title {
-  font-family: var(--font-serif);
-  font-size: 28rpx;
-  color: var(--ink-black);
-  line-height: 1.6;
-  display: block;
-}
-
-/* 展开详情 */
-.timeline-detail {
-  margin-top: 16rpx;
-  padding: 20rpx;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 16rpx;
-  border-left: 4rpx solid var(--vermillion);
-}
-
-.detail-text {
+.tl-detail text {
   font-size: 26rpx;
-  color: var(--dark-ink);
-  line-height: 1.8;
+  color: #555;
+  line-height: 1.9;
 }
 
-.expand-hint {
-  margin-top: 12rpx;
-}
-
-.expand-hint text {
+.tl-expand-hint {
+  display: block;
+  text-align: center;
   font-size: 22rpx;
-  color: var(--gray-blue);
+  color: #8B9DAF;
+  margin-top: 8rpx;
 }

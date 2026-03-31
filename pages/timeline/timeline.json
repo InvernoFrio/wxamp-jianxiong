@@ -1,6 +1,7 @@
 {
-  "navigationBarTitleText": "生平年表",
   "usingComponents": {
+    "glass-card": "/components/glass-card/glass-card",
     "timeline-item": "/components/timeline-item/timeline-item"
-  }
+  },
+  "navigationBarTitleText": "生平年表"
 }

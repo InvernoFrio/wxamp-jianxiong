@@ -1,146 +1,99 @@
-/* components/book-cover/book-cover.wxss */
-.book-container {
-  width: 400rpx;
-  height: 560rpx;
-  margin: 0 auto;
-  position: relative;
+.book-scene {
   perspective: 1200rpx;
-  cursor: pointer;
+  width: 320rpx;
+  height: 420rpx;
+  margin: 0 auto;
 }
 
-/* 封面 */
-.book-cover {
-  position: absolute;
+.book {
   width: 100%;
   height: 100%;
-  transform-origin: left center;
-  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.book-spine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20rpx;
+  height: 100%;
+  background: #2C2C2C;
+  transform: translateX(-10rpx);
   z-index: 2;
+  border-radius: 4rpx 0 0 4rpx;
 }
 
-.opening .book-cover {
-  transform: rotateY(-165deg);
-}
-
-/* 封面正面 */
-.book-front {
+.book-page {
   position: absolute;
-  width: 100%;
+  top: 0;
+  left: 10rpx;
+  width: calc(100% - 10rpx);
   height: 100%;
-  background: linear-gradient(135deg, #8B1A1A 0%, #C41E3A 30%, #A01830 100%);
-  border-radius: 4rpx 16rpx 16rpx 4rpx;
+  border-radius: 0 12rpx 12rpx 0;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.15);
+  backface-visibility: hidden;
+  transform-origin: left center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-page-back {
+  background: #F5F0E8;
+  z-index: 1;
+  box-shadow: inset 8rpx 0 16rpx rgba(0, 0, 0, 0.08);
+}
+
+.book-page-front {
+  background: linear-gradient(135deg, #F5F0E8 0%, #EDE5D8 100%);
+  z-index: 3;
+  border: 2rpx solid #D4A574;
+  border-left: none;
+}
+
+.book-open .book-page-front {
+  transform: rotateY(-160deg);
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.2);
+}
+
+.page-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 
-    inset 4rpx 0 12rpx rgba(0,0,0,0.3),
-    8rpx 8rpx 24rpx rgba(0,0,0,0.25);
-  backface-visibility: hidden;
-  border: 2rpx solid #6B1010;
+  padding: 20rpx;
 }
 
-/* 书脊 */
-.book-spine {
-  position: absolute;
-  left: -16rpx;
-  top: 0;
-  width: 16rpx;
-  height: 100%;
-  background: linear-gradient(90deg, #5A0E0E, #8B1A1A);
-  transform: rotateY(-90deg) translateZ(0);
-  border-radius: 4rpx 0 0 4rpx;
-}
-
-/* 书页侧面 */
-.book-pages-side {
-  position: absolute;
-  right: -12rpx;
-  top: 4rpx;
-  width: 12rpx;
-  height: calc(100% - 8rpx);
-  background: repeating-linear-gradient(
-    180deg,
-    #F5F0E8 0rpx,
-    #EDE5D8 1rpx,
-    #F5F0E8 2rpx
-  );
-  border-radius: 0 4rpx 4rpx 0;
-}
-
-/* 封面文字 */
-.book-title {
-  text-align: center;
-  padding: 0 32rpx;
-}
-
-.book-title-main {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 48rpx;
-  color: #F5E6D0;
-  display: block;
-  letter-spacing: 8rpx;
-  text-shadow: 2rpx 2rpx 4rpx rgba(0,0,0,0.3);
-}
-
-.book-title-sub {
-  font-size: 24rpx;
-  color: rgba(245, 230, 208, 0.7);
-  display: block;
-  margin-top: 12rpx;
-  letter-spacing: 4rpx;
-}
-
-/* 装饰线 */
-.book-decoration {
-  margin-top: 40rpx;
-  text-align: center;
-}
-
-.book-line {
-  width: 120rpx;
-  height: 1rpx;
-  background: linear-gradient(90deg, transparent, rgba(245, 230, 208, 0.5), transparent);
-  margin: 8rpx auto;
-}
-
-.book-author {
-  font-size: 22rpx;
-  color: rgba(245, 230, 208, 0.6);
-  letter-spacing: 6rpx;
-}
-
-/* 内页 */
-.book-inner {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #F5F0E8, #EDE5D8);
-  border-radius: 4rpx 16rpx 16rpx 4rpx;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 8rpx 8rpx 24rpx rgba(0,0,0,0.15);
-  border: 1rpx solid #D4C5B0;
-}
-
-.inner-content {
-  text-align: center;
-  padding: 32rpx;
-}
-
-.inner-title {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 36rpx;
+.page-title {
+  font-size: 40rpx;
+  font-weight: bold;
   color: #2C2C2C;
-  display: block;
-  margin-bottom: 16rpx;
-  letter-spacing: 4rpx;
+  letter-spacing: 8rpx;
+  margin-bottom: 12rpx;
 }
 
-.inner-subtitle {
+.page-subtitle {
+  font-size: 18rpx;
+  color: #8B9DAF;
+  letter-spacing: 2rpx;
+}
+
+.page-line {
+  width: 60rpx;
+  height: 2rpx;
+  background: #C41E3A;
+  margin: 24rpx 0;
+}
+
+.page-author {
   font-size: 24rpx;
-  color: var(--gray-blue);
-  display: block;
+  color: #D4A574;
+}
+
+.page-hint {
+  font-size: 22rpx;
+  color: #8B9DAF;
+  margin-top: 8rpx;
 }

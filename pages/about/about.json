@@ -1,6 +1,6 @@
 {
-  "navigationBarTitleText": "关于",
   "usingComponents": {
     "glass-card": "/components/glass-card/glass-card"
-  }
+  },
+  "navigationBarTitleText": "关于"
 }

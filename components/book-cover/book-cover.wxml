@@ -1,30 +1,21 @@
-<!--components/book-cover/book-cover.wxml-->
-<view 
-  class="book-container {{opening ? 'opening' : ''}}" 
-  bindtap="onTap"
->
-  <!-- 书本封面 -->
-  <view class="book-cover">
-    <view class="book-front">
-      <view class="book-title">
-        <text class="book-title-main">{{title}}</text>
-        <text class="book-title-sub">{{subtitle}}</text>
-      </view>
-      <view class="book-decoration">
-        <view class="book-line"></view>
-        <text class="book-author">{{author}}</text>
-        <view class="book-line"></view>
+<view class="book-scene" bindtap="onTap">
+  <view class="book {{isOpen ? 'book-open' : ''}}">
+    <view class="book-spine"></view>
+    <view class="book-page book-page-back">
+      <view class="page-content">
+        <text class="page-title">吴健雄传</text>
+        <text class="page-subtitle">THE BIOGRAPHY OF WU JIANXIONG</text>
+        <view class="page-line"></view>
+        <text class="page-author">张怀亮 编著</text>
       </view>
     </view>
-    <view class="book-spine"></view>
-    <view class="book-pages-side"></view>
-  </view>
-  
-  <!-- 翻开后的内页 -->
-  <view class="book-inner">
-    <view class="inner-content">
-      <text class="inner-title">{{innerTitle}}</text>
-      <text class="inner-subtitle">{{innerSubtitle}}</text>
+    <view class="book-page book-page-front">
+      <view class="page-content">
+        <text class="page-title">健雄书韵</text>
+        <text class="page-subtitle">WU JIANXIONG MEMORIAL</text>
+        <view class="page-line"></view>
+        <text class="page-hint">{{isOpen ? '点击关闭' : '点击翻开'}}</text>
+      </view>
     </view>
   </view>
 </view>

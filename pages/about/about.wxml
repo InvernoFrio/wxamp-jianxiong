@@ -1,101 +1,68 @@
-<!--pages/about/about.wxml-->
-<view class="page-container paper-bg">
-  <view class="page-header fade-slide-up">
-    <text class="page-title title-text">关于</text>
+<view class="about-page page-enter">
+  <!-- 头部 -->
+  <view class="about-header">
+    <text class="about-logo">📖</text>
+    <text class="about-title">健雄书韵</text>
+    <text class="about-subtitle">吴健雄数字纪念馆</text>
+    <text class="about-version">v1.0.0</text>
   </view>
 
   <!-- 项目介绍 -->
-  <view class="section glass-card scale-fade-in">
-    <view class="section-header">
-      <text class="section-icon">📖</text>
-      <text class="section-title title-text">健雄书韵</text>
-    </view>
-    <text class="section-desc">
-      以"书韵"为魂，以代码为笔，用数字化的语言重新书写一位伟大科学家的一生。
-      小程序以「翻开一本书」的意象贯穿始终，探索吴健雄教授的传奇人生。
-    </text>
-    <view class="version-badge">
-      <text>v1.0.0</text>
-    </view>
+  <view class="section">
+    <text class="section-title">项目介绍</text>
+    <glass-card>
+      <text class="section-text">「健雄书韵」是一个致敬吴健雄先生的微信小程序，通过数字化的方式呈现她的生平事迹、科学成就和人格魅力。项目旨在让更多人了解这位伟大的物理学家，传承她的科学精神与爱国情怀。</text>
+    </glass-card>
   </view>
 
-  <!-- 团队介绍 -->
-  <view class="section glass-card scale-fade-in" style="animation-delay: 0.1s">
-    <text class="section-title title-text">团队成员</text>
+  <!-- 团队成员 -->
+  <view class="section">
+    <text class="section-title">团队成员</text>
     <view class="team-list">
-      <view class="team-member">
-        <view class="member-avatar glass-card">
-          <text>俊</text>
+      <view
+        wx:for="{{teams}}"
+        wx:key="name"
+        class="team-card glass"
+      >
+        <view class="team-avatar">
+          <text>{{item.name.charAt(0)}}</text>
         </view>
-        <view class="member-info">
-          <text class="member-name">俊贤</text>
-          <text class="member-role">项目负责人 · 物理实验可视化</text>
-        </view>
-      </view>
-      <view class="team-member">
-        <view class="member-avatar glass-card">
-          <text>B</text>
-        </view>
-        <view class="member-info">
-          <text class="member-name">成员B</text>
-          <text class="member-role">生平年表 · 首页设计</text>
-        </view>
-      </view>
-      <view class="team-member">
-        <view class="member-avatar glass-card">
-          <text>C</text>
-        </view>
-        <view class="member-info">
-          <text class="member-name">成员C</text>
-          <text class="member-role">书韵阅读器 · 关于页</text>
+        <view class="team-info">
+          <text class="team-name">{{item.name}}</text>
+          <text class="team-role">{{item.role}}</text>
+          <text class="team-desc">{{item.desc}}</text>
         </view>
       </view>
     </view>
   </view>
 
   <!-- 设计理念 -->
-  <view class="section glass-card scale-fade-in" style="animation-delay: 0.2s">
-    <text class="section-title title-text">设计理念</text>
-    <view class="design-list">
-      <view class="design-item">
-        <text class="design-icon">🎨</text>
-        <text class="design-text">宣纸纹理 + 墨色 + 朱红点缀，致敬中国传统文化</text>
-      </view>
-      <view class="design-item">
-        <text class="design-icon">💎</text>
-        <text class="design-text">液态玻璃 UI，打造高级质感</text>
-      </view>
-      <view class="design-item">
-        <text class="design-icon">📚</text>
-        <text class="design-text">"翻开一本书"的完整叙事体验</text>
+  <view class="section">
+    <text class="section-title">设计理念</text>
+    <view class="principle-list">
+      <view
+        wx:for="{{principles}}"
+        wx:key="title"
+        class="principle-card glass"
+      >
+        <text class="principle-icon">{{item.icon}}</text>
+        <text class="principle-title">{{item.title}}</text>
+        <text class="principle-desc">{{item.desc}}</text>
       </view>
     </view>
   </view>
 
   <!-- 致谢 -->
-  <view class="section glass-card scale-fade-in" style="animation-delay: 0.3s">
-    <text class="section-title title-text">致谢</text>
-    <text class="thanks-text">
-      感谢南京大学物理系、太仓市浏河镇、以及所有为吴健雄教授留下珍贵史料的机构和个人。
-    </text>
-    <text class="thanks-text">
-      特别感谢张怀亮先生编著的《吴健雄传》，为本项目提供了丰富的一手资料。
-    </text>
+  <view class="section">
+    <text class="section-title">致谢</text>
+    <glass-card>
+      <text class="section-text">感谢张怀亮先生编著的《吴健雄传》为本项目提供了宝贵的传记资料。感谢南京大学、哥伦比亚大学等机构的历史文献与照片资料。</text>
+      <text class="section-text" style="margin-top: 16rpx;">本项目仅用于学术与教育目的，向所有为科学事业做出贡献的前辈致敬。</text>
+    </glass-card>
   </view>
 
-  <!-- 联系方式 -->
-  <view class="section glass-card scale-fade-in" style="animation-delay: 0.4s">
-    <text class="section-title title-text">联系我们</text>
-    <view class="contact-list">
-      <view class="contact-item">
-        <text class="contact-icon">📧</text>
-        <text class="contact-text">GitHub: invernofrio</text>
-      </view>
-    </view>
-  </view>
-
-  <view class="footer">
-    <text class="footer-text">© 2026 健雄书韵团队</text>
-    <text class="footer-text">以代码致敬科学</text>
+  <!-- 底部 -->
+  <view class="about-footer">
+    <text>© 2026 健雄书韵团队</text>
   </view>
 </view>

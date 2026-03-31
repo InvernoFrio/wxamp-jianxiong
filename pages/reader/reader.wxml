@@ -1,195 +1,131 @@
-<!--pages/reader/reader.wxml-->
-<view class="page-container paper-bg">
+<view class="reader-page page-enter">
   <!-- 章节导航 -->
-  <scroll-view 
-    class="chapter-nav" 
-    scroll-x 
-    enhanced 
-    show-scrollbar="{{false}}"
-  >
-    <view class="chapter-tabs">
-      <view 
-        class="chapter-tab {{activeChapter === index ? 'active' : ''}}" 
-        wx:for="{{chapters}}" 
-        wx:key="id"
-        bindtap="onChapterTap"
-        data-index="{{index}}"
-      >
-        <text>{{item.title}}</text>
-      </view>
+  <scroll-view class="chapter-nav" scroll-x="{{true}}" show-scrollbar="{{false}}">
+    <view
+      wx:for="{{chapters}}"
+      wx:key="id"
+      class="chapter-tab {{activeChapter === index ? 'active' : ''}}"
+      data-index="{{index}}"
+      bindtap="onChapterTap"
+    >
+      <text>{{item.title}}</text>
     </view>
   </scroll-view>
 
-  <!-- 阅读区域 -->
-  <view class="reader-container">
-    <!-- 小节列表模式 -->
-    <block wx:if="{{activeSection === -1}}">
-      <!-- 章节标题 -->
-      <view class="chapter-header scale-fade-in">
-        <text class="chapter-number">第{{activeChapter + 1}}章</text>
-        <text class="chapter-title title-text">{{currentChapter.title}}</text>
-        <text class="chapter-subtitle">{{currentChapter.subtitle}}</text>
-        <view class="chapter-divider">
-          <view class="divider-line"></view>
-          <text class="divider-icon">✦</text>
-          <view class="divider-line"></view>
-        </view>
-      </view>
-      
-      <!-- 小节列表 -->
-      <scroll-view class="content-scroll" scroll-y enhanced show-scrollbar="{{false}}">
-        <view class="section-list">
-          <view 
-            class="section-item scale-fade-in" 
-            wx:for="{{currentSections}}" 
-            wx:key="id"
-            bindtap="onSectionTap"
-            data-index="{{index}}"
-            style="animation-delay: {{index * 0.05}}s"
-          >
-            <view class="section-bullet vermillion">§</view>
-            <view class="section-content">
-              <text class="section-title">{{item.title}}</text>
-              <text class="section-hint">{{item.paragraphs.length}} 段 · 点击阅读</text>
-            </view>
-            <view class="section-arrow">›</view>
-          </view>
-        </view>
-        <view class="chapter-end" wx:if="{{currentSections.length === 0 && !isLoading}}">
-          <text class="end-text">内容加载中...</text>
-        </view>
-      </scroll-view>
-    </block>
-
-    <!-- 正文阅读模式 -->
-    <block wx:elif="{{activeSection >= 0 && currentSections[activeSection]}}">
-      <view class="section-header-bar glass-card">
-        <view class="back-btn" bindtap="onBackToSections">
-          <text>← 返回目录</text>
-        </view>
-        <text class="current-section-title">{{currentSections[activeSection].title}}</text>
-      </view>
-      <reader-view
-        id="readerView"
-        chapterTitle="{{currentChapter.title}}"
-        sectionTitle="{{currentSections[activeSection].title}}"
-        paragraphs="{{currentSections[activeSection].paragraphs}}"
-        hasPrev="{{activeSection > 0}}"
-        hasNext="{{activeSection < currentSections.length - 1}}"
-        bind:select="onTextSelect"
-        bind:prev="onPrevSection"
-        bind:next="onNextSection"
-        bind:progress="onReadProgress"
-      />
-    </block>
+  <!-- 章节标题 -->
+  <view class="chapter-header" wx:if="{{chapters[activeChapter]}}">
+    <text class="chapter-title">{{chapters[activeChapter].title}}</text>
+    <text class="chapter-subtitle">{{chapters[activeChapter].subtitle}}</text>
   </view>
 
-  <!-- 高亮/批注弹窗 -->
-  <view class="highlight-popup" wx:if="{{showHighlightPopup}}">
-    <view class="popup-mask" bindtap="onPopupClose"></view>
-    <view class="popup-content glass-card">
-      <text class="popup-title">选择操作</text>
-      <view class="popup-actions">
-        <view class="popup-btn glass-btn" bindtap="onHighlight">
-          <text>🖍️ 划线高亮</text>
-        </view>
-        <view class="popup-btn glass-btn" bindtap="onAddNote">
-          <text>📝 写笔记</text>
-        </view>
-        <view class="popup-btn glass-btn" bindtap="onCopyText">
-          <text>📋 复制文字</text>
-        </view>
+  <!-- 小节列表模式 -->
+  <view class="section-list" wx:if="{{mode === 'list'}}">
+    <view
+      wx:if="{{chapters[activeChapter]}}"
+      wx:for="{{chapters[activeChapter].sections}}"
+      wx:key="id"
+      class="section-item glass"
+      data-id="{{item.id}}"
+      bindtap="onSectionTap"
+    >
+      <view class="section-index">{{index + 1}}</view>
+      <view class="section-info">
+        <text class="section-name">{{item.title}}</text>
+        <text class="section-page">第{{item.startPage}}页</text>
       </view>
+      <text class="section-arrow">›</text>
     </view>
   </view>
 
-  <!-- 笔记/高亮入口按钮 -->
-  <view class="notes-fab glass-btn" bindtap="onOpenNotesPanel">
-    <text class="notes-fab-icon">📒</text>
+  <!-- 正文阅读模式 -->
+  <view class="reading-mode" wx:if="{{mode === 'reading'}}">
+    <view class="reading-header">
+      <view class="back-btn" bindtap="onBackToList">
+        <text>‹ 返回</text>
+      </view>
+      <text class="reading-title" wx:if="{{currentSection}}">{{currentSection.title}}</text>
+    </view>
+    <scroll-view class="reading-scroll" scroll-y="{{true}}" enhanced="{{true}}">
+      <reader-view
+        paragraphs="{{sectionParagraphs}}"
+        fontSize="{{fontSize}}"
+        lineHeight="{{lineHeight}}"
+        bind:highlight="onHighlight"
+        bind:note="onNote"
+      />
+    </scroll-view>
   </view>
 
-  <!-- 笔记/高亮列表面板 -->
-  <view class="notes-panel-overlay" wx:if="{{showNotesPanel}}">
-    <view class="notes-panel-mask" bindtap="onCloseNotesPanel"></view>
-    <view class="notes-panel glass-card" catchtouchmove="onPanelTouchMove">
-      <!-- 面板头部 -->
-      <view class="notes-panel-header">
-        <text class="notes-panel-title title-text">我的笔记</text>
-        <view class="notes-panel-close" bindtap="onCloseNotesPanel">
-          <text>✕</text>
-        </view>
+  <!-- 笔记浮动按钮 -->
+  <view class="notes-fab" bindtap="onToggleNotesPanel">
+    <text>📝</text>
+  </view>
+
+  <!-- 笔记面板 -->
+  <view class="notes-panel {{showNotesPanel ? 'notes-panel-open' : ''}}">
+    <view class="notes-overlay" bindtap="onCloseNotesPanel"></view>
+    <view class="notes-drawer">
+      <view class="notes-header">
+        <text class="notes-title">阅读笔记</text>
+        <text class="notes-close" bindtap="onCloseNotesPanel">✕</text>
       </view>
 
       <!-- Tab 切换 -->
       <view class="notes-tabs">
-        <view 
-          class="notes-tab {{notesPanelTab === 'highlights' ? 'active' : ''}}" 
-          bindtap="onNotesPanelTabChange" 
+        <view
+          class="notes-tab {{notesTab === 'highlights' ? 'active' : ''}}"
           data-tab="highlights"
+          bindtap="onNotesTabChange"
         >
-          <text>🖍️ 高亮 ({{highlightsList.length}})</text>
+          <text>高亮 ({{highlights.length}})</text>
         </view>
-        <view 
-          class="notes-tab {{notesPanelTab === 'notes' ? 'active' : ''}}" 
-          bindtap="onNotesPanelTabChange" 
+        <view
+          class="notes-tab {{notesTab === 'notes' ? 'active' : ''}}"
           data-tab="notes"
+          bindtap="onNotesTabChange"
         >
-          <text>📝 笔记 ({{notesList.length}})</text>
+          <text>笔记 ({{notes.length}})</text>
         </view>
       </view>
 
       <!-- 高亮列表 -->
-      <scroll-view class="notes-list-scroll" scroll-y enhanced show-scrollbar="{{false}}" wx:if="{{notesPanelTab === 'highlights'}}">
-        <block wx:if="{{highlightsList.length > 0}}">
-          <view 
-            class="note-item glass-card" 
-            wx:for="{{highlightsList}}" 
-            wx:key="id"
-          >
-            <view class="note-item-body" bindtap="onJumpToHighlight" data-index="{{index}}">
-              <text class="note-item-text">"{{item.text}}"</text>
-              <view class="note-item-meta">
-                <text class="note-item-chapter">📖 {{item.chapter}}</text>
-                <text class="note-item-time">{{item.timeFormatted}}</text>
-              </view>
-            </view>
-            <view class="note-item-delete" bindtap="onDeleteHighlight" data-index="{{index}}">
-              <text class="delete-icon">🗑️</text>
-            </view>
+      <scroll-view class="notes-list" scroll-y="{{true}}" wx:if="{{notesTab === 'highlights'}}">
+        <view wx:if="{{highlights.length === 0}}" class="notes-empty">
+          <text>暂无高亮记录</text>
+        </view>
+        <view
+          wx:for="{{highlights}}"
+          wx:key="id"
+          class="note-item"
+        >
+          <view class="note-item-content" data-chapter="{{item.chapterIndex}}" data-section="{{item.sectionId}}" bindtap="onJumpToHighlight">
+            <text class="note-item-text">{{item.text}}</text>
+            <text class="note-item-meta">{{item.sectionTitle}}</text>
           </view>
-        </block>
-        <view class="notes-empty" wx:else>
-          <text class="notes-empty-icon">🖍️</text>
-          <text class="notes-empty-text">还没有高亮</text>
-          <text class="notes-empty-hint">长按文字即可划线高亮</text>
+          <view class="note-item-delete" data-id="{{item.id}}" bindtap="onDeleteHighlight">
+            <text>删除</text>
+          </view>
         </view>
       </scroll-view>
 
       <!-- 笔记列表 -->
-      <scroll-view class="notes-list-scroll" scroll-y enhanced show-scrollbar="{{false}}" wx:if="{{notesPanelTab === 'notes'}}">
-        <block wx:if="{{notesList.length > 0}}">
-          <view 
-            class="note-item glass-card" 
-            wx:for="{{notesList}}" 
-            wx:key="id"
-          >
-            <view class="note-item-body" bindtap="onJumpToHighlight" data-index="{{index}}">
-              <text class="note-item-quote">"{{item.text}}"</text>
-              <text class="note-item-note">💡 {{item.note}}</text>
-              <view class="note-item-meta">
-                <text class="note-item-chapter">📖 {{item.chapter}}</text>
-                <text class="note-item-time">{{item.timeFormatted}}</text>
-              </view>
-            </view>
-            <view class="note-item-delete" bindtap="onDeleteNote" data-index="{{index}}">
-              <text class="delete-icon">🗑️</text>
-            </view>
+      <scroll-view class="notes-list" scroll-y="{{true}}" wx:if="{{notesTab === 'notes'}}">
+        <view wx:if="{{notes.length === 0}}" class="notes-empty">
+          <text>暂无笔记记录</text>
+        </view>
+        <view
+          wx:for="{{notes}}"
+          wx:key="id"
+          class="note-item"
+        >
+          <view class="note-item-content" data-chapter="{{item.chapterIndex}}" data-section="{{item.sectionId}}" bindtap="onJumpToNote">
+            <text class="note-item-note">{{item.note}}</text>
+            <text class="note-item-text">{{item.text}}</text>
+            <text class="note-item-meta">{{item.sectionTitle}}</text>
           </view>
-        </block>
-        <view class="notes-empty" wx:else>
-          <text class="notes-empty-icon">📝</text>
-          <text class="notes-empty-text">还没有笔记</text>
-          <text class="notes-empty-hint">选中文字后点击"写笔记"开始记录</text>
+          <view class="note-item-delete" data-id="{{item.id}}" bindtap="onDeleteNote">
+            <text>删除</text>
+          </view>
         </view>
       </scroll-view>
     </view>

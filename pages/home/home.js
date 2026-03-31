@@ -4,75 +4,56 @@ const quotes = require('../../data/quotes.js');
 Page({
   data: {
     quotes: quotes,
-    bookOpening: false,
-    showModules: false,
-    modules: [
-      {
-        id: 'timeline',
-        title: '生平年表',
-        desc: '交互式时间轴，探索一生轨迹',
-        icon: '📖',
-        path: '/pages/timeline/timeline'
-      },
-      {
-        id: 'reader',
-        title: '书韵阅读',
-        desc: '章节式传记，划线批注',
-        icon: '📚',
-        path: '/pages/reader/reader'
-      },
-      {
-        id: 'physics',
-        title: '物理之光',
-        desc: 'β衰变实验可视化',
-        icon: '🧪',
-        path: '/pages/physics/physics'
-      },
-      {
-        id: 'about',
-        title: '关于',
-        desc: '团队介绍与项目说明',
-        icon: '👤',
-        path: '/pages/about/about'
-      }
-    ]
+    currentQuote: 0,
+    bookOpen: false,
+    pageReady: false
   },
 
   onLoad() {
-    // 检查是否已经翻开过书
-    const hasOpened = wx.getStorageSync('bookOpened');
-    if (hasOpened) {
-      this.setData({
-        bookOpening: true,
-        showModules: true
-      });
+    this.setData({ pageReady: true });
+    this._startQuoteTimer();
+  },
+
+  onShow() {
+    if (!this._quoteTimer) {
+      this._startQuoteTimer();
+    }
+  },
+
+  onHide() {
+    this._stopQuoteTimer();
+  },
+
+  onUnload() {
+    this._stopQuoteTimer();
+  },
+
+  _startQuoteTimer() {
+    this._stopQuoteTimer();
+    this._quoteTimer = setInterval(() => {
+      let next = this.data.currentQuote + 1;
+      if (next >= this.data.quotes.length) next = 0;
+      this.setData({ currentQuote: next });
+    }, 5000);
+  },
+
+  _stopQuoteTimer() {
+    if (this._quoteTimer) {
+      clearInterval(this._quoteTimer);
+      this._quoteTimer = null;
     }
   },
 
   onBookToggle(e) {
-    const opening = e.detail.opening;
-    if (opening) {
-      // 书本打开
-      this.setData({ bookOpening: true });
-      wx.setStorageSync('bookOpened', true);
-      // 等翻书动画完成后显示模块
-      setTimeout(() => {
-        this.setData({ showModules: true });
-      }, 600);
-    } else {
-      // 书本关闭 - 收起模块
-      this.setData({ 
-        showModules: false,
-        bookOpening: false
-      });
-      wx.setStorageSync('bookOpened', false);
-    }
+    this.setData({ bookOpen: e.detail.isOpen });
+  },
+
+  onQuoteChange(e) {
+    this.setData({ currentQuote: e.detail.current });
   },
 
   onModuleTap(e) {
-    const path = e.currentTarget.dataset.path;
-    if (path) {
-      wx.switchTab({ url: path });
-    }
+    const page = e.currentTarget.dataset.page;
+    wx.switchTab({ url: '/pages/' + page + '/' + page });
   }
 });

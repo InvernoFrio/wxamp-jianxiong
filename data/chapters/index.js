@@ -91,32 +91,6 @@ const chapters = [
       { id: "ch07-04", title: "业余女权运动家", startPage: 101 }
     ],
     coverColor: "#C41E3A"
-  },
-  {
-    id: "ch08",
-    title: "成功的背后",
-    subtitle: "爱情、家庭与人生",
-    pages: [106, 125],
-    sections: [
-      { id: "ch08-01", title: "吴健雄与《第二次握手》", startPage: 106 },
-      { id: "ch08-02", title: "爱情的空白与火花", startPage: 110 },
-      { id: "ch08-03", title: "与袁家骝的婚姻", startPage: 115 },
-      { id: "ch08-04", title: "家庭与事业", startPage: 120 }
-    ],
-    coverColor: "#8B9DAF"
-  },
-  {
-    id: "ch09",
-    title: "晚年与传承",
-    subtitle: "科学遗产永存",
-    pages: [126, 140],
-    sections: [
-      { id: "ch09-01", title: "多次回国访问", startPage: 126 },
-      { id: "ch09-02", title: "吴健雄星", startPage: 130 },
-      { id: "ch09-03", title: "荣誉与评价", startPage: 135 },
-      { id: "ch09-04", title: "科学遗产", startPage: 138 }
-    ],
-    coverColor: "#D4A574"
   }
 ];
 

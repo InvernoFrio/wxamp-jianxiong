@@ -1,28 +1,20 @@
-<!--components/timeline-item/timeline-item.wxml-->
-<view class="timeline-item {{expanded ? 'expanded' : ''}}" bindtap="onTap">
-  <!-- 时间轴竖线 -->
-  <view class="timeline-track">
-    <view class="timeline-dot {{category}}"></view>
-    <view class="timeline-line"></view>
+<view class="tl-item" bindtap="onTap">
+  <view class="tl-left">
+    <text class="tl-year">{{item.year}}</text>
+    <view class="tl-dot" style="background: {{typeColor[item.type] || '#8B9DAF'}};"></view>
+    <view class="tl-line"></view>
   </view>
-  
-  <!-- 内容 -->
-  <view class="timeline-content">
-    <view class="timeline-header">
-      <text class="timeline-year">{{year}}</text>
-      <view class="timeline-badge {{category}}">
-        <text>{{categoryText}}</text>
-      </view>
+  <view class="tl-card glass">
+    <view class="tl-header">
+      <text class="tl-icon">{{item.icon}}</text>
+      <text class="tl-title">{{item.title}}</text>
     </view>
-    <text class="timeline-title">{{title}}</text>
-    
-    <!-- 展开详情 -->
-    <view class="timeline-detail" wx:if="{{expanded}}">
-      <text class="detail-text">{{detail}}</text>
+    <view class="tl-tag" style="background: {{typeColor[item.type] || '#8B9DAF'}};">
+      <text>{{typeText[item.type] || '其他'}}</text>
     </view>
-    
-    <view class="expand-hint" wx:if="{{hasDetail}}">
-      <text>{{expanded ? '收起 ▲' : '展开详情 ▼'}}</text>
+    <view class="tl-detail" wx:if="{{expanded}}">
+      <text>{{item.detail}}</text>
     </view>
+    <text class="tl-expand-hint">{{expanded ? '收起 ▲' : '展开详情 ▼'}}</text>
   </view>
 </view>

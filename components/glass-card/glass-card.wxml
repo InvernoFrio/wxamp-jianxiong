@@ -1,4 +1,3 @@
-<!--components/glass-card/glass-card.wxml-->
-<view class="glass-card {{customClass}}" style="{{customStyle}}">
-  <slot></slot>
+<view class="glass-card {{customClass}}" style="padding: {{padding}};">
+  <slot />
 </view>

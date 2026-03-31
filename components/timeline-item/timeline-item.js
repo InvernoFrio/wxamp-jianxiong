@@ -1,36 +1,38 @@
+// components/timeline-item/timeline-item.js
 Component({
   properties: {
-    year: { type: null, value: '' },  // 支持数字或字符串
-    title: { type: String, value: '' },
-    detail: { type: String, value: '' },
-    category: { type: String, value: 'research' },
-    hasDetail: { type: Boolean, value: false }
-  },
-
-  data: {
-    expanded: false,
-    categoryText: ''
-  },
-
-  observers: {
-    'category': function(cat) {
-      const map = { 
-        birth: '出生', 
-        education: '求学', 
-        research: '研究', 
-        award: '荣誉', 
-        other: '其他' 
-      };
-      this.setData({ categoryText: map[cat] || '事件' });
+    item: {
+      type: Object,
+      value: {}
+    },
+    index: {
+      type: Number,
+      value: 0
+    },
+    expanded: {
+      type: Boolean,
+      value: false
     }
   },
-
+  data: {
+    typeColor: {
+      birth: '#C41E3A',
+      education: '#8B9DAF',
+      research: '#D4A574',
+      award: '#C41E3A',
+      other: '#8B9DAF'
+    },
+    typeText: {
+      birth: '出生',
+      education: '教育',
+      research: '研究',
+      award: '荣誉',
+      other: '其他'
+    }
+  },
   methods: {
     onTap() {
-      if (this.properties.hasDetail) {
-        this.setData({ expanded: !this.data.expanded });
-        this.triggerEvent('toggle', { expanded: this.data.expanded });
-      }
+      this.triggerEvent('toggle', { index: this.properties.index });
     }
   }
 });

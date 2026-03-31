@@ -1,26 +1,24 @@
+// components/glass-button/glass-button.js
 Component({
   properties: {
     type: {
       type: String,
-      value: 'default' // default | primary
+      value: 'default' // default | primary | ghost
+    },
+    size: {
+      type: String,
+      value: 'medium' // small | medium | large
     },
     disabled: {
       type: Boolean,
       value: false
-    },
-    customClass: {
-      type: String,
-      value: ''
-    },
-    customStyle: {
-      type: String,
-      value: ''
     }
   },
+  data: {},
   methods: {
-    onTap() {
+    onTap(e) {
       if (!this.properties.disabled) {
-        this.triggerEvent('tap');
+        this.triggerEvent('tap', e.detail);
       }
     }
   }

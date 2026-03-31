@@ -1,177 +1,173 @@
-/* pages/about/about.wxss */
-
-.page-container {
+.about-page {
   min-height: 100vh;
-  padding-bottom: 120rpx;
+  background: #F5F0E8;
+  padding: 20rpx 24rpx;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
-.page-header {
-  padding: 40rpx 32rpx 20rpx;
-  text-align: center;
-}
-
-.page-title {
-  font-size: 44rpx;
-}
-
-/* 卡片区块 */
-.section {
-  margin: 20rpx 32rpx;
-  padding: 32rpx;
-}
-
-.section-header {
+/* 头部 */
+.about-header {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 20rpx;
+  padding: 48rpx 0 32rpx;
 }
 
-.section-icon {
-  font-size: 40rpx;
-  margin-right: 16rpx;
-}
-
-.section-title {
-  font-size: 36rpx;
-  display: block;
+.about-logo {
+  font-size: 80rpx;
   margin-bottom: 16rpx;
 }
 
-.section-desc {
-  font-family: var(--font-serif);
-  font-size: 28rpx;
-  color: var(--ink-black);
-  line-height: 2;
-  text-indent: 2em;
+.about-title {
+  font-size: 44rpx;
+  font-weight: bold;
+  color: #2C2C2C;
+  letter-spacing: 8rpx;
+  margin-bottom: 8rpx;
 }
 
-.version-badge {
-  margin-top: 16rpx;
-  display: inline-block;
-  padding: 8rpx 20rpx;
-  background: rgba(196, 30, 58, 0.1);
+.about-subtitle {
+  font-size: 26rpx;
+  color: #8B9DAF;
+  margin-bottom: 8rpx;
+}
+
+.about-version {
+  font-size: 22rpx;
+  color: #D4A574;
+  padding: 4rpx 16rpx;
+  background: rgba(212, 165, 116, 0.1);
+  border-radius: 12rpx;
+}
+
+/* 区块 */
+.section {
+  margin-bottom: 32rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #2C2C2C;
+  display: block;
+  margin-bottom: 16rpx;
+  padding-left: 16rpx;
+  border-left: 6rpx solid #C41E3A;
+}
+
+.section-text {
+  font-size: 28rpx;
+  color: #555;
+  line-height: 2;
+  display: block;
+}
+
+/* 团队 */
+.team-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.team-card {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(16rpx);
+  -webkit-backdrop-filter: blur(16rpx);
+  border: 1rpx solid rgba(255, 255, 255, 0.6);
   border-radius: 20rpx;
 }
 
-.version-badge text {
-  font-size: 22rpx;
-  color: var(--vermillion);
-}
-
-/* 团队成员 */
-.team-list {
-  margin-top: 20rpx;
-}
-
-.team-member {
-  display: flex;
-  align-items: center;
-  padding: 20rpx 0;
-  border-bottom: 1rpx solid rgba(139, 157, 175, 0.1);
-}
-
-.team-member:last-child {
-  border-bottom: none;
-}
-
-.member-avatar {
-  width: 72rpx;
-  height: 72rpx;
-  border-radius: var(--radius-full);
+.team-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #C41E3A, #D4A574);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 20rpx;
-  background: rgba(196, 30, 58, 0.1);
+  flex-shrink: 0;
 }
 
-.member-avatar text {
-  font-family: var(--font-serif);
+.team-avatar text {
   font-size: 32rpx;
-  color: var(--vermillion);
-  font-weight: 700;
+  color: #fff;
+  font-weight: bold;
 }
 
-.member-info {
+.team-info {
   flex: 1;
 }
 
-.member-name {
-  font-family: var(--font-serif);
+.team-name {
   font-size: 30rpx;
-  color: var(--ink-black);
+  font-weight: bold;
+  color: #2C2C2C;
   display: block;
 }
 
-.member-role {
+.team-role {
   font-size: 24rpx;
-  color: var(--gray-blue);
+  color: #C41E3A;
+  display: block;
+  margin-top: 4rpx;
+}
+
+.team-desc {
+  font-size: 22rpx;
+  color: #8B9DAF;
+  display: block;
   margin-top: 4rpx;
 }
 
 /* 设计理念 */
-.design-list {
-  margin-top: 20rpx;
-}
-
-.design-item {
+.principle-list {
   display: flex;
-  align-items: flex-start;
-  padding: 16rpx 0;
+  flex-direction: column;
+  gap: 16rpx;
 }
 
-.design-icon {
-  font-size: 32rpx;
-  margin-right: 16rpx;
-  flex-shrink: 0;
-}
-
-.design-text {
-  font-size: 26rpx;
-  color: var(--ink-black);
-  line-height: 1.8;
-}
-
-/* 致谢 */
-.thanks-text {
-  font-family: var(--font-serif);
-  font-size: 26rpx;
-  color: var(--ink-black);
-  line-height: 1.8;
-  display: block;
-  margin-bottom: 16rpx;
-}
-
-/* 联系方式 */
-.contact-list {
-  margin-top: 16rpx;
-}
-
-.contact-item {
-  display: flex;
-  align-items: center;
-  padding: 12rpx 0;
-}
-
-.contact-icon {
-  font-size: 32rpx;
-  margin-right: 16rpx;
-}
-
-.contact-text {
-  font-size: 26rpx;
-  color: var(--ink-black);
-}
-
-/* 页脚 */
-.footer {
+.principle-card {
+  padding: 24rpx;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(16rpx);
+  -webkit-backdrop-filter: blur(16rpx);
+  border: 1rpx solid rgba(255, 255, 255, 0.6);
+  border-radius: 20rpx;
   text-align: center;
-  padding: 40rpx 32rpx;
 }
 
-.footer-text {
-  font-size: 24rpx;
-  color: var(--gray-blue);
+.principle-icon {
+  font-size: 48rpx;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.principle-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #2C2C2C;
   display: block;
   margin-bottom: 8rpx;
+}
+
+.principle-desc {
+  font-size: 26rpx;
+  color: #8B9DAF;
+  line-height: 1.8;
+  display: block;
+}
+
+/* 底部 */
+.about-footer {
+  text-align: center;
+  padding: 40rpx 0 20rpx;
+}
+
+.about-footer text {
+  font-size: 22rpx;
+  color: #8B9DAF;
 }

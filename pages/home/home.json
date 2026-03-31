@@ -1,7 +1,8 @@
 {
-  "navigationBarTitleText": "健雄书韵",
-  "navigationBarBackgroundColor": "#F5F0E8",
   "usingComponents": {
+    "glass-card": "/components/glass-card/glass-card",
+    "glass-button": "/components/glass-button/glass-button",
     "book-cover": "/components/book-cover/book-cover"
-  }
+  },
+  "navigationBarTitleText": "健雄书韵"
 }
