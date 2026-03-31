@@ -1,0 +1,51 @@
+[
+  {
+    "id": "ch01",
+    "title": "难忘的读书岁月",
+    "subtitle": "从幼年到出国留学",
+    "sectionCount": 5,
+    "paragraphCount": 100
+  },
+  {
+    "id": "ch02",
+    "title": "鲜为人知的世界权威",
+    "subtitle": "原子弹之母",
+    "sectionCount": 4,
+    "paragraphCount": 80
+  },
+  {
+    "id": "ch03",
+    "title": "拼搏与成名",
+    "subtitle": "β衰变与宇称不守恒",
+    "sectionCount": 4,
+    "paragraphCount": 80
+  },
+  {
+    "id": "ch04",
+    "title": "科学女杰也是女权的捍卫者",
+    "subtitle": "科学界的女性力量",
+    "sectionCount": 3,
+    "paragraphCount": 60
+  },
+  {
+    "id": "ch05",
+    "title": "爱国·婚姻·家庭",
+    "subtitle": "爱情与人生",
+    "sectionCount": 4,
+    "paragraphCount": 80
+  },
+  {
+    "id": "ch06",
+    "title": "人品学风",
+    "subtitle": "科学精神与人格魅力",
+    "sectionCount": 4,
+    "paragraphCount": 80
+  },
+  {
+    "id": "ch07",
+    "title": "科星陨落后的反响",
+    "subtitle": "永恒的科学遗产",
+    "sectionCount": 4,
+    "paragraphCount": 74
+  }
+]

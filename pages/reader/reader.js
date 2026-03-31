@@ -1,26 +1,68 @@
 // pages/reader/reader.js
-const chapters = require('../../data/chapters/index.js');
+const chaptersIndex = require('../../data/chapters/index.json');
+
+// 章节数据缓存
+const chaptersCache = {};
 
 Page({
   data: {
-    chapters: chapters,
+    chapters: chaptersIndex,
     activeChapter: 0,
-    currentChapter: chapters[0],
+    currentChapter: chaptersIndex[0],
+    currentSections: [],
     readProgress: 0,
     scrollTop: 0,
-    chapterContent: '',
     showHighlightPopup: false,
-    selectedText: ''
+    selectedText: '',
+    activeSection: -1,
+    isLoading: false
   },
 
   onLoad() {
     // 加载阅读进度
     const progress = wx.getStorageSync('readingProgress') || {};
-    if (progress.chapterIndex !== undefined) {
+    const chapterIdx = progress.chapterIndex || 0;
+    this.setData({
+      activeChapter: chapterIdx,
+      currentChapter: chaptersIndex[chapterIdx]
+    });
+    this.loadChapterContent(chapterIdx);
+  },
+
+  // 加载章节内容
+  loadChapterContent(chapterIndex) {
+    const chapter = chaptersIndex[chapterIndex];
+    if (!chapter) return;
+
+    const chapterId = chapter.id;
+    
+    // 检查缓存
+    if (chaptersCache[chapterId]) {
       this.setData({
-        activeChapter: progress.chapterIndex,
-        currentChapter: chapters[progress.chapterIndex]
+        currentSections: chaptersCache[chapterId].sections,
+        isLoading: false
       });
+      return;
+    }
+
+    this.setData({ isLoading: true });
+
+    // 动态加载章节JSON
+    try {
+      // 微信小程序中使用 require 动态加载
+      const chapterData = require(`../../data/chapters/${chapterId}.json`);
+      chaptersCache[chapterId] = chapterData;
+      this.setData({
+        currentSections: chapterData.sections,
+        isLoading: false
+      });
+    } catch (err) {
+      console.error('加载章节失败:', err);
+      this.setData({
+        currentSections: [],
+        isLoading: false
+      });
+      wx.showToast({ title: '内容加载中', icon: 'none' });
     }
   },
 
@@ -28,23 +70,20 @@ Page({
     const index = e.currentTarget.dataset.index;
     this.setData({
       activeChapter: index,
-      currentChapter: chapters[index],
+      currentChapter: chaptersIndex[index],
       scrollTop: 0,
       readProgress: 0,
-      chapterContent: ''
+      activeSection: -1
     });
-    
-    // 保存阅读进度
+    this.loadChapterContent(index);
     this.saveProgress(index, 0);
   },
 
   onSectionTap(e) {
-    const section = e.currentTarget.dataset.section;
-    // TODO: 加载对应章节内容
-    wx.showToast({
-      title: `加载: ${section.title}`,
-      icon: 'none'
-    });
+    const index = e.currentTarget.dataset.index;
+    this.setData({ activeSection: index });
+    // 滚动到对应内容
+    this.setData({ scrollTop: 0 });
   },
 
   onContentScroll(e) {
@@ -59,6 +98,32 @@ Page({
         this.saveProgress(this.data.activeChapter, progress);
       }
     }).exec();
+  },
+
+  // 返回目录
+  onBackToSections() {
+    this.setData({ activeSection: -1, scrollTop: 0 });
+  },
+
+  // 上一节
+  onPrevSection() {
+    if (this.data.activeSection > 0) {
+      this.setData({ 
+        activeSection: this.data.activeSection - 1,
+        scrollTop: 0
+      });
+    }
+  },
+
+  // 下一节
+  onNextSection() {
+    const sections = this.data.currentSections;
+    if (this.data.activeSection < sections.length - 1) {
+      this.setData({ 
+        activeSection: this.data.activeSection + 1,
+        scrollTop: 0
+      });
+    }
   },
 
   saveProgress(chapterIndex, percent) {

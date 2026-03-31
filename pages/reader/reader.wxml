@@ -44,37 +44,56 @@
       scroll-top="{{scrollTop}}"
     >
       <view class="content-body">
-        <view class="section-list">
-          <view 
-            class="section-item" 
-            wx:for="{{currentChapter.sections}}" 
-            wx:key="id"
-            bindtap="onSectionTap"
-            data-section="{{item}}"
-          >
-            <view class="section-bullet vermillion">§</view>
-            <view class="section-content">
-              <text class="section-title">{{item.title}}</text>
-              <text class="section-hint">点击阅读</text>
-            </view>
-            <view class="section-arrow">›</view>
-          </view>
+    <!-- 章节小节列表 -->
+    <view class="section-list" wx:if="{{activeSection === -1}}">
+      <view 
+        class="section-item scale-fade-in" 
+        wx:for="{{currentSections}}" 
+        wx:key="id"
+        bindtap="onSectionTap"
+        data-index="{{index}}"
+        style="animation-delay: {{index * 0.05}}s"
+      >
+        <view class="section-bullet vermillion">§</view>
+        <view class="section-content">
+          <text class="section-title">{{item.title}}</text>
+          <text class="section-hint">{{item.paragraphs.length}} 段 · 点击阅读</text>
         </view>
+        <view class="section-arrow">›</view>
+      </view>
+    </view>
 
-        <!-- 示例正文段落 -->
-        <view class="paragraph" wx:if="{{chapterContent}}">
-          <text class="paragraph-text" 
-            bindlongpress="onTextLongPress"
-            data-text="{{chapterContent}}"
-          >
-            {{chapterContent}}
-          </text>
+    <!-- 正文内容 -->
+    <view class="chapter-content" wx:if="{{activeSection >= 0}}">
+      <view class="section-header-bar">
+        <view class="back-btn glass-btn" bindtap="onBackToSections">
+          <text>← 返回目录</text>
         </view>
-        
-        <view class="chapter-end" wx:if="{{!chapterContent}}">
-          <text class="end-text">选择上方章节开始阅读</text>
-          <text class="end-hint">内容待电子书数据导入后填充</text>
+        <text class="current-section-title">{{currentSections[activeSection].title}}</text>
+      </view>
+      
+      <view class="paragraph" wx:for="{{currentSections[activeSection].paragraphs}}" wx:key="index">
+        <text class="paragraph-text" 
+          bindlongpress="onTextLongPress"
+          data-text="{{item}}"
+        >{{item}}</text>
+      </view>
+
+      <!-- 上下小节导航 -->
+      <view class="section-nav">
+        <view class="nav-btn glass-btn" wx:if="{{activeSection > 0}}" bindtap="onPrevSection">
+          <text>← 上一节</text>
         </view>
+        <view class="nav-placeholder" wx:else></view>
+        <view class="nav-btn glass-btn vermillion" wx:if="{{activeSection < currentSections.length - 1}}" bindtap="onNextSection">
+          <text>下一节 →</text>
+        </view>
+      </view>
+    </view>
+    
+    <view class="chapter-end" wx:if="{{currentSections.length === 0 && !isLoading}}">
+      <text class="end-text">内容加载中...</text>
+    </view>
       </view>
     </scroll-view>
   </view>
