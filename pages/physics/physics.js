@@ -23,6 +23,7 @@ Page({
   _particles: [],
   _width: 0,
   _height: 0,
+  _isFallback: false,
 
   onLoad() {
     // Delay canvas init until step changes
@@ -79,30 +80,37 @@ Page({
   _initCanvas() {
     const query = this.createSelectorQuery();
     query.select('#physicsCanvas').fields({ node: true, size: true }).exec((res) => {
-      if (!res || !res[0] || !res[0].node) {
-        // Fallback for non-node canvas
+      if (res && res[0] && res[0].node) {
+        // Node-based canvas (preferred)
+        const canvas = res[0].node;
+        const ctx = canvas.getContext('2d');
+        const dpr = wx.getSystemInfoSync().pixelRatio;
+        canvas.width = res[0].width * dpr;
+        canvas.height = res[0].height * dpr;
+        ctx.scale(dpr, dpr);
+        this._canvas = canvas;
+        this._ctx = ctx;
+        this._width = res[0].width;
+        this._height = res[0].height;
+        this._isFallback = false;
+        this.setData({ canvasReady: true });
+        this._drawStatic();
+      } else {
+        // Fallback: use wx.createCanvasContext
+        const ctx = wx.createCanvasContext('physicsCanvas', this);
+        const sysInfo = wx.getSystemInfoSync();
         const query2 = this.createSelectorQuery();
         query2.select('#physicsCanvas').boundingClientRect().exec((res2) => {
           if (res2 && res2[0]) {
+            this._ctx = ctx;
             this._width = res2[0].width;
             this._height = res2[0].height;
+            this._isFallback = true;
             this.setData({ canvasReady: true });
+            this._drawStatic();
           }
         });
-        return;
       }
-      const canvas = res[0].node;
-      const ctx = canvas.getContext('2d');
-      const dpr = wx.getSystemInfoSync().pixelRatio;
-      canvas.width = res[0].width * dpr;
-      canvas.height = res[0].height * dpr;
-      ctx.scale(dpr, dpr);
-      this._canvas = canvas;
-      this._ctx = ctx;
-      this._width = res[0].width;
-      this._height = res[0].height;
-      this.setData({ canvasReady: true });
-      this._drawStatic();
     });
   },
 
@@ -165,6 +173,11 @@ Page({
     ctx.fillStyle = '#4FC3F7';
     ctx.font = 'bold 12px sans-serif';
     ctx.fillText('⁶⁰Co', cx, cy + 4);
+
+    // Draw for fallback canvas
+    if (this._isFallback) {
+      ctx.draw();
+    }
   },
 
   _runAnimation() {
@@ -248,6 +261,11 @@ Page({
           particlesDown: this.data.particlesDown + downCount,
           totalParticles: this.data.particlesUp + this.data.particlesDown + upCount + downCount
         });
+      }
+
+      // Draw for fallback canvas
+      if (this._isFallback) {
+        ctx.draw();
       }
 
       // End after 300 total particles
