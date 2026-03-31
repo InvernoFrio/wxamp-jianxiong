@@ -62,7 +62,7 @@
     </block>
 
     <!-- 正文阅读模式 -->
-    <block wx:else>
+    <block wx:elif="{{activeSection >= 0 && currentSections[activeSection]}}">
       <view class="section-header-bar glass-card">
         <view class="back-btn" bindtap="onBackToSections">
           <text>← 返回目录</text>

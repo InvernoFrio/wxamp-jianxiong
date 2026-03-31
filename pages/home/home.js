@@ -51,13 +51,21 @@ Page({
 
   onBookToggle(e) {
     const opening = e.detail.opening;
-    if (opening && !this.data.bookOpening) {
+    if (opening) {
+      // 书本打开
       this.setData({ bookOpening: true });
       wx.setStorageSync('bookOpened', true);
       // 等翻书动画完成后显示模块
       setTimeout(() => {
         this.setData({ showModules: true });
       }, 600);
+    } else {
+      // 书本关闭 - 收起模块
+      this.setData({ 
+        showModules: false,
+        bookOpening: false
+      });
+      wx.setStorageSync('bookOpened', false);
     }
   },
 
