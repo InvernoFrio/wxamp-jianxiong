@@ -157,7 +157,15 @@ Page({
   },
 
   onHighlight() {
-    // TODO: 实现高亮功能
+    // 存储高亮
+    const highlights = wx.getStorageSync('highlights') || [];
+    highlights.push({
+      text: this.data.selectedText,
+      chapter: this.data.currentChapter.title,
+      sectionIndex: this.data.activeSection,
+      time: new Date().toISOString()
+    });
+    wx.setStorageSync('highlights', highlights);
     wx.showToast({ title: '已高亮', icon: 'success' });
     this.onPopupClose();
   },

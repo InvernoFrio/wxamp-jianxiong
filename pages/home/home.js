@@ -62,8 +62,7 @@ Page({
   },
 
   onModuleTap(e) {
-    // 事件可能来自组件内部或直接绑定
-    const path = e.currentTarget.dataset.path || e.currentTarget._dataset.path;
+    const path = e.currentTarget.dataset.path;
     if (path) {
       wx.switchTab({ url: path });
     }

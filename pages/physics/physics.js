@@ -11,18 +11,25 @@ Page({
   },
 
   onLoad() {
-    // 初始化canvas
+    this.canvasReady = false;
   },
 
   onReady() {
-    // Canvas 2D 初始化
+    // 延迟初始化，确保 Canvas 节点已渲染
+    this.initCanvasIfNeeded();
+  },
+
+  initCanvasIfNeeded() {
+    if (this.canvasReady) return;
+    
     const query = wx.createSelectorQuery();
     query.select('#experimentCanvas').fields({ node: true, size: true }).exec((res) => {
-      if (res[0]) {
+      if (res && res[0]) {
         const canvas = res[0].node;
         const ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.ctx = ctx;
+        this.canvasReady = true;
         this.initCanvas(canvas, res[0].width, res[0].height);
       }
     });
@@ -109,14 +116,42 @@ Page({
     // 重绘静态场景
     this.drawStaticScene();
 
-    // 生成新粒子（每10帧）
+    // 绘制磁场方向标识（向上箭头）
+    ctx.save();
+    ctx.strokeStyle = 'rgba(139, 157, 175, 0.6)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY - 200);
+    ctx.lineTo(centerX, centerY - 230);
+    ctx.moveTo(centerX - 8, centerY - 222);
+    ctx.lineTo(centerX, centerY - 230);
+    ctx.lineTo(centerX + 8, centerY - 222);
+    ctx.stroke();
+    ctx.fillStyle = '#8B9DAF';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('磁场 B ↑', centerX, centerY - 240);
+    ctx.restore();
+
+    // 生成新粒子（宇称不守恒：粒子主要向下发射）
     if (Math.random() < 0.3) {
-      const angle = Math.random() * Math.PI * 2;
+      // 宇称不守恒：β粒子优先向磁场反方向发射（向下）
+      // 70%概率向下半球发射，30%概率向上半球发射
+      let angle;
+      if (Math.random() < 0.7) {
+        // 向下半球发射（0 到 π）
+        angle = Math.random() * Math.PI;
+      } else {
+        // 向上半球发射（π 到 2π）
+        angle = Math.PI + Math.random() * Math.PI;
+      }
+      
+      const speed = 2 + Math.random() * 2;
       this.particles.push({
         x: centerX,
         y: centerY,
-        vx: Math.cos(angle) * (2 + Math.random() * 2),
-        vy: Math.sin(angle) * (2 + Math.random() * 2),
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
         life: 60,
         size: 3 + Math.random() * 3,
         color: `rgba(196, 30, 58, ${0.5 + Math.random() * 0.5})`
@@ -124,7 +159,6 @@ Page({
     }
 
     // 更新和绘制粒子
-    ctx.fillStyle = '#2C2C2C';
     this.particles = this.particles.filter(p => {
       p.x += p.vx;
       p.y += p.vy;
@@ -170,19 +204,28 @@ Page({
 
   prevStep() {
     if (this.data.activeStep > 0) {
-      this.setData({ activeStep: this.data.activeStep - 1 });
-      if (this.data.activeStep !== 2) {
-        this.stopExperiment();
-      }
+      const newStep = this.data.activeStep - 1;
+      this.setData({ activeStep: newStep });
+      this.onStepChange(newStep);
     }
   },
 
   nextStep() {
     if (this.data.activeStep < 3) {
-      this.setData({ activeStep: this.data.activeStep + 1 });
-      if (this.data.activeStep !== 2) {
-        this.stopExperiment();
-      }
+      const newStep = this.data.activeStep + 1;
+      this.setData({ activeStep: newStep });
+      this.onStepChange(newStep);
+    }
+  },
+
+  onStepChange(newStep) {
+    // 进入实验步骤时初始化 Canvas
+    if (newStep === 2) {
+      this.initCanvasIfNeeded();
+    }
+    // 离开实验步骤时停止动画
+    if (newStep !== 2) {
+      this.stopExperiment();
     }
   },
 

@@ -84,11 +84,15 @@
         </view>
         <view class="info-row">
           <text class="info-label">关键发现：</text>
-          <text class="info-value">β粒子发射方向不对称 → 宇称不守恒！</text>
+          <text class="info-value">β粒子优先向下发射 → 宇称不守恒！</text>
         </view>
         <view class="info-row">
           <text class="info-label">实验温度：</text>
           <text class="info-value">0.01K（极低温）</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">观察要点：</text>
+          <text class="info-value">粒子向磁场反方向发射更多</text>
         </view>
       </view>
     </view>
