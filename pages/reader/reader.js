@@ -3,13 +3,13 @@ const chaptersIndex = require('../../data/chapters/index.js');
 const storage = require('../../utils/storage.js');
 
 // Pre-import all chapter data (static require paths required by mini program)
-const ch01Data = require('../../data/chapters/ch01.json');
-const ch02Data = require('../../data/chapters/ch02.json');
-const ch03Data = require('../../data/chapters/ch03.json');
-const ch04Data = require('../../data/chapters/ch04.json');
-const ch05Data = require('../../data/chapters/ch05.json');
-const ch06Data = require('../../data/chapters/ch06.json');
-const ch07Data = require('../../data/chapters/ch07.json');
+const ch01Data = require('../../data/chapters/ch01.js');
+const ch02Data = require('../../data/chapters/ch02.js');
+const ch03Data = require('../../data/chapters/ch03.js');
+const ch04Data = require('../../data/chapters/ch04.js');
+const ch05Data = require('../../data/chapters/ch05.js');
+const ch06Data = require('../../data/chapters/ch06.js');
+const ch07Data = require('../../data/chapters/ch07.js');
 
 const chapterDataMap = {
   ch01: ch01Data,
@@ -49,6 +49,9 @@ Page({
     });
     if (progress.chapterIndex !== undefined && progress.chapterIndex < chaptersIndex.length) {
       this.setData({ activeChapter: progress.chapterIndex });
+      if (progress.sectionId) {
+        this._openSection(progress.chapterIndex, progress.sectionId);
+      }
     }
   },
 
@@ -70,25 +73,7 @@ Page({
 
   onSectionTap(e) {
     const sectionId = e.currentTarget.dataset.id;
-    const chapter = this.data.chapters[this.data.activeChapter];
-    if (!chapter) return;
-
-    const chapterId = chapter.id;
-    const chapterData = chapterDataMap[chapterId];
-    if (!chapterData) {
-      wx.showToast({ title: '章节数据未找到', icon: 'none' });
-      return;
-    }
-
-    const section = chapterData.sections.find(function(s) { return s.id === sectionId; });
-    if (section) {
-      this.setData({
-        mode: 'reading',
-        currentSection: section,
-        sectionParagraphs: section.paragraphs || []
-      });
-      storage.saveReadingProgress(this.data.activeChapter, 0);
-    }
+    this._openSection(this.data.activeChapter, sectionId);
   },
 
   onBackToList() {
@@ -180,13 +165,14 @@ Page({
       if (!chapter) return;
       var chapterData = chapterDataMap[chapter.id];
       if (!chapterData) return;
-      var section = chapterData.sections.find(function(s) { return s.id === sectionId; });
+      var section = chapterData.sections.find(function (s) { return s.id === sectionId; });
       if (section) {
         this.setData({
           mode: 'reading',
           currentSection: section,
           sectionParagraphs: section.paragraphs || []
         });
+        storage.saveReadingProgress(chapterIndex, 0, sectionId);
       }
     }, 100);
   },
@@ -197,5 +183,28 @@ Page({
 
   onCloseNotesPanel() {
     this.setData({ showNotesPanel: false });
+  },
+
+  _openSection(chapterIndex, sectionId) {
+    const chapter = this.data.chapters[chapterIndex];
+    if (!chapter) return;
+
+    const chapterId = chapter.id;
+    const chapterData = chapterDataMap[chapterId];
+    if (!chapterData) {
+      wx.showToast({ title: '章节数据未找到', icon: 'none' });
+      return;
+    }
+
+    const section = chapterData.sections.find(function (s) { return s.id === sectionId; });
+    if (!section) return;
+
+    this.setData({
+      activeChapter: chapterIndex,
+      mode: 'reading',
+      currentSection: section,
+      sectionParagraphs: section.paragraphs || []
+    });
+    storage.saveReadingProgress(chapterIndex, 0, sectionId);
   }
 });

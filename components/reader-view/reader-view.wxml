@@ -8,7 +8,7 @@
       bindlongpress="onLongPress"
       style="font-size: {{fontSize}}rpx; line-height: {{lineHeight}};"
     >
-      <text>{{item}}</text>
+      <text user-select="{{true}}">{{item}}</text>
     </view>
   </view>
 

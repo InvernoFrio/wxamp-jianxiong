@@ -69,6 +69,10 @@
         <text class="notes-close" bindtap="onCloseNotesPanel">✕</text>
       </view>
 
+      <view class="notes-summary">
+        <text>共 {{highlights.length + notes.length}} 条记录 · 点击卡片可跳转原文</text>
+      </view>
+
       <!-- Tab 切换 -->
       <view class="notes-tabs">
         <view
@@ -98,10 +102,10 @@
           class="note-item"
         >
           <view class="note-item-content" data-chapter="{{item.chapterIndex}}" data-section="{{item.sectionId}}" bindtap="onJumpToHighlight">
-            <text class="note-item-text">{{item.text}}</text>
+            <text class="note-item-text" user-select="{{true}}">{{item.text}}</text>
             <text class="note-item-meta">{{item.sectionTitle}}</text>
           </view>
-          <view class="note-item-delete" data-id="{{item.id}}" bindtap="onDeleteHighlight">
+          <view class="note-item-delete" data-id="{{item.id}}" catchtap="onDeleteHighlight">
             <text>删除</text>
           </view>
         </view>
@@ -118,11 +122,11 @@
           class="note-item"
         >
           <view class="note-item-content" data-chapter="{{item.chapterIndex}}" data-section="{{item.sectionId}}" bindtap="onJumpToNote">
-            <text class="note-item-note">{{item.note}}</text>
-            <text class="note-item-text">{{item.text}}</text>
+            <text class="note-item-note" user-select="{{true}}">{{item.note}}</text>
+            <text class="note-item-text" user-select="{{true}}">{{item.text}}</text>
             <text class="note-item-meta">{{item.sectionTitle}}</text>
           </view>
-          <view class="note-item-delete" data-id="{{item.id}}" bindtap="onDeleteNote">
+          <view class="note-item-delete" data-id="{{item.id}}" catchtap="onDeleteNote">
             <text>删除</text>
           </view>
         </view>

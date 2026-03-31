@@ -1,4 +1,4 @@
-{
+module.exports = {
   "id": "ch07",
   "title": "科星陨落后的反响",
   "subtitle": "永恒的科学遗产",
@@ -85,4 +85,4 @@
     }
   ],
   "totalParagraphs": 56
-}
+};

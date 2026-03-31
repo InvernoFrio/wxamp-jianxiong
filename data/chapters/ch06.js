@@ -1,4 +1,4 @@
-{
+module.exports = {
   "id": "ch06",
   "title": "人品学风",
   "subtitle": "科学精神与人格魅力",
@@ -109,4 +109,4 @@
     }
   ],
   "totalParagraphs": 80
-}
+};

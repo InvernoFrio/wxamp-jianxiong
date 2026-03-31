@@ -1,4 +1,4 @@
-{
+module.exports = {
   "id": "ch02",
   "title": "鲜为人知的世界权威",
   "subtitle": "原子弹之母",
@@ -109,4 +109,4 @@
     }
   ],
   "totalParagraphs": 80
-}
+};

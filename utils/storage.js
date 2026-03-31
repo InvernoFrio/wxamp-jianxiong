@@ -18,10 +18,13 @@ function getReadingProgress() {
 /**
  * 保存阅读进度
  */
-function saveReadingProgress(chapterIndex, percent) {
+function saveReadingProgress(chapterIndex, percent, sectionId) {
   const progress = getReadingProgress();
   progress.chapterIndex = chapterIndex;
   progress.percent = percent;
+  if (sectionId) {
+    progress.sectionId = sectionId;
+  }
   progress.lastRead = new Date().toISOString();
   wx.setStorageSync(KEYS.READING_PROGRESS, progress);
 }

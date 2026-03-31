@@ -1,4 +1,4 @@
-{
+module.exports = {
   "id": "ch03",
   "title": "拼搏与成名",
   "subtitle": "β衰变与宇称不守恒",
@@ -109,4 +109,4 @@
     }
   ],
   "totalParagraphs": 80
-}
+};

@@ -1,4 +1,4 @@
-{
+module.exports = {
   "id": "ch05",
   "title": "爱国·婚姻·家庭",
   "subtitle": "爱情与人生",
@@ -109,4 +109,4 @@
     }
   ],
   "totalParagraphs": 80
-}
+};

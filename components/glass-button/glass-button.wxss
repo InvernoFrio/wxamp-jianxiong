@@ -2,22 +2,23 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(16rpx);
-  -webkit-backdrop-filter: blur(16rpx);
-  border: 1rpx solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.46);
+  backdrop-filter: blur(16rpx) saturate(115%);
+  -webkit-backdrop-filter: blur(16rpx) saturate(115%);
+  border: 1rpx solid rgba(255, 255, 255, 0.72);
   border-radius: 16rpx;
   color: #2C2C2C;
-  transition: all 0.3s ease;
+  transition: all 0.24s ease;
+  box-shadow: 0 8rpx 18rpx rgba(61, 45, 29, 0.1);
 }
 
 .glass-btn:active {
-  transform: scale(0.96);
+  transform: scale(0.96) translateY(2rpx);
 }
 
 .glass-btn.primary {
-  background: rgba(196, 30, 58, 0.85);
-  border-color: rgba(196, 30, 58, 0.6);
+  background: linear-gradient(160deg, rgba(196, 30, 58, 0.94), rgba(157, 18, 37, 0.9));
+  border-color: rgba(196, 30, 58, 0.34);
   color: #fff;
 }
 

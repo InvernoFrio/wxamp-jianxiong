@@ -1,4 +1,4 @@
-{
+module.exports = {
   "id": "ch01",
   "title": "难忘的读书岁月",
   "subtitle": "从幼年到出国留学",
@@ -135,4 +135,4 @@
     }
   ],
   "totalParagraphs": 100
-}
+};

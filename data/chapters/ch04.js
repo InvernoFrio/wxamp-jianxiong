@@ -1,4 +1,4 @@
-{
+module.exports = {
   "id": "ch04",
   "title": "科学女杰也是女权的捍卫者",
   "subtitle": "科学界的女性力量",
@@ -83,4 +83,4 @@
     }
   ],
   "totalParagraphs": 60
-}
+};

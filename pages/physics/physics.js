@@ -274,18 +274,33 @@ Page({
         return;
       }
 
-      this._animationId = requestAnimationFrame(animate);
+      this._animationId = this._requestFrame(animate);
     };
 
-    this._animationId = requestAnimationFrame(animate);
+    this._animationId = this._requestFrame(animate);
   },
 
   _stopAnimation() {
     if (this._animationId) {
-      cancelAnimationFrame(this._animationId);
+      this._cancelFrame(this._animationId);
       this._animationId = null;
     }
     this.setData({ experimentRunning: false });
+  },
+
+  _requestFrame(fn) {
+    if (this._canvas && typeof this._canvas.requestAnimationFrame === 'function') {
+      return this._canvas.requestAnimationFrame(fn);
+    }
+    return setTimeout(fn, 16);
+  },
+
+  _cancelFrame(id) {
+    if (this._canvas && typeof this._canvas.cancelAnimationFrame === 'function') {
+      this._canvas.cancelAnimationFrame(id);
+      return;
+    }
+    clearTimeout(id);
   },
 
   _calculateResults() {
