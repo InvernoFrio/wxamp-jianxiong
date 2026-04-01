@@ -57,7 +57,7 @@
 .tl-axis::before {
   content: '';
   position: absolute;
-  left: 68rpx;
+  left: 90rpx;
   top: 0;
   bottom: 0;
   width: 4rpx;
