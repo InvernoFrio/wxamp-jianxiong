@@ -3,14 +3,17 @@
 }
 
 .reader-content {
-  padding: 30rpx 34rpx;
+  padding: 32rpx 40rpx;
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
 }
 
 .paragraph {
   text-indent: 2em;
-  margin-bottom: 24rpx;
+  margin-bottom: 28rpx;
   color: #2C2C2C;
-  letter-spacing: 0.4rpx;
+  letter-spacing: 0.5rpx;
+  line-height: 2;
+  font-size: 30rpx;
 }
 
 .paragraph text {
@@ -54,3 +57,4 @@
 .menu-item:active {
   background: rgba(255, 255, 255, 0.15);
 }
+

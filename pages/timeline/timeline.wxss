@@ -48,6 +48,23 @@
   padding: 18rpx 0;
 }
 
+.tl-axis {
+  position: relative;
+  padding-left: 20rpx;
+}
+
+/* 连续时间线 */
+.tl-axis::before {
+  content: '';
+  position: absolute;
+  left: 68rpx;
+  top: 0;
+  bottom: 0;
+  width: 4rpx;
+  background: linear-gradient(180deg, rgba(196, 30, 58, 0.4) 0%, rgba(196, 30, 58, 0.2) 40%, rgba(139, 157, 175, 0.15) 100%);
+  border-radius: 2rpx;
+}
+
 .tl-wrapper {
   opacity: 0;
   animation: fadeSlideIn 0.42s ease-out forwards;
