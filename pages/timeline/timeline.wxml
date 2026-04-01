@@ -25,6 +25,7 @@
           item="{{item}}"
           index="{{index}}"
           expanded="{{expandedIndex === index}}"
+          last="{{index === filteredItems.length - 1}}"
           bind:toggle="onItemToggle"
         />
       </view>

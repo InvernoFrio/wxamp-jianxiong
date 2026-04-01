@@ -1,8 +1,8 @@
 .tl-item {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  margin-bottom: 26rpx;
+  align-items: stretch;
+  padding-bottom: 26rpx;
 }
 
 .tl-left {

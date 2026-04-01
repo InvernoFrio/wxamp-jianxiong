@@ -150,15 +150,16 @@
   letter-spacing: 1rpx;
 }
 
-/* 轮播指示器 */
-.quote-section .wx-swiper-dot {
-  width: 12rpx;
-  height: 12rpx;
-  background: rgba(139, 157, 175, 0.3);
+/* 轮播指示点 */
+swiper .wx-swiper-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background: rgba(139, 157, 175, 0.35) !important;
 }
 
-.quote-section .wx-swiper-dot-active {
-  background: #C41E3A;
-  width: 28rpx;
-  border-radius: 6rpx;
+swiper .wx-swiper-dot.wx-swiper-dot-active {
+  width: 30rpx;
+  border-radius: 7rpx;
+  background: #C41E3A !important;
 }

@@ -55,8 +55,8 @@
     </scroll-view>
   </view>
 
-  <!-- 笔记浮动按钮 -->
-  <view class="notes-fab" bindtap="onToggleNotesPanel">
+  <!-- 笔记浮动按钮（仅阅读模式） -->
+  <view class="notes-fab" wx:if="{{mode === 'reading'}}" bindtap="onToggleNotesPanel">
     <text>📝</text>
   </view>
 

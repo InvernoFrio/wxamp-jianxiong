@@ -3,7 +3,7 @@
 }
 
 .reader-content {
-  padding: 32rpx 38rpx;
+  padding: 32rpx;
   padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
 }
 
@@ -11,10 +11,9 @@
   text-indent: 2em;
   margin-bottom: 28rpx;
   color: #2C2C2C;
-  letter-spacing: 0.8rpx;
+  letter-spacing: 0.5rpx;
   line-height: 2;
   font-size: 30rpx;
-  text-align: justify;
 }
 
 .paragraph text {
