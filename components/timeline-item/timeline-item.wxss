@@ -3,7 +3,6 @@
   flex-direction: row;
   align-items: flex-start;
   padding-bottom: 26rpx;
-  position: relative;
 }
 
 .tl-left {
@@ -12,15 +11,12 @@
   flex-direction: column;
   align-items: center;
   flex-shrink: 0;
-  position: relative;
-  height: 0;
 }
 
 .tl-year {
   font-size: 24rpx;
   color: #C41E3A;
   font-weight: bold;
-  margin-bottom: 12rpx;
   font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
   background: rgba(196, 30, 58, 0.08);
   padding: 4rpx 14rpx;
@@ -29,10 +25,6 @@
 }
 
 .tl-dot {
-  position: absolute;
-  top: 36rpx;
-  left: 50%;
-  transform: translateX(-50%);
   width: 20rpx;
   height: 20rpx;
   border-radius: 50%;
@@ -40,6 +32,7 @@
   box-shadow: 0 0 0 3rpx rgba(0,0,0,0.06), 0 0 0 8rpx rgba(196, 30, 58, 0.1), 0 0 12rpx rgba(196, 30, 58, 0.15);
   z-index: 1;
   flex-shrink: 0;
+  margin-top: -8rpx;
 }
 
 .tl-line {
