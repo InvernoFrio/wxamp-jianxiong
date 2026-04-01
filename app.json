@@ -51,7 +51,9 @@
       }
     ]
   },
-  "usingComponents": {},
+  "usingComponents": {
+    "glass-button": "/components/glass-button/glass-button"
+  },
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents"
 }

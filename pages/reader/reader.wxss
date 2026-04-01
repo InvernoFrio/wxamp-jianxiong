@@ -154,6 +154,7 @@
 .reading-scroll {
   flex: 1;
   height: calc(100vh - 200rpx);
+  overflow-y: auto;
 }
 
 /* 笔记浮动按钮 */
@@ -171,7 +172,8 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 12rpx 28rpx rgba(196, 30, 58, 0.36);
-  z-index: 100;
+  z-index: 300;
+  pointer-events: auto;
 }
 
 .notes-fab text {
@@ -192,10 +194,12 @@
   bottom: 0;
   z-index: 200;
   pointer-events: none;
+  visibility: hidden;
 }
 
 .notes-panel-open {
   pointer-events: auto;
+  visibility: visible;
 }
 
 .notes-overlay {
@@ -207,10 +211,12 @@
   background: rgba(0, 0, 0, 0.4);
   opacity: 0;
   transition: opacity 0.3s ease;
+  visibility: hidden;
 }
 
 .notes-panel-open .notes-overlay {
   opacity: 1;
+  visibility: visible;
 }
 
 .notes-drawer {
