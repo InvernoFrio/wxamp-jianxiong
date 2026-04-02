@@ -1,34 +1,38 @@
 .reader-view {
   position: relative;
+  display: block;
+  width: 100%;
 }
 
 .reader-content {
-  padding: 32rpx 48rpx;
-  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
+  padding: 32rpx 34rpx;
+  padding-bottom: calc(54rpx + env(safe-area-inset-bottom));
+  width: 100%;
   overflow-x: hidden;
 }
 
 .paragraph {
-  text-indent: 2em;
+  display: block;
+  width: 100%;
   margin-bottom: 28rpx;
   color: #2C2C2C;
   line-height: 2;
   font-size: 30rpx;
-  word-break: break-all;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  text-indent: 2em;
+  text-align: justify;
+  text-justify: inter-ideograph;
 }
 
 /* 首段无缩进，加装饰 */
 .paragraph:first-child {
-  text-indent: 0;
+  text-indent: 2em;
 }
 
-.paragraph:first-child text {
+.paragraph:first-child {
   font-size: 32rpx;
-}
-
-.paragraph text {
-  user-select: text;
-  -webkit-user-select: text;
 }
 
 .context-menu-overlay {

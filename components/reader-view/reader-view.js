@@ -33,11 +33,11 @@ Component({
       let x = e.touches[0].clientX;
       let y = e.touches[0].clientY;
       // 边界检测：菜单宽约180rpx(≈屏幕一半)，高约140rpx
-      const sysInfo = wx.getSystemInfoSync();
-      const menuW = sysInfo.windowWidth * 0.45;
+      const windowInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
+      const menuW = windowInfo.windowWidth * 0.45;
       const menuH = 140;
       if (x - menuW / 2 < 10) x = menuW / 2 + 10;
-      if (x + menuW / 2 > sysInfo.windowWidth - 10) x = sysInfo.windowWidth - menuW / 2 - 10;
+      if (x + menuW / 2 > windowInfo.windowWidth - 10) x = windowInfo.windowWidth - menuW / 2 - 10;
       if (y - menuH < 10) y = menuH + 10;
       this.setData({
         menuVisible: true,

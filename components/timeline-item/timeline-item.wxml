@@ -2,6 +2,7 @@
   <view class="tl-left">
     <text class="tl-year">{{item.year}}</text>
     <view class="tl-dot" style="background: {{typeColor[item.type] || '#8B9DAF'}};"></view>
+    <view class="tl-line" wx:if="{{!last}}"></view>
   </view>
   <view class="tl-card glass">
     <view class="tl-header">

@@ -24,6 +24,7 @@
         <timeline-item
           item="{{item}}"
           index="{{index}}"
+          last="{{index === filteredItems.length - 1}}"
           expanded="{{expandedIndex === index}}"
           bind:toggle="onItemToggle"
         />

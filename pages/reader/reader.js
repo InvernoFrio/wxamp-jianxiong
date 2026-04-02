@@ -33,10 +33,16 @@ Page({
     readMinutes: 0,
     progress: {},
     showNotesPanel: false,
+    showNoteEditor: false,
+    noteDraft: '',
+    noteSelectedText: '',
+    noteSelectedParaIndex: -1,
+    noteTargetSection: null,
     notesTab: 'highlights', // highlights | notes
     highlights: [],
     notes: [],
-    readingProgress: 0
+    readingProgress: 0,
+    readingScrollHeight: 0
   },
 
   onLoad() {
@@ -55,6 +61,7 @@ Page({
         this._openSection(progress.chapterIndex, progress.sectionId);
       }
     }
+    this._updateReadingScrollHeight();
   },
 
   onShow() {
@@ -62,6 +69,7 @@ Page({
       highlights: storage.getHighlights(),
       notes: storage.getNotes()
     });
+    this._updateReadingScrollHeight();
   },
 
   onChapterTap(e) {
@@ -71,6 +79,7 @@ Page({
       mode: 'list',
       currentSection: null
     });
+    this._updateReadingScrollHeight();
   },
 
   onSectionTap(e) {
@@ -80,6 +89,7 @@ Page({
 
   onBackToList() {
     this.setData({ mode: 'list', currentSection: null, readingProgress: 0 });
+    this._updateReadingScrollHeight();
   },
 
   onReadingScroll(e) {
@@ -118,24 +128,12 @@ Page({
     var section = this.data.currentSection;
     if (!section) return;
 
-    wx.showModal({
-      title: '添加笔记',
-      editable: true,
-      placeholderText: '输入你的笔记...',
-      success: (res) => {
-        if (res.confirm && res.content) {
-          storage.addNote({
-            text: text.substring(0, 80),
-            note: res.content,
-            sectionId: section.id,
-            sectionTitle: section.title,
-            chapterIndex: this.data.activeChapter,
-            paraIndex: paraIndex
-          });
-          this.setData({ notes: storage.getNotes() });
-          wx.showToast({ title: '笔记已保存', icon: 'success' });
-        }
-      }
+    this.setData({
+      showNoteEditor: true,
+      noteDraft: '',
+      noteSelectedText: text.substring(0, 80),
+      noteSelectedParaIndex: paraIndex,
+      noteTargetSection: section
     });
   },
 
@@ -199,6 +197,51 @@ Page({
     this.setData({ showNotesPanel: false });
   },
 
+  onCloseNoteEditor() {
+    this.setData({ showNoteEditor: false, noteDraft: '' });
+  },
+
+  noop() { },
+
+  onNoteDraftInput(e) {
+    this.setData({ noteDraft: e.detail.value });
+  },
+
+  onSaveNote() {
+    const section = this.data.noteTargetSection;
+    const noteContent = (this.data.noteDraft || '').trim();
+    if (!section) return;
+    if (!noteContent) {
+      wx.showToast({ title: '请输入笔记内容', icon: 'none' });
+      return;
+    }
+
+    storage.addNote({
+      text: this.data.noteSelectedText,
+      note: noteContent,
+      sectionId: section.id,
+      sectionTitle: section.title,
+      chapterIndex: this.data.activeChapter,
+      paraIndex: this.data.noteSelectedParaIndex
+    });
+    this.setData({
+      notes: storage.getNotes(),
+      showNoteEditor: false,
+      noteDraft: '',
+      noteSelectedText: '',
+      noteSelectedParaIndex: -1,
+      noteTargetSection: null
+    });
+    wx.showToast({ title: '笔记已保存', icon: 'success' });
+  },
+
+  _updateReadingScrollHeight() {
+    const windowInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
+    // Reserve less vertical space so正文区域更高，提升可读面积
+    const fallbackHeight = Math.max(360, Math.floor(windowInfo.windowHeight - 180));
+    this.setData({ readingScrollHeight: fallbackHeight });
+  },
+
   _openSection(chapterIndex, sectionId) {
     const chapter = this.data.chapters[chapterIndex];
     if (!chapter) return;
@@ -226,5 +269,6 @@ Page({
       readMinutes: readMinutes
     });
     storage.saveReadingProgress(chapterIndex, 0, sectionId);
+    setTimeout(() => this._updateReadingScrollHeight(), 0);
   }
 });

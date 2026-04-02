@@ -42,7 +42,7 @@
   padding: 0 16rpx;
   display: flex;
   flex-direction: column;
-  gap: 24rpx;
+  gap: 34rpx;
 }
 
 .step-content glass-card {
@@ -65,7 +65,7 @@
 
 .step-hero {
   text-align: center;
-  padding: 30rpx 0 36rpx;
+  padding: 30rpx 0 44rpx;
 }
 
 .hero-icon {
@@ -92,7 +92,7 @@
 .intro-text {
   font-size: 28rpx;
   color: #2C2C2C;
-  line-height: 2;
+  line-height: 2.08;
   display: block;
 }
 
