@@ -3,17 +3,18 @@
 }
 
 .reader-content {
-  padding: 32rpx 44rpx;
+  padding: 32rpx 48rpx;
   padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
+  overflow-x: hidden;
 }
 
 .paragraph {
   text-indent: 2em;
   margin-bottom: 28rpx;
   color: #2C2C2C;
-  letter-spacing: 0.5rpx;
   line-height: 2;
   font-size: 30rpx;
+  word-break: break-all;
 }
 
 /* 首段无缩进，加装饰 */

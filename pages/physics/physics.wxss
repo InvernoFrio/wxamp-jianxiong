@@ -40,6 +40,13 @@
 .step-content {
   animation: fadeInUp 0.4s ease-out;
   padding: 0 16rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.step-content glass-card {
+  padding: 28rpx;
 }
 
 .step-hero {
@@ -49,10 +56,6 @@
 @keyframes heroAppear {
   from { opacity: 0; transform: translateY(16rpx) scale(0.96); }
   to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.step-content glass-card {
-  margin-bottom: 40rpx;
 }
 
 @keyframes fadeInUp {
