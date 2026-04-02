@@ -36,6 +36,15 @@
   padding: 0 16rpx;
 }
 
+.step-hero {
+  animation: heroAppear 0.5s ease-out;
+}
+
+@keyframes heroAppear {
+  from { opacity: 0; transform: translateY(16rpx) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .step-content glass-card {
   margin-bottom: 32rpx;
 }
@@ -211,8 +220,9 @@
 }
 
 .nav-btn:active {
-  transform: scale(0.96);
-  transition: transform 0.2s ease;
+  transform: scale(0.95);
+  background: rgba(196, 30, 58, 0.1);
+  transition: all 0.15s ease;
 }
 
 .nav-next {

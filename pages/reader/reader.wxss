@@ -29,6 +29,11 @@
   transition: all 0.3s ease;
 }
 
+.chapter-tab:active {
+  transform: scale(0.95);
+  transition: transform 0.15s ease;
+}
+
 .chapter-tab.active {
   background: linear-gradient(180deg, rgba(196, 30, 58, 0.2), rgba(196, 30, 58, 0.12));
   color: #C41E3A;
@@ -79,7 +84,8 @@
 
 .section-item:active {
   transform: scale(0.98) translateY(2rpx);
-  transition: transform 0.2s ease;
+  transition: transform 0.15s ease;
+  box-shadow: 0 4rpx 10rpx rgba(75, 58, 37, 0.06);
 }
 
 .section-index {
@@ -137,6 +143,11 @@
 .back-btn {
   padding: 8rpx 16rpx;
   margin-right: 16rpx;
+  transition: transform 0.15s ease;
+}
+
+.back-btn:active {
+  transform: scale(0.9);
 }
 
 .back-btn text {
@@ -292,6 +303,7 @@
   height: 5rpx;
   background: #C41E3A;
   border-radius: 2rpx;
+  transition: all 0.25s ease;
 }
 
 .notes-list {

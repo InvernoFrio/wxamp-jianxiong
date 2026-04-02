@@ -16,6 +16,15 @@
   font-size: 30rpx;
 }
 
+/* 首段无缩进，加装饰 */
+.paragraph:first-child {
+  text-indent: 0;
+}
+
+.paragraph:first-child text {
+  font-size: 32rpx;
+}
+
 .paragraph text {
   user-select: text;
   -webkit-user-select: text;

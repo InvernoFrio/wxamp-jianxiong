@@ -49,6 +49,12 @@
   border-radius: 22rpx;
   padding: 24rpx;
   box-shadow: 0 10rpx 22rpx rgba(63, 47, 32, 0.09);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tl-item:active .tl-card {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 12rpx rgba(63, 47, 32, 0.06);
 }
 
 .tl-header {

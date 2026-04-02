@@ -86,6 +86,12 @@
   border: 1rpx solid rgba(255, 255, 255, 0.68);
   border-radius: 22rpx;
   box-shadow: 0 8rpx 20rpx rgba(65, 49, 30, 0.09);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.team-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 10rpx rgba(65, 49, 30, 0.06);
 }
 
 .team-avatar {
