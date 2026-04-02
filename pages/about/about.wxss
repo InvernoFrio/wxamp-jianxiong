@@ -153,6 +153,12 @@
   border-radius: 22rpx;
   text-align: center;
   box-shadow: 0 8rpx 20rpx rgba(62, 47, 30, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.principle-card:active {
+  transform: scale(0.97);
+  box-shadow: 0 4rpx 10rpx rgba(62, 47, 30, 0.05);
 }
 
 .principle-icon {

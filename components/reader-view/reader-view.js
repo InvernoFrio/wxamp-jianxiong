@@ -30,10 +30,19 @@ Component({
       const dataset = e.currentTarget.dataset;
       const paraIndex = dataset.index;
       const text = this.properties.paragraphs[paraIndex] || '';
+      let x = e.touches[0].clientX;
+      let y = e.touches[0].clientY;
+      // 边界检测：菜单宽约180rpx(≈屏幕一半)，高约140rpx
+      const sysInfo = wx.getSystemInfoSync();
+      const menuW = sysInfo.windowWidth * 0.45;
+      const menuH = 140;
+      if (x - menuW / 2 < 10) x = menuW / 2 + 10;
+      if (x + menuW / 2 > sysInfo.windowWidth - 10) x = sysInfo.windowWidth - menuW / 2 - 10;
+      if (y - menuH < 10) y = menuH + 10;
       this.setData({
         menuVisible: true,
-        menuX: e.touches[0].clientX,
-        menuY: e.touches[0].clientY,
+        menuX: x,
+        menuY: y,
         selectedText: text,
         selectedParaIndex: paraIndex
       });

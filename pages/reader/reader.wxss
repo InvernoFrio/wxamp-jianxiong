@@ -162,9 +162,26 @@
   flex: 1;
 }
 
+.reading-meta {
+  font-size: 22rpx;
+  color: #8B9DAF;
+  flex-shrink: 0;
+  padding-left: 12rpx;
+}
+
 .reading-scroll {
   flex: 1;
   height: 0;
+  position: relative;
+}
+
+.reading-progress-bar {
+  position: sticky;
+  top: 0;
+  height: 4rpx;
+  background: linear-gradient(90deg, #C41E3A, #D4A574);
+  z-index: 10;
+  transition: width 0.3s ease;
 }
 
 /* 笔记浮动按钮 */

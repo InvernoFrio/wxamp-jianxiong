@@ -74,8 +74,15 @@
     <view class="result-panel" wx:if="{{experimentDone}}">
       <glass-card>
         <text class="result-title">实验结果</text>
-        <text class="result-text">向下发射比例：{{asymmetryPercent}}%</text>
-        <text class="result-desc">明显偏离50%的对称预期，证实了宇称不守恒！</text>
+        <view class="result-bar">
+          <view class="result-bar-up" style="width: {{100 - asymmetryPercent}}%;">
+            <text class="bar-label">↑ {{100 - asymmetryPercent}}%</text>
+          </view>
+          <view class="result-bar-down" style="width: {{asymmetryPercent}}%;">
+            <text class="bar-label">↓ {{asymmetryPercent}}%</text>
+          </view>
+        </view>
+        <text class="result-desc">向下发射比例明显偏离50%的对称预期，证实了宇称不守恒！</text>
       </glass-card>
     </view>
   </view>

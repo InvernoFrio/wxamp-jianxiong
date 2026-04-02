@@ -13,7 +13,7 @@
   </scroll-view>
 
   <!-- 时间轴列表 -->
-  <view class="timeline-list">
+  <scroll-view class="timeline-list" scroll-y="{{true}}" enhanced="{{true}}" scroll-top="{{scrollTop}}">
     <view class="tl-axis">
       <view
         wx:for="{{filteredItems}}"
@@ -32,5 +32,5 @@
     <view class="empty-tip" wx:if="{{filteredItems.length === 0}}">
       <text>暂无数据</text>
     </view>
-  </view>
+  </scroll-view>
 </view>

@@ -30,11 +30,13 @@ Page({
     sectionParagraphs: [],
     fontSize: 30,
     lineHeight: 2.2,
+    readMinutes: 0,
     progress: {},
     showNotesPanel: false,
     notesTab: 'highlights', // highlights | notes
     highlights: [],
-    notes: []
+    notes: [],
+    readingProgress: 0
   },
 
   onLoad() {
@@ -77,7 +79,19 @@ Page({
   },
 
   onBackToList() {
-    this.setData({ mode: 'list', currentSection: null });
+    this.setData({ mode: 'list', currentSection: null, readingProgress: 0 });
+  },
+
+  onReadingScroll(e) {
+    const { scrollTop, scrollHeight } = e.detail;
+    if (!scrollHeight || scrollHeight <= 0) return;
+    // 简单进度估算（scrollTop / (scrollHeight - 可见高度)）
+    // 用 0.65 近似可见区域占比
+    const viewRatio = 0.65;
+    const totalScrollable = scrollHeight * (1 - viewRatio);
+    if (totalScrollable <= 0) return;
+    const progress = Math.min(100, Math.round((scrollTop / totalScrollable) * 100));
+    this.setData({ readingProgress: progress });
   },
 
   onHighlight(e) {
@@ -199,11 +213,17 @@ Page({
     const section = chapterData.sections.find(function (s) { return s.id === sectionId; });
     if (!section) return;
 
+    // 计算阅读时长（按中文400字/分钟）
+    const paragraphs = section.paragraphs || [];
+    const charCount = paragraphs.reduce((sum, p) => sum + p.length, 0);
+    const readMinutes = Math.max(1, Math.ceil(charCount / 400));
+
     this.setData({
       activeChapter: chapterIndex,
       mode: 'reading',
       currentSection: section,
-      sectionParagraphs: section.paragraphs || []
+      sectionParagraphs: paragraphs,
+      readMinutes: readMinutes
     });
     storage.saveReadingProgress(chapterIndex, 0, sectionId);
   }

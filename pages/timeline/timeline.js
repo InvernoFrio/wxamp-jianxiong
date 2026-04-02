@@ -7,6 +7,7 @@ Page({
     filteredItems: [],
     expandedIndex: -1,
     activeFilter: 'all',
+    scrollTop: 0,
     filterTabs: [
       { key: 'all', label: '全部' },
       { key: 'birth', label: '出生' },
@@ -35,7 +36,8 @@ Page({
     this.setData({
       activeFilter: key,
       filteredItems: filtered,
-      expandedIndex: -1
+      expandedIndex: -1,
+      scrollTop: 0
     });
   },
 

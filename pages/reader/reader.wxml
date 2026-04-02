@@ -43,8 +43,10 @@
         <text>‹ 返回</text>
       </view>
       <text class="reading-title" wx:if="{{currentSection}}">{{currentSection.title}}</text>
+      <text class="reading-meta" wx:if="{{currentSection}}">{{readMinutes}}分钟读完</text>
     </view>
-    <scroll-view class="reading-scroll" scroll-y="{{true}}" enhanced="{{true}}">
+    <scroll-view class="reading-scroll" scroll-y="{{true}}" enhanced="{{true}}" bindscroll="onReadingScroll">
+      <view class="reading-progress-bar" style="width: {{readingProgress}}%;"></view>
       <reader-view
         paragraphs="{{sectionParagraphs}}"
         fontSize="{{fontSize}}"
