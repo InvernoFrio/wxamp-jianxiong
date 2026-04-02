@@ -28,6 +28,10 @@
   color: #C41E3A;
 }
 
+.glass-btn.ghost:active {
+  background: rgba(196, 30, 58, 0.08);
+}
+
 .glass-btn.small {
   padding: 8rpx 20rpx;
   font-size: 24rpx;

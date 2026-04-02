@@ -96,7 +96,8 @@
       <!-- 高亮列表 -->
       <scroll-view class="notes-list" scroll-y="{{true}}" wx:if="{{notesTab === 'highlights'}}">
         <view wx:if="{{highlights.length === 0}}" class="notes-empty">
-          <text>暂无高亮记录</text>
+          <text class="empty-icon">🖍</text>
+          <text>长按文字即可高亮</text>
         </view>
         <view
           wx:for="{{highlights}}"
@@ -116,7 +117,8 @@
       <!-- 笔记列表 -->
       <scroll-view class="notes-list" scroll-y="{{true}}" wx:if="{{notesTab === 'notes'}}">
         <view wx:if="{{notes.length === 0}}" class="notes-empty">
-          <text>暂无笔记记录</text>
+          <text class="empty-icon">📝</text>
+          <text>长按文字添加你的笔记</text>
         </view>
         <view
           wx:for="{{notes}}"

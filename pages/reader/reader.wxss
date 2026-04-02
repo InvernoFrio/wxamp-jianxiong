@@ -330,7 +330,14 @@
 
 .notes-empty {
   text-align: center;
-  padding: 80rpx 0;
+  padding: 100rpx 0;
+}
+
+.notes-empty .empty-icon {
+  font-size: 72rpx;
+  display: block;
+  margin-bottom: 20rpx;
+  opacity: 0.4;
 }
 
 .notes-empty text {

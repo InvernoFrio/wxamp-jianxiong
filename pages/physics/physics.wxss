@@ -28,6 +28,12 @@
   background: #C41E3A;
   transform: scale(1.34);
   box-shadow: 0 0 0 10rpx rgba(196, 30, 58, 0.12);
+  animation: dotPulse 2s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 0 10rpx rgba(196, 30, 58, 0.12); }
+  50% { box-shadow: 0 0 0 16rpx rgba(196, 30, 58, 0.06); }
 }
 
 /* 步骤内容 */
