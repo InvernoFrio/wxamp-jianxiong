@@ -3,7 +3,7 @@
 }
 
 .reader-content {
-  padding: 32rpx 40rpx;
+  padding: 32rpx 44rpx;
   padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
 }
 

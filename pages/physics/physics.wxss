@@ -52,7 +52,7 @@
 }
 
 .step-content glass-card {
-  margin-bottom: 32rpx;
+  margin-bottom: 40rpx;
 }
 
 @keyframes fadeInUp {
