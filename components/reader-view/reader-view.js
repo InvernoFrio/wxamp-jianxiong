@@ -62,13 +62,23 @@ Component({
       this.setData({ menuVisible: false });
     },
     onCopy() {
-      wx.setClipboardData({
-        data: this.data.selectedText,
-        success: () => {
-          wx.showToast({ title: '已复制', icon: 'success' });
-        }
-      });
+      const text = this.data.selectedText || '';
       this.setData({ menuVisible: false });
+      if (!text) return;
+
+      try {
+        wx.setClipboardData({
+          data: text,
+          success: () => {
+            wx.showToast({ title: '已复制', icon: 'success' });
+          },
+          fail: () => {
+            wx.showToast({ title: '复制失败', icon: 'none' });
+          }
+        });
+      } catch (e) {
+        wx.showToast({ title: '复制不可用', icon: 'none' });
+      }
     },
     onCloseMenu() {
       this.setData({ menuVisible: false });

@@ -53,7 +53,31 @@
   padding-left: 20rpx;
 }
 
-/* 连续时间线由 timeline-item 内部绘制，避免卡片遮挡导致断线 */
+/* 左侧连续主时间线 */
+.tl-axis::before {
+  content: '';
+  position: absolute;
+  left: 90rpx;
+  top: 22rpx;
+  bottom: 30rpx;
+  width: 4rpx;
+  border-radius: 2rpx;
+  background: linear-gradient(180deg, rgba(196, 30, 58, 0.35) 0%, rgba(196, 30, 58, 0.2) 45%, rgba(139, 157, 175, 0.16) 100%);
+}
+
+.tl-axis::after {
+  content: '';
+  position: absolute;
+  left: 92rpx;
+  bottom: 24rpx;
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background: #C41E3A;
+  border: 2rpx solid #fff;
+  box-shadow: 0 0 0 4rpx rgba(196, 30, 58, 0.14);
+  transform: translateX(-50%);
+}
 
 .tl-wrapper {
   opacity: 0;
