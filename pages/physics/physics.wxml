@@ -59,23 +59,30 @@
 
     <!-- 控制按钮 -->
     <view class="controls">
-      <view class="ctrl-btn" wx:if="{{!experimentRunning && !experimentDone}}" bindtap="onStartExperiment">
+      <glass-button type="primary" size="large" wx:if="{{!experimentRunning && !experimentDone}}" bind:tap="onStartExperiment">
         <text>▶ 开始实验</text>
-      </view>
-      <view class="ctrl-btn ctrl-stop" wx:if="{{experimentRunning}}" bindtap="onStopExperiment">
+      </glass-button>
+      <glass-button type="default" size="large" wx:if="{{experimentRunning}}" bind:tap="onStopExperiment">
         <text>■ 停止实验</text>
-      </view>
-      <view class="ctrl-btn" wx:if="{{experimentDone}}" bindtap="onStartExperiment">
+      </glass-button>
+      <glass-button type="primary" size="large" wx:if="{{experimentDone}}" bind:tap="onStartExperiment">
         <text>↻ 重新实验</text>
-      </view>
+      </glass-button>
     </view>
 
     <!-- 结果 -->
     <view class="result-panel" wx:if="{{experimentDone}}">
       <glass-card>
         <text class="result-title">实验结果</text>
-        <text class="result-text">向下发射比例：{{asymmetryPercent}}%</text>
-        <text class="result-desc">明显偏离50%的对称预期，证实了宇称不守恒！</text>
+        <view class="result-bar">
+          <view class="result-bar-up" style="width: {{100 - asymmetryPercent}}%;">
+            <text class="bar-label">↑ {{100 - asymmetryPercent}}%</text>
+          </view>
+          <view class="result-bar-down" style="width: {{asymmetryPercent}}%;">
+            <text class="bar-label">↓ {{asymmetryPercent}}%</text>
+          </view>
+        </view>
+        <text class="result-desc">向下发射比例明显偏离50%的对称预期，证实了宇称不守恒！</text>
       </glass-card>
     </view>
   </view>
@@ -93,7 +100,7 @@
     <glass-card>
       <text class="intro-text">杨振宁和李政道因此获得了1957年诺贝尔物理学奖。吴健雄虽然未获诺奖，但被公认为此发现的核心贡献者。她的实验证据是整个理论得以确立的基石。</text>
     </glass-card>
-    <glass-card>
+    <glass-card class="quote-card">
       <text class="intro-text quote-text">"我做实验，不是为了得到什么奖，而是为了探索自然的真理。" —— 吴健雄</text>
     </glass-card>
   </view>

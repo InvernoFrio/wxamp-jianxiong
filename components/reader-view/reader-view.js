@@ -30,10 +30,19 @@ Component({
       const dataset = e.currentTarget.dataset;
       const paraIndex = dataset.index;
       const text = this.properties.paragraphs[paraIndex] || '';
+      let x = e.touches[0].clientX;
+      let y = e.touches[0].clientY;
+      // 边界检测：菜单宽约180rpx(≈屏幕一半)，高约140rpx
+      const windowInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
+      const menuW = windowInfo.windowWidth * 0.45;
+      const menuH = 140;
+      if (x - menuW / 2 < 10) x = menuW / 2 + 10;
+      if (x + menuW / 2 > windowInfo.windowWidth - 10) x = windowInfo.windowWidth - menuW / 2 - 10;
+      if (y - menuH < 10) y = menuH + 10;
       this.setData({
         menuVisible: true,
-        menuX: e.touches[0].clientX,
-        menuY: e.touches[0].clientY,
+        menuX: x,
+        menuY: y,
         selectedText: text,
         selectedParaIndex: paraIndex
       });
@@ -53,13 +62,23 @@ Component({
       this.setData({ menuVisible: false });
     },
     onCopy() {
-      wx.setClipboardData({
-        data: this.data.selectedText,
-        success: () => {
-          wx.showToast({ title: '已复制', icon: 'success' });
-        }
-      });
+      const text = this.data.selectedText || '';
       this.setData({ menuVisible: false });
+      if (!text) return;
+
+      try {
+        wx.setClipboardData({
+          data: text,
+          success: () => {
+            wx.showToast({ title: '已复制', icon: 'success' });
+          },
+          fail: () => {
+            wx.showToast({ title: '复制失败', icon: 'none' });
+          }
+        });
+      } catch (e) {
+        wx.showToast({ title: '复制不可用', icon: 'none' });
+      }
     },
     onCloseMenu() {
       this.setData({ menuVisible: false });

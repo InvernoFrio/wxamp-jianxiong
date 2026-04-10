@@ -11,44 +11,52 @@
 /* 名言轮播 */
 .quote-section {
   margin-bottom: 28rpx;
+  padding-top: 10rpx;
+  position: relative;
+  z-index: 2;
 }
 
 .quote-swiper {
-  height: 200rpx;
+  height: 248rpx;
+  overflow: visible;
 }
 
 .quote-item {
-  height: 100%;
+  height: calc(100% - 28rpx);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 32rpx;
+  padding: 36rpx 40rpx;
   background: rgba(255, 255, 255, 0.34);
   backdrop-filter: blur(22rpx);
   -webkit-backdrop-filter: blur(22rpx);
   border: 1rpx solid rgba(255, 255, 255, 0.7);
   border-radius: 28rpx;
   box-shadow: 0 12rpx 30rpx rgba(77, 56, 34, 0.11);
-  margin: 0 8rpx;
+  margin: 0 8rpx 28rpx;
+  position: relative;
+  overflow: hidden;
 }
 
 .quote-text {
   font-size: 30rpx;
   color: #2C2C2C;
   text-align: center;
-  line-height: 1.68;
-  margin-bottom: 12rpx;
+  line-height: 1.72;
+  margin-bottom: 14rpx;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   overflow: hidden;
+  letter-spacing: 1rpx;
 }
 
 .quote-source {
   font-size: 24rpx;
   color: #C41E3A;
   letter-spacing: 2rpx;
+  font-style: italic;
 }
 
 /* 书本区域 */
@@ -57,6 +65,7 @@
   justify-content: center;
   margin: 20rpx 0 42rpx;
   position: relative;
+  z-index: 1;
 }
 
 .book-section::before {
@@ -64,9 +73,9 @@
   position: absolute;
   width: 420rpx;
   height: 92rpx;
-  bottom: -16rpx;
+  bottom: -20rpx;
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(44, 44, 44, 0.2) 0%, rgba(44, 44, 44, 0.02) 68%, transparent 100%);
+  background: radial-gradient(ellipse at center, rgba(44, 44, 44, 0.15) 0%, rgba(44, 44, 44, 0.015) 68%, transparent 100%);
   filter: blur(6rpx);
 }
 
@@ -143,4 +152,19 @@
   color: #7e8f9e;
   font-style: italic;
   letter-spacing: 1rpx;
+}
+
+/* 轮播指示点 */
+swiper .wx-swiper-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background: rgba(139, 157, 175, 0.35) !important;
+  box-shadow: none !important;
+}
+
+swiper .wx-swiper-dot.wx-swiper-dot-active {
+  width: 30rpx;
+  border-radius: 7rpx;
+  background: #C41E3A !important;
 }

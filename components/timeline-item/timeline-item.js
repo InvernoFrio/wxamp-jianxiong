@@ -12,6 +12,10 @@ Component({
     expanded: {
       type: Boolean,
       value: false
+    },
+    last: {
+      type: Boolean,
+      value: false
     }
   },
   data: {

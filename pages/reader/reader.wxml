@@ -12,8 +12,8 @@
     </view>
   </scroll-view>
 
-  <!-- 章节标题 -->
-  <view class="chapter-header" wx:if="{{chapters[activeChapter]}}">
+  <!-- 章节标题（仅列表页显示） -->
+  <view class="chapter-header" wx:if="{{chapters[activeChapter] && mode === 'list'}}">
     <text class="chapter-title">{{chapters[activeChapter].title}}</text>
     <text class="chapter-subtitle">{{chapters[activeChapter].subtitle}}</text>
   </view>
@@ -43,8 +43,10 @@
         <text>‹ 返回</text>
       </view>
       <text class="reading-title" wx:if="{{currentSection}}">{{currentSection.title}}</text>
+      <text class="reading-meta" wx:if="{{currentSection}}">{{readMinutes}}分钟读完</text>
     </view>
-    <scroll-view class="reading-scroll" scroll-y="{{true}}" enhanced="{{true}}">
+    <scroll-view class="reading-scroll" style="height: {{readingScrollHeight}}px; min-height: 62vh;" scroll-y="{{true}}" enhanced="{{true}}" bindscroll="onReadingScroll">
+      <view class="reading-progress-bar" style="width: {{readingProgress}}%;"></view>
       <reader-view
         paragraphs="{{sectionParagraphs}}"
         fontSize="{{fontSize}}"
@@ -55,8 +57,8 @@
     </scroll-view>
   </view>
 
-  <!-- 笔记浮动按钮 -->
-  <view class="notes-fab" bindtap="onToggleNotesPanel">
+  <!-- 笔记浮动按钮（仅阅读模式） -->
+  <view class="notes-fab {{showNotesPanel ? 'notes-fab-hidden' : ''}}" wx:if="{{mode === 'reading'}}" bindtap="onToggleNotesPanel">
     <text>📝</text>
   </view>
 
@@ -94,7 +96,8 @@
       <!-- 高亮列表 -->
       <scroll-view class="notes-list" scroll-y="{{true}}" wx:if="{{notesTab === 'highlights'}}">
         <view wx:if="{{highlights.length === 0}}" class="notes-empty">
-          <text>暂无高亮记录</text>
+          <text class="empty-icon">🖍</text>
+          <text>长按文字即可高亮</text>
         </view>
         <view
           wx:for="{{highlights}}"
@@ -114,7 +117,8 @@
       <!-- 笔记列表 -->
       <scroll-view class="notes-list" scroll-y="{{true}}" wx:if="{{notesTab === 'notes'}}">
         <view wx:if="{{notes.length === 0}}" class="notes-empty">
-          <text>暂无笔记记录</text>
+          <text class="empty-icon">📝</text>
+          <text>长按文字添加你的笔记</text>
         </view>
         <view
           wx:for="{{notes}}"
@@ -131,6 +135,36 @@
           </view>
         </view>
       </scroll-view>
+    </view>
+  </view>
+
+  <!-- 笔记输入弹层 -->
+  <view class="note-editor-mask" wx:if="{{showNoteEditor}}" catchtap="onCloseNoteEditor">
+    <view class="note-editor-card" catchtap="noop">
+      <view class="note-editor-header">
+        <text class="note-editor-title">添加笔记</text>
+        <text class="note-editor-close" bindtap="onCloseNoteEditor">✕</text>
+      </view>
+      <view class="note-editor-quote">
+        <text>{{noteSelectedText}}</text>
+      </view>
+      <textarea
+        class="note-editor-input"
+        value="{{noteDraft}}"
+        placeholder="输入你的笔记..."
+        maxlength="500"
+        auto-height="true"
+        confirm-type="done"
+        bindinput="onNoteDraftInput"
+      />
+      <view class="note-editor-actions">
+        <view class="note-editor-cancel" bindtap="onCloseNoteEditor">
+          <text>取消</text>
+        </view>
+        <view class="note-editor-save" bindtap="onSaveNote">
+          <text>保存</text>
+        </view>
+      </view>
     </view>
   </view>
 </view>

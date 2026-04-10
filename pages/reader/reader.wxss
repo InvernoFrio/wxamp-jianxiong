@@ -1,4 +1,5 @@
 .reader-page {
+  height: 100vh;
   min-height: 100vh;
   background:
     radial-gradient(circle at 0% 0%, rgba(212, 165, 116, 0.2), transparent 36%),
@@ -6,6 +7,17 @@
     linear-gradient(180deg, #f9f4ec 0%, #f5f0e8 48%, #eee5d7 100%);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+
+.reader-page.page-enter {
+  transform: none;
+  animation: readerFadeIn 480ms ease-out forwards;
+}
+
+@keyframes readerFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* 章节导航 */
@@ -29,6 +41,11 @@
   transition: all 0.3s ease;
 }
 
+.chapter-tab:active {
+  transform: scale(0.95);
+  transition: transform 0.15s ease;
+}
+
 .chapter-tab.active {
   background: linear-gradient(180deg, rgba(196, 30, 58, 0.2), rgba(196, 30, 58, 0.12));
   color: #C41E3A;
@@ -40,6 +57,10 @@
 .chapter-header {
   padding: 24rpx 32rpx;
   border-bottom: 1rpx solid rgba(139, 157, 175, 0.14);
+}
+
+.chapter-header-scroll {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .chapter-title {
@@ -79,7 +100,8 @@
 
 .section-item:active {
   transform: scale(0.98) translateY(2rpx);
-  transition: transform 0.2s ease;
+  transition: transform 0.15s ease;
+  box-shadow: 0 4rpx 10rpx rgba(75, 58, 37, 0.06);
 }
 
 .section-index {
@@ -124,6 +146,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .reading-header {
@@ -137,6 +160,11 @@
 .back-btn {
   padding: 8rpx 16rpx;
   margin-right: 16rpx;
+  transition: transform 0.15s ease;
+}
+
+.back-btn:active {
+  transform: scale(0.9);
 }
 
 .back-btn text {
@@ -151,16 +179,34 @@
   flex: 1;
 }
 
+.reading-meta {
+  font-size: 22rpx;
+  color: #8B9DAF;
+  flex-shrink: 0;
+  padding-left: 12rpx;
+}
+
 .reading-scroll {
   flex: 1;
-  height: calc(100vh - 200rpx);
+  height: 0;
+  min-height: 0;
+  position: relative;
+}
+
+.reading-progress-bar {
+  position: sticky;
+  top: 0;
+  height: 4rpx;
+  background: linear-gradient(90deg, #C41E3A, #D4A574);
+  z-index: 10;
+  transition: width 0.3s ease;
 }
 
 /* 笔记浮动按钮 */
 .notes-fab {
   position: fixed;
   right: 32rpx;
-  bottom: 160rpx;
+  bottom: calc(124rpx + env(safe-area-inset-bottom));
   width: 96rpx;
   height: 96rpx;
   border-radius: 50%;
@@ -171,7 +217,9 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 12rpx 28rpx rgba(196, 30, 58, 0.36);
-  z-index: 100;
+  z-index: 300;
+  pointer-events: auto;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .notes-fab text {
@@ -180,7 +228,12 @@
 
 .notes-fab:active {
   transform: scale(0.92);
-  transition: transform 0.2s ease;
+}
+
+.notes-fab-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(18rpx) scale(0.92);
 }
 
 /* 笔记面板 */
@@ -225,6 +278,7 @@
   transition: transform 0.35s ease;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .notes-panel-open .notes-drawer {
@@ -291,16 +345,25 @@
   height: 5rpx;
   background: #C41E3A;
   border-radius: 2rpx;
+  transition: all 0.25s ease;
 }
 
 .notes-list {
   flex: 1;
-  padding: 20rpx 24rpx calc(26rpx + env(safe-area-inset-bottom));
+  height: 0;
+  padding: 20rpx 24rpx calc(8rpx + env(safe-area-inset-bottom));
 }
 
 .notes-empty {
   text-align: center;
-  padding: 80rpx 0;
+  padding: 100rpx 0;
+}
+
+.notes-empty .empty-icon {
+  font-size: 72rpx;
+  display: block;
+  margin-bottom: 20rpx;
+  opacity: 0.4;
 }
 
 .notes-empty text {
@@ -361,4 +424,89 @@
   font-size: 23rpx;
   color: #C41E3A;
   font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+/* 笔记输入弹层 */
+.note-editor-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: rgba(0, 0, 0, 0.42);
+  display: flex;
+  align-items: flex-end;
+}
+
+.note-editor-card {
+  width: 100%;
+  background: linear-gradient(180deg, #f9f4eb 0%, #f3ebdd 100%);
+  border-radius: 28rpx 28rpx 0 0;
+  padding: 24rpx 28rpx calc(24rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -10rpx 28rpx rgba(0, 0, 0, 0.18);
+}
+
+.note-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18rpx;
+}
+
+.note-editor-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #2C2C2C;
+}
+
+.note-editor-close {
+  font-size: 36rpx;
+  color: #8B9DAF;
+  padding: 8rpx;
+}
+
+.note-editor-quote {
+  padding: 16rpx 18rpx;
+  margin-bottom: 18rpx;
+  border-radius: 18rpx;
+  background: rgba(255, 255, 255, 0.58);
+  color: #7f8f9c;
+  font-size: 24rpx;
+  line-height: 1.6;
+}
+
+.note-editor-input {
+  width: 100%;
+  min-height: 180rpx;
+  padding: 20rpx;
+  border-radius: 18rpx;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1rpx solid rgba(139, 157, 175, 0.18);
+  color: #2C2C2C;
+  font-size: 28rpx;
+  line-height: 1.7;
+  box-sizing: border-box;
+}
+
+.note-editor-actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 20rpx;
+}
+
+.note-editor-cancel,
+.note-editor-save {
+  flex: 1;
+  text-align: center;
+  padding: 18rpx 0;
+  border-radius: 18rpx;
+  font-size: 28rpx;
+}
+
+.note-editor-cancel {
+  background: rgba(255, 255, 255, 0.55);
+  color: #8B9DAF;
+}
+
+.note-editor-save {
+  background: linear-gradient(180deg, #C41E3A, #A8182D);
+  color: #fff;
 }
