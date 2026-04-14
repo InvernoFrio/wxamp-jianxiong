@@ -1,36 +1,63 @@
 <!--pages/physics/index.wxml-->
 <view class="physics-index">
+  <!-- 顶部标题区 -->
   <view class="page-header">
+    <view class="header-line"></view>
     <text class="serif-title">物理之光</text>
     <text class="en-title">Scientific Simulations</text>
   </view>
 
+  <!-- 实验列表 -->
   <view class="exp-list">
-    <view class="exp-card glass" bindtap="onExpTap" data-type="parity">
-      <view class="exp-badge">实验一</view>
+    <!-- 实验一：宇称不守恒 -->
+    <view class="exp-card glass active-scale" bindtap="onExpTap" data-type="parity">
+      <view class="exp-icon-box">
+        <text class="exp-emoji">⚛️</text>
+      </view>
       <view class="exp-main">
+        <view class="exp-tag">实验一 · 弱相互作用</view>
         <text class="exp-title">β 衰变与宇称不守恒</text>
         <text class="exp-intro">重现1956年震惊物理学界的极低温实验</text>
       </view>
-      <text class="enter-icon">→</text>
+      <view class="enter-btn">
+        <text class="arrow">›</text>
+      </view>
     </view>
 
-    <view class="exp-card glass" bindtap="onExpTap" data-type="diffusion">
-      <view class="exp-badge">实验二</view>
+    <!-- 实验二：气体扩散 -->
+    <view class="exp-card glass active-scale" bindtap="onExpTap" data-type="diffusion">
+      <view class="exp-icon-box">
+        <text class="exp-emoji">💨</text>
+      </view>
       <view class="exp-main">
+        <view class="exp-tag">实验二 · 核物理应用</view>
         <text class="exp-title">气体扩散法原理</text>
         <text class="exp-intro">探索曼哈顿计划中铀同位素的分离奥秘</text>
       </view>
-      <text class="enter-icon">→</text>
+      <view class="enter-btn">
+        <text class="arrow">›</text>
+      </view>
     </view>
 
-    <view class="exp-card glass" bindtap="onExpTap" data-type="entanglement">
-      <view class="exp-badge">实验三</view>
+    <!-- 实验三：量子纠缠 -->
+    <view class="exp-card glass active-scale" bindtap="onExpTap" data-type="entanglement">
+      <view class="exp-icon-box">
+        <text class="exp-emoji">🔗</text>
+      </view>
       <view class="exp-main">
+        <view class="exp-tag">实验三 · 量子力学</view>
         <text class="exp-title">光子纠缠实验</text>
         <text class="exp-intro">吴-萨科诺夫实验：量子纠缠的早期实证</text>
       </view>
-      <text class="enter-icon">→</text>
+      <view class="enter-btn">
+        <text class="arrow">›</text>
+      </view>
     </view>
+  </view>
+
+  <!-- 背景装饰 -->
+  <view class="bg-decoration">
+    <view class="circle-1"></view>
+    <view class="circle-2"></view>
   </view>
 </view>

@@ -1,66 +1,19 @@
 // pages/multimedia/multimedia.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    isPlaying: false,
+    gallery: [
+      { id: 1, title: '实验室沉思', desc: '哥伦比亚大学，1956年', url: 'https://picsum.photos/seed/lab/320/420' },
+      { id: 2, title: '守恒定律实验', desc: '实验装置，低温物理', url: 'https://picsum.photos/seed/exp/320/420' },
+      { id: 3, title: '普林斯顿岁月', desc: '普林斯顿研究所，1940s', url: 'https://picsum.photos/seed/princeton/320/420' },
+      { id: 4, title: '手稿与笔札', desc: '私人珍藏档案', url: 'https://picsum.photos/seed/notes/320/420' }
+    ]
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
+  togglePlay() {
+    this.setData({ isPlaying: !this.data.isPlaying });
+    if (this.data.isPlaying) {
+      wx.showToast({ title: '雅集开启', icon: 'none' });
+    }
   }
-})
+});
