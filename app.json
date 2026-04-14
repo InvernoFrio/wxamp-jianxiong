@@ -30,6 +30,12 @@
         "selectedIconPath": "assets/icons/home-active.png"
       },
       {
+        "pagePath": "pages/reader/reader",
+        "text": "阅读",
+        "iconPath": "assets/icons/reader.png",
+        "selectedIconPath": "assets/icons/reader-active.png"
+      },
+      {
         "pagePath": "pages/timeline/timeline",
         "text": "年表",
         "iconPath": "assets/icons/timeline.png",
@@ -46,12 +52,6 @@
         "text": "影音",
         "iconPath": "assets/icons/media.png",
         "selectedIconPath": "assets/icons/media-active.png"
-      },
-      {
-        "pagePath": "pages/about/about",
-        "text": "关于",
-        "iconPath": "assets/icons/about.png",
-        "selectedIconPath": "assets/icons/about-active.png"
       }
     ]
   },

@@ -1,170 +1,260 @@
+/* pages/home/home.wxss */
 .home-page {
   min-height: 100vh;
+  /* 恢复原本的纸张感背景 */
   background:
-    radial-gradient(circle at 86% 6%, rgba(196, 30, 58, 0.08), transparent 32%),
-    radial-gradient(circle at 8% 85%, rgba(212, 165, 116, 0.16), transparent 40%),
+    radial-gradient(circle at 86% 6%, rgba(166, 33, 33, 0.05), transparent 32%),
+    radial-gradient(circle at 8% 85%, rgba(212, 165, 116, 0.1), transparent 40%),
     linear-gradient(180deg, #f9f6ef 0%, #f5f0e8 38%, #efe7da 100%);
-  padding: 20rpx 32rpx;
+  padding: 40rpx 32rpx;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* 名言轮播 */
-.quote-section {
-  margin-bottom: 28rpx;
-  padding-top: 10rpx;
-  position: relative;
-  z-index: 2;
-}
-
-.quote-swiper {
-  height: 248rpx;
-  overflow: visible;
-}
-
-.quote-item {
-  height: calc(100% - 28rpx);
+/* 顶部金句 */
+.top-quote-area {
+  width: 100%;
+  min-height: 160rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 36rpx 40rpx;
-  background: rgba(255, 255, 255, 0.34);
-  backdrop-filter: blur(22rpx);
-  -webkit-backdrop-filter: blur(22rpx);
-  border: 1rpx solid rgba(255, 255, 255, 0.7);
-  border-radius: 28rpx;
-  box-shadow: 0 12rpx 30rpx rgba(77, 56, 34, 0.11);
-  margin: 0 8rpx 28rpx;
-  position: relative;
-  overflow: hidden;
+  transition: all 0.8s ease;
 }
 
-.quote-text {
-  font-size: 30rpx;
-  color: #2C2C2C;
-  text-align: center;
-  line-height: 1.72;
-  margin-bottom: 14rpx;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-  letter-spacing: 1rpx;
-}
-
-.quote-source {
-  font-size: 24rpx;
-  color: #C41E3A;
-  letter-spacing: 2rpx;
-  font-style: italic;
-}
-
-/* 书本区域 */
-.book-section {
-  display: flex;
-  justify-content: center;
-  margin: 20rpx 0 42rpx;
-  position: relative;
-  z-index: 1;
-}
-
-.book-section::before {
-  content: '';
-  position: absolute;
-  width: 420rpx;
-  height: 92rpx;
-  bottom: -20rpx;
-  border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(44, 44, 44, 0.15) 0%, rgba(44, 44, 44, 0.015) 68%, transparent 100%);
-  filter: blur(6rpx);
-}
-
-/* 模块入口 */
-.modules {
-  overflow: hidden;
-  transition: all 0.55s ease;
-}
-
-.modules-visible {
-  max-height: 500rpx;
-  opacity: 1;
-  margin-bottom: 40rpx;
-  transform: translateY(0);
-}
-
-.modules-hidden {
-  max-height: 0;
+.quote-hidden {
   opacity: 0;
-  margin-bottom: 0;
   transform: translateY(20rpx);
 }
 
-.module-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 0 8rpx;
+.quote-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.module-item {
-  width: 48%;
+.quote-content {
+  font-size: 30rpx;
+  color: var(--jianxiong-red);
+  text-align: center;
+  line-height: 1.6;
+  padding: 0 40rpx;
+}
+
+.quote-line {
+  width: 60rpx;
+  height: 4rpx;
+  background: var(--gold-accent);
+  margin-top: 24rpx;
+  border-radius: 2rpx;
+}
+
+/* 主体布局 */
+.main-layout {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  margin-top: 40rpx;
+}
+
+.layout-shifted {
+  transform: translateY(-40rpx);
+}
+
+/* 修复书本显示：确保容器有明确的宽度和高度 */
+.book-container {
+  width: 100%;
+  height: 460rpx;
+  display: flex;
   justify-content: center;
-  padding: 36rpx 20rpx;
-  margin-bottom: 20rpx;
-  background: rgba(255, 255, 255, 0.38);
-  backdrop-filter: blur(18rpx);
-  -webkit-backdrop-filter: blur(18rpx);
-  border: 1rpx solid rgba(255, 255, 255, 0.68);
-  border-radius: 22rpx;
-  box-shadow: 0 10rpx 24rpx rgba(61, 44, 35, 0.1);
+  align-items: center;
+  margin-bottom: 40rpx;
+  z-index: 10;
 }
 
-.module-item:active {
-  transform: scale(0.965) translateY(2rpx);
-  transition: transform 0.2s ease;
+/* 章节列表 */
+.chapter-list {
+  width: 100%;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  transition: all 0.5s ease;
 }
 
-.module-icon {
-  font-size: 48rpx;
-  margin-bottom: 16rpx;
+.list-hidden {
+  opacity: 0;
+  transform: translateY(40rpx);
+  pointer-events: none;
+  height: 0;
+  overflow: hidden;
 }
 
-.module-name {
-  font-size: 27rpx;
-  color: #2C2C2C;
+.list-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.chapter-item {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1rpx solid rgba(255, 255, 255, 0.9);
+  padding: 36rpx 40rpx;
+  border-radius: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.03);
+}
+
+.chapter-num {
+  font-size: 24rpx;
+  color: var(--gold-accent);
+  margin-right: 32rpx;
+  width: 40rpx;
+}
+
+.chapter-title {
+  font-size: 30rpx;
+  color: var(--ink-black);
   font-weight: 500;
-  letter-spacing: 1rpx;
-  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
 
-/* 底部标语 */
+.chapter-arrow {
+  margin-left: auto;
+  color: var(--gold-accent);
+  font-size: 40rpx;
+  opacity: 0.5;
+}
+
+/* AI 灵感岛 */
+.ai-island-wrapper {
+  position: fixed;
+  bottom: 60rpx;
+  left: 48rpx;
+  right: 48rpx;
+  z-index: 1000;
+}
+
+.ai-island {
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.collapsed .ai-island {
+  height: 100rpx;
+  border-radius: 50rpx;
+  padding: 0 40rpx;
+}
+
+.expanded .ai-island {
+  height: 640rpx;
+  border-radius: 40rpx;
+  padding: 32rpx;
+  background: rgba(255, 255, 255, 0.9) !important;
+}
+
+.ai-bar {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.status-dot {
+  width: 14rpx;
+  height: 14rpx;
+  background: var(--jianxiong-red);
+  border-radius: 50%;
+  margin-right: 20rpx;
+  box-shadow: 0 0 12rpx rgba(166, 33, 33, 0.4);
+}
+
+.expand-hint {
+  margin-left: auto;
+  font-size: 24rpx;
+  color: var(--slate-gray);
+}
+
+.ai-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.ai-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32rpx;
+}
+
+.close-icon {
+  font-size: 48rpx;
+  color: #999;
+  padding: 10rpx;
+}
+
+.ai-chat-box {
+  flex: 1;
+  margin-bottom: 24rpx;
+}
+
+.ai-msg {
+  background: #f5f0e8;
+  padding: 24rpx;
+  border-radius: 0 24rpx 24rpx 24rpx;
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+.ai-input-group {
+  display: flex;
+  background: #fff;
+  border-radius: 100rpx;
+  padding: 8rpx 8rpx 8rpx 32rpx;
+  align-items: center;
+  border: 1rpx solid #eee;
+}
+
+.ai-input-group input {
+  flex: 1;
+  font-size: 26rpx;
+}
+
+.ai-send-btn {
+  background: var(--jianxiong-red);
+  color: #fff;
+  padding: 16rpx 36rpx;
+  border-radius: 100rpx;
+  font-size: 24rpx;
+}
+
 .footer-slogan {
+  margin-top: auto;
+  padding: 40rpx 0;
   text-align: center;
-  padding: 28rpx 0;
-  padding-bottom: env(safe-area-inset-bottom);
+  transition: opacity 0.3s;
 }
 
 .footer-slogan text {
   font-size: 24rpx;
-  color: #7e8f9e;
-  font-style: italic;
-  letter-spacing: 1rpx;
+  color: var(--slate-gray);
+  opacity: 0.6;
 }
 
-/* 轮播指示点 */
-swiper .wx-swiper-dot {
-  width: 14rpx;
-  height: 14rpx;
-  border-radius: 50%;
-  background: rgba(139, 157, 175, 0.35) !important;
-  box-shadow: none !important;
+.slogan-fade {
+  opacity: 0;
 }
 
-swiper .wx-swiper-dot.wx-swiper-dot-active {
-  width: 30rpx;
-  border-radius: 7rpx;
-  background: #C41E3A !important;
+.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  pointer-events: auto;
+}
+
+.fade-out {
+  opacity: 0;
+  transform: translateY(30rpx);
+  transition: all 0.4s ease;
+  pointer-events: none;
 }

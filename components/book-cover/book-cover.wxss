@@ -1,3 +1,4 @@
+/* components/book-cover/book-cover.wxss */
 .book-scene {
   perspective: 1200rpx;
   width: 320rpx;
