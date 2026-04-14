@@ -1,0 +1,81 @@
+<!--pages/multimedia/multimedia.wxml-->
+<view class="media-container">
+  <!-- 1. 英雄标题区 -->
+  <section class="hero-section">
+    <view class="title-row">
+      <text class="serif-title main-title">影音流年</text>
+      <text class="en-label">MULTIMEDIA ARCHIVES</text>
+    </view>
+    <view class="title-line"></view>
+    <p class="hero-desc">光影流转，声情并茂，谨以此辑记录吴健雄女士跨越时空的学术与生活印迹。</p>
+  </section>
+
+  <!-- 2. 放映厅 (视频区域) -->
+  <section class="media-section">
+    <view class="section-header">
+      <view class="header-indicator"></view>
+      <text class="serif-title section-title">放映厅</text>
+      <text class="section-subtitle">纪录片：《物理学第一夫人》</text>
+    </view>
+    
+    <view class="video-card active-scale">
+      <image class="video-thumb" src="https://picsum.photos/seed/physics/800/450" mode="aspectFill" />
+      <view class="video-overlay">
+        <view class="play-btn">
+          <view class="play-icon"></view>
+        </view>
+        <view class="video-info">
+          <text class="time-label">04:12 / 18:45</text>
+          <view class="progress-bar">
+            <view class="progress-inner" style="width: 22%"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </section>
+
+  <!-- 3. 流年册 (相册区域) -->
+  <section class="media-section">
+    <view class="section-header">
+      <view class="header-indicator"></view>
+      <text class="serif-title section-title">流年册</text>
+      <text class="more-link">查看全部档案</text>
+    </view>
+    
+    <scroll-view class="gallery-scroll" scroll-x enable-flex>
+      <view class="gallery-item" wx:for="{{gallery}}" wx:key="id">
+        <view class="photo-wrapper active-scale">
+          <image class="photo-img" src="{{item.url}}" mode="aspectFill" />
+        </view>
+        <view class="photo-info">
+          <text class="photo-title serif-title">{{item.title}}</text>
+          <text class="photo-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </section>
+
+  <!-- 4. 乐赏 (音乐控制台) -->
+  <section class="media-section music-section">
+    <view class="music-console glass">
+      <view class="vinyl-wrapper {{isPlaying ? 'spinning' : ''}}">
+        <view class="vinyl-record">
+          <image class="record-cover" src="https://picsum.photos/seed/music/200/200" mode="aspectFill" />
+        </view>
+      </view>
+      
+      <view class="music-info">
+        <text class="music-name serif-title">雅集 · 苏州之春</text>
+        <text class="music-author">琵琶独奏</text>
+        
+        <view class="music-controls">
+          <text class="ctrl-icon">⏮</text>
+          <view class="play-pause-btn active-scale" bindtap="togglePlay">
+            <text class="ctrl-icon-main">{{isPlaying ? '⏸' : '▶'}}</text>
+          </view>
+          <text class="ctrl-icon">⏭</text>
+        </view>
+      </view>
+    </view>
+  </section>
+</view>

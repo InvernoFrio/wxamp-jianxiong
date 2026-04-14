@@ -75,10 +75,10 @@
       <glass-card>
         <text class="result-title">实验结果</text>
         <view class="result-bar">
-          <view class="result-bar-up" style="width: {{100 - asymmetryPercent}}%;">
+          <view class="result-bar-up" style="width: {{100 - asymmetryPercent}}%">
             <text class="bar-label">↑ {{100 - asymmetryPercent}}%</text>
           </view>
-          <view class="result-bar-down" style="width: {{asymmetryPercent}}%;">
+          <view class="result-bar-down" style="width: {{asymmetryPercent}}%">
             <text class="bar-label">↓ {{asymmetryPercent}}%</text>
           </view>
         </view>

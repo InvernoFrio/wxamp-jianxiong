@@ -1,0 +1,147 @@
+/* pages/physics/index.wxss */
+
+.physics-index {
+  min-height: 100vh;
+  background: #F8F6F2;
+  padding: 60rpx 40rpx;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 顶部标题 */
+.page-header {
+  margin-bottom: 80rpx;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+}
+
+.header-line {
+  width: 60rpx;
+  height: 6rpx;
+  background: #A62121;
+  margin-bottom: 20rpx;
+  border-radius: 3rpx;
+}
+
+.serif-title {
+  font-size: 48rpx;
+  color: #1A1A1A;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+}
+
+.en-title {
+  font-size: 24rpx;
+  color: #8B9DAF;
+  letter-spacing: 2rpx;
+  text-transform: uppercase;
+}
+
+/* 实验卡片列表 */
+.exp-list {
+  position: relative;
+  z-index: 2;
+}
+
+.exp-card {
+  display: flex;
+  align-items: center;
+  padding: 40rpx 32rpx;
+  margin-bottom: 32rpx;
+  background: rgba(255, 255, 255, 0.7) !important;
+  border-radius: 32rpx;
+  box-shadow: 0 12rpx 40rpx rgba(0, 0, 0, 0.04);
+}
+
+.exp-icon-box {
+  width: 100rpx;
+  height: 100rpx;
+  background: #F0F4F8;
+  border-radius: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 32rpx;
+  flex-shrink: 0;
+}
+
+.exp-emoji {
+  font-size: 50rpx;
+}
+
+.exp-main {
+  flex: 1;
+}
+
+.exp-tag {
+  font-size: 20rpx;
+  color: #A62121;
+  background: rgba(166, 33, 33, 0.08);
+  padding: 4rpx 16rpx;
+  border-radius: 100rpx;
+  display: inline-block;
+  margin-bottom: 12rpx;
+  font-weight: 500;
+}
+
+.exp-title {
+  display: block;
+  font-size: 32rpx;
+  color: #1A1A1A;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+}
+
+.exp-intro {
+  display: block;
+  font-size: 24rpx;
+  color: #54606B;
+  line-height: 1.4;
+}
+
+.enter-btn {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20rpx;
+}
+
+.arrow {
+  font-size: 48rpx;
+  color: #D4A574;
+  opacity: 0.6;
+}
+
+/* 背景装饰 */
+.bg-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.circle-1 {
+  position: absolute;
+  top: -100rpx;
+  right: -100rpx;
+  width: 400rpx;
+  height: 400rpx;
+  background: radial-gradient(circle, rgba(166, 33, 33, 0.03) 0%, transparent 70%);
+}
+
+.circle-2 {
+  position: absolute;
+  bottom: 100rpx;
+  left: -150rpx;
+  width: 500rpx;
+  height: 500rpx;
+  background: radial-gradient(circle, rgba(212, 165, 116, 0.05) 0%, transparent 70%);
+}

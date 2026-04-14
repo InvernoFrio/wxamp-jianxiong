@@ -3,33 +3,31 @@
     "pages/home/home",
     "pages/timeline/timeline",
     "pages/reader/reader",
-    "pages/physics/physics",
+    "pages/physics/index",
+    "pages/physics/exp-parity/exp-parity",
+    "pages/physics/exp-diffusion/exp-diffusion",
+    "pages/physics/exp-entanglement/exp-entanglement",
+    "pages/multimedia/multimedia",
     "pages/about/about"
   ],
   "window": {
     "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#F5F0E8",
+    "navigationBarBackgroundColor": "#F8F6F2",
     "navigationBarTitleText": "健雄书韵",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#F5F0E8"
+    "backgroundColor": "#F8F6F2"
   },
   "tabBar": {
-    "color": "#8B9DAF",
-    "selectedColor": "#C41E3A",
-    "backgroundColor": "#F5F0E8",
+    "color": "#707C88",
+    "selectedColor": "#A62121",
+    "backgroundColor": "#F8F6F2",
     "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/home/home",
-        "text": "首页",
+        "text": "书卷",
         "iconPath": "assets/icons/home.png",
         "selectedIconPath": "assets/icons/home-active.png"
-      },
-      {
-        "pagePath": "pages/timeline/timeline",
-        "text": "年表",
-        "iconPath": "assets/icons/timeline.png",
-        "selectedIconPath": "assets/icons/timeline-active.png"
       },
       {
         "pagePath": "pages/reader/reader",
@@ -38,22 +36,27 @@
         "selectedIconPath": "assets/icons/reader-active.png"
       },
       {
-        "pagePath": "pages/physics/physics",
+        "pagePath": "pages/timeline/timeline",
+        "text": "年表",
+        "iconPath": "assets/icons/timeline.png",
+        "selectedIconPath": "assets/icons/timeline-active.png"
+      },
+      {
+        "pagePath": "pages/physics/index",
         "text": "物理",
         "iconPath": "assets/icons/physics.png",
         "selectedIconPath": "assets/icons/physics-active.png"
       },
       {
-        "pagePath": "pages/about/about",
-        "text": "关于",
-        "iconPath": "assets/icons/about.png",
-        "selectedIconPath": "assets/icons/about-active.png"
+        "pagePath": "pages/multimedia/multimedia",
+        "text": "影音",
+        "iconPath": "assets/icons/media.png",
+        "selectedIconPath": "assets/icons/media-active.png"
       }
     ]
   },
   "usingComponents": {
-    "glass-button": "/components/glass-button/glass-button"
-  },
-  "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+    "glass-button": "/components/glass-button/glass-button",
+    "book-cover": "/components/book-cover/book-cover"
+  }
 }

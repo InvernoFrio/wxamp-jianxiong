@@ -1,4 +1,4 @@
-// pages/physics/physics.js
+// pages/physics/exp-parity/exp-parity.js
 Page({
   data: {
     currentStep: 0,

@@ -1,120 +1,35 @@
-/* app.wxss - 全局样式 */
-
+/** app.wxss **/
 page {
-  --paper: #F5F0E8;
-  --ink: #2C2C2C;
-  --vermilion: #C41E3A;
-  --blue-grey: #8B9DAF;
-  --amber: #D4A574;
-  --glass-bg: rgba(255, 255, 255, 0.28);
-  --glass-border: rgba(255, 255, 255, 0.62);
-  --glass-inner: rgba(255, 255, 255, 0.5);
-  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  background-color: var(--paper);
-  color: var(--ink);
-  font-size: 28rpx;
-  line-height: 1.72;
-  background-image:
-    radial-gradient(circle at 15% 8%, rgba(196, 30, 58, 0.08), transparent 36%),
-    radial-gradient(circle at 84% 0%, rgba(212, 165, 116, 0.12), transparent 30%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.52) 0%, rgba(245, 240, 232, 0.94) 42%, rgba(240, 233, 223, 0.96) 100%);
+  /* 恢复纸韵色彩系统 */
+  --paper-white: #F8F6F2;
+  --paper-dark: #EFE7DA;
+  --ink-black: #1A1A1A;
+  --jianxiong-red: #A62121;
+  --gold-accent: #D4A574;
+  --slate-gray: #54606B;
+
+  background-color: var(--paper-white);
+  color: var(--ink-black);
+  font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.title-serif {
-  font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
-  letter-spacing: 1rpx;
-}
-
-text,
-view,
-scroll-view,
-swiper,
-swiper-item {
-  box-sizing: border-box;
-}
-
-/* 液态玻璃基础 */
+/* 通用毛玻璃卡片 (浅色版) */
 .glass {
-  position: relative;
-  background: var(--glass-bg);
-  backdrop-filter: blur(18rpx) saturate(120%);
-  -webkit-backdrop-filter: blur(18rpx) saturate(120%);
-  border: 1rpx solid var(--glass-border);
-  border-radius: 24rpx;
-  box-shadow: 0 10rpx 28rpx rgba(56, 44, 34, 0.08);
-}
-
-.glass::before {
-  content: '';
-  position: absolute;
-  left: 2rpx;
-  right: 2rpx;
-  top: 2rpx;
-  height: 38%;
-  border-radius: 22rpx 22rpx 40rpx 40rpx;
-  background: linear-gradient(180deg, var(--glass-inner) 0%, rgba(255, 255, 255, 0.03) 100%);
-  pointer-events: none;
-}
-
-.glass-dark {
-  background: rgba(44, 44, 44, 0.62);
+  background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(20rpx);
   -webkit-backdrop-filter: blur(20rpx);
-  border: 1rpx solid rgba(255, 255, 255, 0.18);
+  border: 1rpx solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.05);
   border-radius: 24rpx;
-  color: var(--paper);
 }
 
-/* 页面入场动画 */
-.page-enter {
-  opacity: 0;
-  transform: translateY(34rpx);
-  animation: fadeInUp 480ms ease-out forwards;
+.serif-title {
+  font-family: "Noto Serif SC", serif;
+  letter-spacing: 0.1em;
+  font-weight: 600;
 }
 
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.active-scale:active {
+  transform: scale(0.96);
+  transition: transform 0.2s ease;
 }
-
-/* 卡片缩放淡入 */
-.card-enter {
-  opacity: 0;
-  transform: scale(0.94);
-  animation: scaleIn 420ms ease-out forwards;
-}
-
-@keyframes scaleIn {
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* 文本省略 */
-.ellipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.multi-ellipsis {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-}
-
-/* 安全区域 */
-.safe-bottom {
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-/* 颜色工具 */
-.text-vermilion { color: var(--vermilion); }
-.text-ink { color: var(--ink); }
-.text-blueGrey { color: var(--blue-grey); }
-.text-amber { color: var(--amber); }
-.bg-paper { background-color: var(--paper); }

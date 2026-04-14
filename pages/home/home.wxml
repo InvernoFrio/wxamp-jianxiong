@@ -1,52 +1,63 @@
+<!-- pages/home/home.wxml -->
 <view class="home-page {{pageReady ? 'page-enter' : ''}}">
-  <!-- 名言轮播 -->
-  <view class="quote-section">
-    <swiper
-      class="quote-swiper"
-      autoplay="{{true}}"
-      interval="{{5000}}"
-      circular="{{true}}"
-      current="{{currentQuote}}"
-      bindchange="onQuoteChange"
-    >
-      <swiper-item wx:for="{{quotes}}" wx:key="index">
-        <view class="quote-item glass">
-          <text class="quote-text">"{{item.text}}"</text>
-          <text class="quote-source">—— {{item.source}}</text>
+  
+  <!-- 1. 顶部静谧金句 (书翻开后淡入) -->
+  <view class="top-quote-area {{bookOpen ? 'quote-visible' : 'quote-hidden'}}">
+    <text class="quote-content serif-title">“{{quotes[currentQuote].text}}”</text>
+    <view class="quote-line"></view>
+  </view>
+
+  <!-- 2. 核心内容区域 -->
+  <view class="main-layout {{bookOpen ? 'layout-shifted' : ''}}">
+    <!-- 书本容器：确保有足够空间显示阴影和动画 -->
+    <view class="book-container">
+      <book-cover isOpen="{{bookOpen}}" bind:toggle="onBookToggle" />
+    </view>
+
+    <!-- 3. 纵向章节列表 -->
+    <view class="chapter-list {{bookOpen ? 'fade-in' : 'fade-out'}}">
+      <view 
+        wx:for="{{chapters}}" 
+        wx:key="page" 
+        class="chapter-item active-scale" 
+        style="transition-delay: {{index * 0.1 + 0.3}}s"
+        data-page="{{item.page}}"
+        bindtap="onModuleTap"
+      >
+        <text class="chapter-icon">{{item.icon}}</text>
+        <text class="chapter-name serif-title">{{item.name}}</text>
+        <text class="chapter-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 4. 底部悬浮 AI 灵感岛 -->
+  <view class="ai-island-wrapper {{aiExpanded ? 'expanded' : 'collapsed'}}">
+    <view class="ai-island glass" bindtap="{{aiExpanded ? '' : 'toggleAi'}}">
+      <view class="ai-bar" wx:if="{{!aiExpanded}}">
+        <view class="status-dot"></view>
+        <text class="serif-title">与大先生对话</text>
+        <text class="expand-hint">展开 ↑</text>
+      </view>
+
+      <view class="ai-panel" wx:else>
+        <view class="ai-panel-header">
+          <text class="serif-title">吴健雄数字纪念馆</text>
+          <text class="close-icon" catchtap="toggleAi">×</text>
         </view>
-      </swiper-item>
-    </swiper>
-  </view>
-
-  <!-- 翻书动画 -->
-  <view class="book-section">
-    <book-cover isOpen="{{bookOpen}}" bind:toggle="onBookToggle" />
-  </view>
-
-  <!-- 模块入口（书本打开后显示） -->
-  <view class="modules {{bookOpen ? 'modules-visible' : 'modules-hidden'}}">
-    <view class="module-grid">
-      <view class="module-item glass" data-page="timeline" bindtap="onModuleTap">
-        <text class="module-icon">📜</text>
-        <text class="module-name">生平年表</text>
-      </view>
-      <view class="module-item glass" data-page="reader" bindtap="onModuleTap">
-        <text class="module-icon">📖</text>
-        <text class="module-name">书韵阅读</text>
-      </view>
-      <view class="module-item glass" data-page="physics" bindtap="onModuleTap">
-        <text class="module-icon">⚛️</text>
-        <text class="module-name">物理之光</text>
-      </view>
-      <view class="module-item glass" data-page="about" bindtap="onModuleTap">
-        <text class="module-icon">ℹ️</text>
-        <text class="module-name">关于纪念馆</text>
+        <scroll-view class="ai-chat-box" scroll-y>
+          <view class="ai-msg">你好，我是吴健雄。科学研究没有捷径，你想了解什么？</view>
+        </scroll-view>
+        <view class="ai-input-group">
+          <input placeholder="向大先生请教..." placeholder-style="color:#999" />
+          <view class="ai-send-btn">发送</view>
+        </view>
       </view>
     </view>
   </view>
 
   <!-- 底部标语 -->
-  <view class="footer-slogan">
+  <view class="footer-slogan {{bookOpen ? 'slogan-fade' : ''}}">
     <text>科学是没有国界的，但科学家有自己的祖国。</text>
   </view>
 </view>

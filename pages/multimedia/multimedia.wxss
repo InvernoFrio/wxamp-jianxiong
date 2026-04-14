@@ -1,0 +1,290 @@
+/* pages/multimedia/multimedia.wxss */
+.media-container {
+  min-height: 100vh;
+  background: #F8F6F2;
+  padding: 40rpx 32rpx 120rpx;
+  box-sizing: border-box;
+}
+
+section {
+  display: block;
+  margin-bottom: 80rpx;
+}
+
+/* 英雄标题 */
+.hero-section {
+  margin-top: 40rpx;
+}
+
+.title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 20rpx;
+}
+
+.main-title {
+  font-size: 64rpx;
+  color: #1B1C1A;
+}
+
+.en-label {
+  font-size: 20rpx;
+  color: #8D706D;
+  letter-spacing: 4rpx;
+}
+
+.title-line {
+  width: 96rpx;
+  height: 3rpx;
+  background: rgba(132, 1, 13, 0.2);
+  margin: 24rpx 0;
+}
+
+.hero-desc {
+  font-size: 26rpx;
+  color: #59413E;
+  line-height: 1.8;
+  font-style: italic;
+  max-width: 80%;
+}
+
+/* 章节头部 */
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.header-indicator {
+  width: 6rpx;
+  height: 32rpx;
+  background: #84010D;
+  margin-right: 20rpx;
+}
+
+.section-title {
+  font-size: 36rpx;
+  color: #1B1C1A;
+}
+
+.section-subtitle {
+  font-size: 22rpx;
+  color: #8D706D;
+  margin-left: auto;
+  font-style: italic;
+}
+
+.more-link {
+  font-size: 22rpx;
+  color: #84010D;
+  margin-left: auto;
+  text-decoration: underline;
+}
+
+/* 视频卡片 */
+.video-card {
+  position: relative;
+  width: 100%;
+  height: 380rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+  background: #1B1C1A;
+  box-shadow: 0 20rpx 40rpx rgba(0,0,0,0.15);
+}
+
+.video-thumb {
+  width: 100%;
+  height: 100%;
+  opacity: 0.6;
+  filter: grayscale(0.5);
+}
+
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.play-btn {
+  width: 120rpx;
+  height: 120rpx;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  border: 1rpx solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-icon {
+  width: 0;
+  height: 0;
+  border-top: 20rpx solid transparent;
+  border-bottom: 20rpx solid transparent;
+  border-left: 35rpx solid #fff;
+  margin-left: 10rpx;
+}
+
+.video-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30rpx;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+}
+
+.time-label {
+  font-size: 20rpx;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 10rpx;
+  display: block;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 4rpx;
+  background: rgba(255,255,255,0.2);
+}
+
+.progress-inner {
+  height: 100%;
+  background: #84010D;
+  box-shadow: 0 0 10rpx #84010D;
+}
+
+/* 相册滚动 */
+.gallery-scroll {
+  display: flex;
+  white-space: nowrap;
+  padding-bottom: 20rpx;
+}
+
+.gallery-item {
+  display: inline-block;
+  width: 320rpx;
+  margin-right: 30rpx;
+}
+
+.photo-wrapper {
+  width: 320rpx;
+  height: 420rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 8rpx 20rpx rgba(0,0,0,0.05);
+  margin-bottom: 20rpx;
+}
+
+.photo-img {
+  width: 100%;
+  height: 100%;
+  filter: grayscale(0.8);
+  transition: all 0.5s;
+}
+
+.gallery-item:hover .photo-img {
+  filter: grayscale(0);
+  transform: scale(1.05);
+}
+
+.photo-title {
+  font-size: 28rpx;
+  color: #1B1C1A;
+  display: block;
+}
+
+.photo-desc {
+  font-size: 20rpx;
+  color: #8D706D;
+  letter-spacing: 1rpx;
+}
+
+/* 音乐控制台 */
+.music-console {
+  display: flex;
+  align-items: center;
+  padding: 40rpx;
+  background: rgba(255, 255, 255, 0.8) !important;
+  border-radius: 32rpx;
+}
+
+.vinyl-wrapper {
+  width: 140rpx;
+  height: 140rpx;
+  position: relative;
+  margin-right: 40rpx;
+}
+
+.vinyl-record {
+  width: 100%;
+  height: 100%;
+  background: #1A1A1A;
+  border-radius: 50%;
+  padding: 10rpx;
+  box-sizing: border-box;
+  box-shadow: 0 0 20rpx rgba(0,0,0,0.2);
+}
+
+.record-cover {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  opacity: 0.8;
+}
+
+.spinning {
+  animation: rotate 10s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.music-info {
+  flex: 1;
+}
+
+.music-name {
+  font-size: 32rpx;
+  color: #1B1C1A;
+  display: block;
+}
+
+.music-author {
+  font-size: 22rpx;
+  color: #8D706D;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.music-controls {
+  display: flex;
+  align-items: center;
+  gap: 40rpx;
+}
+
+.ctrl-icon {
+  font-size: 32rpx;
+  color: #8D706D;
+}
+
+.play-pause-btn {
+  width: 80rpx;
+  height: 80rpx;
+  background: #84010D;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 20rpx rgba(132, 1, 13, 0.3);
+}
+
+.ctrl-icon-main {
+  color: #fff;
+  font-size: 36rpx;
+}
