@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "glass-card": "/components/glass-card/glass-card",
+    "glass-button": "/components/glass-button/glass-button"
+  },
+  "navigationBarTitleText": "宇称不守恒实验"
+}

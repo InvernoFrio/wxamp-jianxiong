@@ -1,0 +1,36 @@
+<!--pages/physics/index.wxml-->
+<view class="physics-index">
+  <view class="page-header">
+    <text class="serif-title">物理之光</text>
+    <text class="en-title">Scientific Simulations</text>
+  </view>
+
+  <view class="exp-list">
+    <view class="exp-card glass" bindtap="onExpTap" data-type="parity">
+      <view class="exp-badge">实验一</view>
+      <view class="exp-main">
+        <text class="exp-title">β 衰变与宇称不守恒</text>
+        <text class="exp-intro">重现1956年震惊物理学界的极低温实验</text>
+      </view>
+      <text class="enter-icon">→</text>
+    </view>
+
+    <view class="exp-card glass" bindtap="onExpTap" data-type="diffusion">
+      <view class="exp-badge">实验二</view>
+      <view class="exp-main">
+        <text class="exp-title">气体扩散法原理</text>
+        <text class="exp-intro">探索曼哈顿计划中铀同位素的分离奥秘</text>
+      </view>
+      <text class="enter-icon">→</text>
+    </view>
+
+    <view class="exp-card glass" bindtap="onExpTap" data-type="entanglement">
+      <view class="exp-badge">实验三</view>
+      <view class="exp-main">
+        <text class="exp-title">光子纠缠实验</text>
+        <text class="exp-intro">吴-萨科诺夫实验：量子纠缠的早期实证</text>
+      </view>
+      <text class="enter-icon">→</text>
+    </view>
+  </view>
+</view>
