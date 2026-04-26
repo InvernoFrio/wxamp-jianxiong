@@ -1,0 +1,28 @@
+<!-- pages/comic/comic.wxml -->
+<scroll-view class="sub-page-container" scroll-y="true">
+  <view class="page-header">
+    <text class="page-title serif-title">叙事漫画</text>
+    <view class="title-accent"></view>
+  </view>
+
+  <view class="comic-group glass" wx:for="{{comicGroups}}" wx:key="id">
+    <view class="group-info">
+      <text class="group-index">#{{index + 1}}</text>
+      <text class="group-title">{{item.title}}</text>
+    </view>
+    <view class="comic-grid">
+      <image 
+        wx:for="{{item.images}}" 
+        wx:for-item="img" 
+        wx:key="*this"
+        class="comic-item" 
+        src="{{img}}" 
+        mode="aspectFill" 
+        bindtap="previewImage" 
+        data-urls="{{item.images}}" 
+        data-current="{{img}}"
+      ></image>
+    </view>
+    <text class="group-date">{{item.date}}</text>
+  </view>
+</scroll-view>

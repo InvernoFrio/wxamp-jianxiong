@@ -8,6 +8,9 @@
     "pages/physics/exp-diffusion/exp-diffusion",
     "pages/physics/exp-entanglement/exp-entanglement",
     "pages/multimedia/multimedia",
+    "pages/comic/comic",
+    "pages/gallery/gallery",
+    "pages/video/video",
     "pages/about/about"
   ],
   "window": {

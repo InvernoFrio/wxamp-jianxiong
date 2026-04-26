@@ -2,18 +2,31 @@
 Page({
   data: {
     isPlaying: false,
-    gallery: [
-      { id: 1, title: '实验室沉思', desc: '哥伦比亚大学，1956年', url: 'https://picsum.photos/seed/lab/320/420' },
-      { id: 2, title: '守恒定律实验', desc: '实验装置，低温物理', url: 'https://picsum.photos/seed/exp/320/420' },
-      { id: 3, title: '普林斯顿岁月', desc: '普林斯顿研究所，1940s', url: 'https://picsum.photos/seed/princeton/320/420' },
-      { id: 4, title: '手稿与笔札', desc: '私人珍藏档案', url: 'https://picsum.photos/seed/notes/320/420' }
+    galleryList: [
+      { id: 1, title: '晨曦', desc: 'Shanghai, 2024', url: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400' },
+      { id: 2, title: '街角', desc: 'Tokyo, 2023', url: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400' },
+      { id: 3, title: '雨后', desc: 'London, 2024', url: 'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?w=400' }
     ]
   },
 
   togglePlay() {
-    this.setData({ isPlaying: !this.data.isPlaying });
+    this.setData({
+      isPlaying: !this.data.isPlaying
+    });
     if (this.data.isPlaying) {
-      wx.showToast({ title: '雅集开启', icon: 'none' });
+      wx.showToast({ title: '正在播放', icon: 'none' });
     }
+  },
+
+  goToComic() {
+    wx.navigateTo({ url: '/pages/comic/comic' });
+  },
+
+  goToGallery() {
+    wx.navigateTo({ url: '/pages/gallery/gallery' });
+  },
+
+  goToVideo() {
+    wx.navigateTo({ url: '/pages/video/video' });
   }
-});
+})

@@ -203,6 +203,21 @@ section {
   letter-spacing: 1rpx;
 }
 
+/* 漫画预览辅助样式 */
+.comic-preview-card {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16rpx;
+  padding: 24rpx;
+}
+
+.comic-img-mini {
+  width: 100%;
+  height: 200rpx;
+  border-radius: 12rpx;
+  background: #EFE7DA;
+}
+
 /* 音乐控制台 */
 .music-console {
   display: flex;
@@ -210,6 +225,7 @@ section {
   padding: 40rpx;
   background: rgba(255, 255, 255, 0.8) !important;
   border-radius: 32rpx;
+  margin-top: 40rpx;
 }
 
 .vinyl-wrapper {
