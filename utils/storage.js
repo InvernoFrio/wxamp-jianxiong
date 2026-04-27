@@ -4,103 +4,113 @@ const KEYS = {
   READING_PROGRESS: 'readingProgress',
   HIGHLIGHTS: 'highlights',
   NOTES: 'notes',
+  BOOKMARKS: 'bookmarks',
   BOOK_OPENED: 'bookOpened',
   SETTINGS: 'readerSettings'
 };
 
-/**
- * 获取阅读进度
- */
+function _genId() {
+  return Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+}
+
+// ── 阅读进度 ──────────────────────────────────
+
 function getReadingProgress() {
   return wx.getStorageSync(KEYS.READING_PROGRESS) || {};
 }
 
-/**
- * 保存阅读进度
- */
-function saveReadingProgress(chapterIndex, percent, sectionId) {
+function saveReadingProgress(chapterIndex, percent, sectionId, scrollOffset) {
   const progress = getReadingProgress();
   progress.chapterIndex = chapterIndex;
   progress.percent = percent;
-  if (sectionId) {
-    progress.sectionId = sectionId;
-  }
+  if (sectionId) progress.sectionId = sectionId;
+  if (scrollOffset !== undefined) progress.scrollOffset = scrollOffset;
   progress.lastRead = new Date().toISOString();
   wx.setStorageSync(KEYS.READING_PROGRESS, progress);
 }
 
-/**
- * 获取高亮列表
- */
+// ── 高亮 ──────────────────────────────────────
+
 function getHighlights() {
   return wx.getStorageSync(KEYS.HIGHLIGHTS) || [];
 }
 
-/**
- * 添加高亮
- */
 function addHighlight(highlight) {
   const highlights = getHighlights();
   highlights.push({
     ...highlight,
-    id: Date.now(),
+    id: _genId(),
     createdAt: new Date().toISOString()
   });
   wx.setStorageSync(KEYS.HIGHLIGHTS, highlights);
 }
 
-/**
- * 删除高亮
- */
 function removeHighlight(id) {
-  let highlights = getHighlights();
-  highlights = highlights.filter(h => h.id !== id);
+  const highlights = getHighlights().filter(h => h.id !== id);
   wx.setStorageSync(KEYS.HIGHLIGHTS, highlights);
 }
 
-/**
- * 获取笔记列表
- */
+// ── 笔记 ──────────────────────────────────────
+
 function getNotes() {
   return wx.getStorageSync(KEYS.NOTES) || [];
 }
 
-/**
- * 添加笔记
- */
 function addNote(note) {
   const notes = getNotes();
   notes.push({
     ...note,
-    id: Date.now(),
+    id: _genId(),
     createdAt: new Date().toISOString()
   });
   wx.setStorageSync(KEYS.NOTES, notes);
 }
 
-/**
- * 删除笔记
- */
 function removeNote(id) {
-  let notes = getNotes();
-  notes = notes.filter(n => n.id !== id);
+  const notes = getNotes().filter(n => n.id !== id);
   wx.setStorageSync(KEYS.NOTES, notes);
 }
 
-/**
- * 获取阅读设置
- */
+// ── 书签 ──────────────────────────────────────
+
+function getBookmarks() {
+  return wx.getStorageSync(KEYS.BOOKMARKS) || [];
+}
+
+function addBookmark(bookmark) {
+  const bookmarks = getBookmarks();
+  // 避免重复书签同一小节
+  const exists = bookmarks.find(b => b.sectionId === bookmark.sectionId);
+  if (exists) return false;
+  bookmarks.push({
+    ...bookmark,
+    id: _genId(),
+    createdAt: new Date().toISOString()
+  });
+  wx.setStorageSync(KEYS.BOOKMARKS, bookmarks);
+  return true;
+}
+
+function removeBookmark(id) {
+  const bookmarks = getBookmarks().filter(b => b.id !== id);
+  wx.setStorageSync(KEYS.BOOKMARKS, bookmarks);
+}
+
+function isBookmarked(sectionId) {
+  const bookmarks = getBookmarks();
+  return bookmarks.some(b => b.sectionId === sectionId);
+}
+
+// ── 设置 ──────────────────────────────────────
+
 function getSettings() {
   return wx.getStorageSync(KEYS.SETTINGS) || {
     fontSize: 30,
     lineHeight: 2.2,
-    theme: 'paper' // paper | dark
+    theme: 'paper'
   };
 }
 
-/**
- * 保存阅读设置
- */
 function saveSettings(settings) {
   wx.setStorageSync(KEYS.SETTINGS, settings);
 }
@@ -115,6 +125,10 @@ module.exports = {
   getNotes,
   addNote,
   removeNote,
+  getBookmarks,
+  addBookmark,
+  removeBookmark,
+  isBookmarked,
   getSettings,
   saveSettings
 };
