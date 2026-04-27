@@ -1,2 +1,197 @@
 <!--pages/physics/exp-diffusion/exp-diffusion.wxml-->
-<text>pages/physics/exp-diffusion/exp-diffusion.wxml</text>
+<view class="physics-page page-enter">
+
+  <!-- =======================
+       Step Indicator（同 parity）
+  ======================== -->
+  <view class="step-indicator">
+    <view
+      wx:for="{{steps}}"
+      wx:key="index"
+      class="step-dot {{currentStep >= index ? 'active' : ''}}"
+    ></view>
+  </view>
+
+  <!-- =======================
+       Step 0: 引入
+  ======================== -->
+  <view class="step-content" wx:if="{{currentStep === 0}}">
+    <view class="step-hero">
+      <text class="hero-icon">🌫️</text>
+      <text class="hero-title">{{steps[0].title}}</text>
+      <text class="hero-desc">{{steps[0].desc}}</text>
+    </view>
+
+    <view class="card">
+      <text class="card-text">
+        气体扩散是分子热运动导致的宏观现象，它揭示了微观粒子统计行为与宏观规律之间的关系。
+      </text>
+    </view>
+  </view>
+
+  <!-- =======================
+       Step 1: 理论
+  ======================== -->
+  <view class="step-content" wx:if="{{currentStep === 1}}">
+
+    <view class="step-hero">
+      <text class="hero-icon">📐</text>
+      <text class="hero-title">{{steps[1].title}}</text>
+      <text class="hero-desc">{{steps[1].desc}}</text>
+    </view>
+
+    <view class="card">
+      <text class="card-text">
+        格雷厄姆定律：扩散速率与气体分子质量的平方根成反比。
+      </text>
+    </view>
+
+    <view class="card">
+      <text class="card-text">
+        轻同位素（U-235）比重同位素（U-238）扩散更快，从而在多级扩散中逐渐富集。
+      </text>
+    </view>
+
+  </view>
+
+  <!-- =======================
+       Step 2: 实验（核心）
+  ======================== -->
+  <view class="step-content experiment-step" wx:if="{{currentStep === 2}}">
+
+    <view class="step-hero">
+      <text class="hero-icon">🧪</text>
+      <text class="hero-title">{{steps[2].title}}</text>
+      <text class="hero-desc">{{steps[2].desc}}</text>
+    </view>
+
+    <!-- ===== canvas实验区 ===== -->
+    <view class="canvas-container">
+      <canvas id="diffCanvas" type="2d" class="physics-canvas"></canvas>
+    </view>
+
+    <!-- ===== stats（严格 parity结构） ===== -->
+    <view class="stats-panel">
+
+      <view class="stat-item">
+        <text class="stat-label">轻同位素(U-235)</text>
+        <text class="stat-value stat-up">{{lightCount}}</text>
+      </view>
+
+      <view class="stat-item">
+        <text class="stat-label">总粒子</text>
+        <text class="stat-value">{{totalParticles}}</text>
+      </view>
+
+      <view class="stat-item">
+        <text class="stat-label">重同位素(U-238)</text>
+        <text class="stat-value stat-down">{{heavyCount}}</text>
+      </view>
+
+    </view>
+
+    <!-- ===== control（完全 parity同级） ===== -->
+    <view class="controls">
+
+      <button
+        wx:if="{{!experimentRunning && !experimentDone}}"
+        bindtap="onStartExperiment"
+        type="primary"
+      >
+        ▶ 开始扩散实验
+      </button>
+
+      <button
+        wx:if="{{experimentRunning}}"
+        bindtap="onStopExperiment"
+      >
+        ■ 停止实验
+      </button>
+
+      <button
+        wx:if="{{experimentDone}}"
+        bindtap="onStartExperiment"
+        type="primary"
+      >
+        ↻ 重新实验
+      </button>
+
+    </view>
+
+    <!-- ===== result（parity同款结构） ===== -->
+    <view class="result-panel" wx:if="{{experimentDone}}">
+
+      <view class="card">
+        <text class="card-title">实验结果</text>
+
+        <view class="result-bar">
+          <view
+            class="result-bar-up"
+            style="width: {{enrichmentPercent}}%"
+          >
+            <text class="bar-label">U-235 {{enrichmentPercent}}%</text>
+          </view>
+
+          <view
+            class="result-bar-down"
+            style="width: {{100 - enrichmentPercent}}%"
+          >
+            <text class="bar-label">U-238 {{100 - enrichmentPercent}}%</text>
+          </view>
+        </view>
+
+        <text class="card-text">
+          扩散过程中轻同位素富集现象显著，验证了质量依赖扩散机制。
+        </text>
+
+      </view>
+
+    </view>
+
+  </view>
+
+  <!-- =======================
+       Step 3: 结论
+  ======================== -->
+  <view class="step-content" wx:if="{{currentStep === 3}}">
+
+    <view class="step-hero">
+      <text class="hero-icon">📊</text>
+      <text class="hero-title">{{steps[3].title}}</text>
+      <text class="hero-desc">{{steps[3].desc}}</text>
+    </view>
+
+    <view class="card">
+      <text class="card-text">
+        气体扩散法是早期核工业中重要的铀浓缩手段，其本质是利用分子质量差异造成的统计扩散偏差。
+      </text>
+    </view>
+
+  </view>
+
+  <!-- =======================
+       navigation（同 parity）
+  ======================== -->
+  <view class="step-nav">
+
+    <view
+      class="nav-btn"
+      wx:if="{{currentStep > 0}}"
+      bindtap="onPrevStep"
+    >
+      ‹ 上一步
+    </view>
+
+    <view class="nav-placeholder" wx:else></view>
+
+    <view
+      class="nav-btn nav-next"
+      wx:if="{{currentStep < 3}}"
+      bindtap="onNextStep"
+    >
+      下一步 ›
+    </view>
+
+  </view>
+
+</view>

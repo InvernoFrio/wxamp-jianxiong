@@ -1,2 +1,175 @@
 <!--pages/physics/exp-entanglement/exp-entanglement.wxml-->
-<text>pages/physics/exp-entanglement/exp-entanglement.wxml</text>
+
+<view class="physics-page page-enter">
+
+  <!-- STEP INDICATOR（统一） -->
+  <view class="step-indicator">
+    <view
+      wx:for="{{steps}}"
+      wx:key="index"
+      class="step-dot {{currentStep >= index ? 'active' : ''}}"
+    ></view>
+  </view>
+
+  <!-- STEP 1 -->
+  <view class="step-content" wx:if="{{currentStep === 0}}">
+
+    <view class="step-hero">
+      <text class="hero-icon">⚗️</text>
+      <text class="hero-title">{{steps[0].title}}</text>
+      <text class="hero-desc">{{steps[0].desc}}</text>
+    </view>
+
+    <glass-card>
+      <text class="intro-text">
+        在曼哈顿计划中，科学家尝试通过气体扩散实现铀同位素分离。
+        由于 U-235 和 U-238 质量略有差异，它们在微观扩散中的行为不同。
+      </text>
+    </glass-card>
+
+    <glass-card>
+      <text class="intro-text">
+        这是一个典型的统计物理过程：微小质量差 → 宏观浓缩效应。
+      </text>
+    </glass-card>
+
+  </view>
+
+  <!-- STEP 2 -->
+  <view class="step-content" wx:if="{{currentStep === 1}}">
+
+    <view class="step-hero">
+      <text class="hero-icon">🧪</text>
+      <text class="hero-title">{{steps[1].title}}</text>
+      <text class="hero-desc">{{steps[1].desc}}</text>
+    </view>
+
+    <glass-card>
+      <text class="intro-text">
+        根据格雷厄姆定律：气体扩散速率与分子质量平方根成反比。
+        轻同位素 U-235 扩散速度略快。
+      </text>
+    </glass-card>
+
+    <glass-card>
+      <text class="intro-text">
+        在多级扩散过程中，这种微弱差异会被不断放大，形成富集效应。
+      </text>
+    </glass-card>
+
+  </view>
+
+  <!-- STEP 3 EXPERIMENT -->
+  <view class="step-content experiment-step" wx:if="{{currentStep === 2}}">
+
+    <!-- canvas（统一实验核心） -->
+    <view class="canvas-container">
+      <canvas type="2d" id="physicsCanvas" class="physics-canvas"></canvas>
+    </view>
+
+    <!-- detector panel（升级版 stats） -->
+    <view class="stats-panel glass">
+
+      <view class="stat-item">
+        <text class="stat-label">U-235 浓度</text>
+        <text class="stat-value stat-up">{{u235}}</text>
+      </view>
+
+      <view class="stat-item">
+        <text class="stat-label">总粒子</text>
+        <text class="stat-value">{{totalParticles}}</text>
+      </view>
+
+      <view class="stat-item">
+        <text class="stat-label">U-238 浓度</text>
+        <text class="stat-value stat-down">{{u238}}</text>
+      </view>
+
+    </view>
+
+    <!-- control console -->
+    <view class="controls">
+
+      <glass-button wx:if="{{!experimentRunning}}" bind:tap="startSimulation">
+        <text>▶ 启动扩散</text>
+      </glass-button>
+
+      <glass-button wx:if="{{experimentRunning}}" bind:tap="stopSimulation">
+        <text>■ 停止</text>
+      </glass-button>
+
+      <glass-button wx:if="{{experimentDone}}" bind:tap="resetSimulation">
+        <text>↻ 重置</text>
+      </glass-button>
+
+    </view>
+
+    <!-- result physics layer -->
+    <view class="result-panel" wx:if="{{experimentDone}}">
+
+      <glass-card>
+
+        <text class="result-title">扩散结果</text>
+
+        <view class="result-bar">
+
+          <view class="result-bar-up" style="width: {{concentration}}%">
+            <text class="bar-label">U-235 {{concentration}}%</text>
+          </view>
+
+          <view class="result-bar-down" style="width: {{100 - concentration}}%">
+            <text class="bar-label">U-238 {{100 - concentration}}%</text>
+          </view>
+
+        </view>
+
+        <text class="result-desc">
+          扩散过程导致轻同位素逐步富集，这种微弱差异在多级系统中被指数放大。
+        </text>
+
+      </glass-card>
+
+    </view>
+
+  </view>
+
+  <!-- STEP 4 -->
+  <view class="step-content" wx:if="{{currentStep === 3}}">
+
+    <view class="step-hero">
+      <text class="hero-icon">🏁</text>
+      <text class="hero-title">{{steps[3].title}}</text>
+      <text class="hero-desc">{{steps[3].desc}}</text>
+    </view>
+
+    <glass-card>
+      <text class="intro-text">
+        气体扩散法是早期铀浓缩的关键技术之一，但能耗极高。
+        后来被离心分离技术取代。
+      </text>
+    </glass-card>
+
+    <glass-card>
+      <text class="intro-text">
+        这一过程展示了统计物理中的核心思想：微观差异 → 宏观可观测结果。
+      </text>
+    </glass-card>
+
+  </view>
+
+  <!-- navigation（统一 parity结构） -->
+  <view class="step-nav">
+
+    <view wx:if="{{currentStep > 0}}" bindtap="onPrevStep" class="nav-btn">
+      <text>‹ 上一步</text>
+    </view>
+
+    <view wx:else class="nav-placeholder"></view>
+
+    <view wx:if="{{currentStep < 3}}" bindtap="onNextStep" class="nav-btn nav-next">
+      <text>下一步 ›</text>
+    </view>
+
+  </view>
+
+</view>

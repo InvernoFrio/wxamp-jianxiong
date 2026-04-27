@@ -1,1 +1,284 @@
 /* pages/physics/exp-entanglement/exp-entanglement.wxss */
+
+/* =========================
+   基础页面背景（量子深空风）
+========================= */
+.physics-page {
+  min-height: 100vh;
+  padding: 20rpx 24rpx;
+  padding-bottom: 140rpx;
+
+  background:
+    radial-gradient(circle at 20% 10%, rgba(79,195,247,0.16), transparent 35%),
+    radial-gradient(circle at 80% 90%, rgba(196,30,58,0.12), transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(120,120,255,0.06), transparent 60%),
+    linear-gradient(180deg, #070b1a 0%, #0b1020 50%, #0a0f1d 100%);
+  color: #e8f1ff;
+}
+
+/* =========================
+   步骤指示器（统一宇称风格）
+========================= */
+.step-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 16rpx;
+  margin-bottom: 26rpx;
+}
+
+.step-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background: rgba(200, 220, 255, 0.25);
+  transition: all 0.3s ease;
+}
+
+.step-dot.active {
+  background: #4FC3F7;
+  transform: scale(1.35);
+  box-shadow: 0 0 0 10rpx rgba(79,195,247,0.12);
+}
+
+/* =========================
+   step内容基础动画
+========================= */
+.step-content {
+  animation: fadeInUp 0.45s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx;
+  padding: 0 12rpx;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   step标题区（统一风格）
+========================= */
+.step-hero {
+  text-align: center;
+  padding: 26rpx 0 40rpx;
+}
+
+.hero-icon {
+  font-size: 70rpx;
+  display: block;
+  margin-bottom: 14rpx;
+  filter: drop-shadow(0 0 10rpx rgba(79,195,247,0.4));
+}
+
+.hero-title {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #eaf3ff;
+  letter-spacing: 2rpx;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.hero-desc {
+  font-size: 26rpx;
+  color: rgba(200,220,255,0.6);
+}
+
+/* =========================
+   glass卡片（统一宇称实验）
+========================= */
+glass-card {
+  display: block;
+  padding: 28rpx;
+  border-radius: 22rpx;
+
+  background: rgba(255,255,255,0.06);
+  border: 1rpx solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(16rpx);
+  -webkit-backdrop-filter: blur(16rpx);
+
+  box-shadow:
+    0 10rpx 30rpx rgba(0,0,0,0.25),
+    inset 0 1rpx 0 rgba(255,255,255,0.05);
+}
+
+.intro-text {
+  font-size: 28rpx;
+  line-height: 2.0;
+  color: rgba(230,240,255,0.85);
+}
+
+/* =========================
+   实验区域容器（核心）
+========================= */
+.canvas-container {
+  width: 100%;
+  height: 460rpx;
+  border-radius: 26rpx;
+  overflow: hidden;
+
+  background: radial-gradient(circle at center,
+    rgba(79,195,247,0.08),
+    rgba(0,0,0,0.4));
+
+  border: 1rpx solid rgba(79,195,247,0.25);
+
+  box-shadow:
+    0 18rpx 40rpx rgba(0,0,0,0.35),
+    inset 0 0 40rpx rgba(79,195,247,0.08);
+}
+
+.physics-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* =========================
+   统计面板（量子信息风格）
+========================= */
+.stats-panel {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  padding: 24rpx;
+  border-radius: 24rpx;
+
+  background: rgba(255,255,255,0.05);
+  border: 1rpx solid rgba(255,255,255,0.1);
+
+  backdrop-filter: blur(14rpx);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: rgba(200,220,255,0.6);
+  margin-bottom: 6rpx;
+}
+
+.stat-value {
+  font-size: 38rpx;
+  font-weight: bold;
+  color: #eaf3ff;
+}
+
+.stat-item:nth-child(1) .stat-value {
+  color: #4FC3F7;
+}
+
+.stat-item:nth-child(3) .stat-value {
+  color: #FF5252;
+}
+
+/* =========================
+   控制按钮区域
+========================= */
+.controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 10rpx;
+}
+
+/* =========================
+   结果面板（纠缠强化版）
+========================= */
+.result-panel {
+  margin-top: 20rpx;
+}
+
+.result-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #4FC3F7;
+  display: block;
+  margin-bottom: 18rpx;
+}
+
+/* 结果条 */
+.result-bar {
+  display: flex;
+  height: 46rpx;
+  border-radius: 14rpx;
+  overflow: hidden;
+  margin-bottom: 16rpx;
+
+  box-shadow: inset 0 2rpx 8rpx rgba(0,0,0,0.3);
+}
+
+/* 相同 */
+.result-bar-same {
+  background: linear-gradient(90deg, #4FC3F7, #29B6F6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.5s ease;
+}
+
+/* 不同 */
+.result-bar-diff {
+  background: linear-gradient(90deg, #FF5252, #C41E3A);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.5s ease;
+}
+
+.bar-label {
+  font-size: 20rpx;
+  color: #fff;
+  font-weight: bold;
+}
+
+.result-desc {
+  font-size: 26rpx;
+  color: rgba(200,220,255,0.7);
+  line-height: 1.8;
+}
+
+/* =========================
+   步骤导航（统一宇称风格）
+========================= */
+.step-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30rpx;
+}
+
+.nav-btn {
+  padding: 16rpx 34rpx;
+  border-radius: 18rpx;
+
+  background: rgba(255,255,255,0.06);
+  border: 1rpx solid rgba(255,255,255,0.12);
+
+  color: #4FC3F7;
+  font-size: 28rpx;
+}
+
+.nav-btn:active {
+  transform: scale(0.95);
+  background: rgba(79,195,247,0.1);
+}
+
+.nav-placeholder {
+  width: 120rpx;
+}
+
+.nav-next {
+  border-color: rgba(79,195,247,0.3);
+  background: rgba(79,195,247,0.08);
+}
