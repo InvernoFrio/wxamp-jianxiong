@@ -1,4 +1,4 @@
-<view class="reader-view">
+<view class="reader-view {{theme === 'dark' ? 'dark' : ''}}">
   <view class="reader-content">
     <view
       wx:for="{{paragraphs}}"
@@ -8,7 +8,10 @@
       bindlongpress="onLongPress"
       style="font-size: {{fontSize}}rpx; line-height: {{lineHeight}};"
     >
-      {{item}}
+      <text class="paragraph-text">{{item}}</text>
+    </view>
+    <view wx:if="{{paragraphs.length === 0}}" class="empty-tip">
+      <text>暂无内容</text>
     </view>
   </view>
 
