@@ -1,0 +1,27 @@
+<!-- pages/video/video.wxml -->
+<scroll-view class="sub-page-container" scroll-y="true">
+  <view class="page-header">
+    <text class="page-title serif-title">影像记录</text>
+    <view class="title-accent"></view>
+  </view>
+
+  <view class="video-list">
+    <view class="video-item-wrapper" wx:for="{{videoList}}" wx:key="id">
+      <video 
+        class="video-player" 
+        src="{{item.url}}" 
+        poster="{{item.poster}}" 
+        object-fit="cover"
+        title="{{item.title}}"
+      ></video>
+      <view class="video-meta">
+        <text class="video-title-text">{{item.title}}</text>
+        <text class="video-desc-text">{{item.desc}}</text>
+        <view class="video-footer">
+          <text class="video-tag"># {{item.tag}}</text>
+          <text class="video-date">{{item.date}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</scroll-view>

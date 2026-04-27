@@ -1,0 +1,16 @@
+<!-- pages/gallery/gallery.wxml -->
+<scroll-view class="sub-page-container" scroll-y="true">
+  <view class="page-header">
+    <text class="page-title serif-title">岁时光影</text>
+    <view class="title-accent"></view>
+  </view>
+
+  <view class="gallery-grid">
+    <view class="gallery-card active-scale" wx:for="{{photos}}" wx:key="id" bindtap="previewPhoto" data-url="{{item.url}}">
+      <image class="gallery-img" src="{{item.url}}" mode="aspectFill" lazy-load="true"></image>
+      <view class="gallery-info-overlay">
+        <text class="gallery-text">{{item.title}}</text>
+      </view>
+    </view>
+  </view>
+</scroll-view>
