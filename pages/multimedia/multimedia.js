@@ -1,10 +1,10 @@
 // pages/multimedia/multimedia.js
 const db = wx.cloud.database();
+let audioCtx = null; // 1. 在外面定义一个全局变量放播放器
 
 Page({
   data: {
     isPlaying: false,
-    // 以下数据将从云端动态获取
     galleryList: [],
     comicPreview: null,
     videoPreview: null,
@@ -12,52 +12,63 @@ Page({
   },
 
   onLoad() {
-    // 延迟 500ms 确保环境初始化
+    // 2. 页面加载时初始化播放器
+    audioCtx = wx.createInnerAudioContext();
+    
+    // 监听播放器状态，确保 UI 和声音同步
+    audioCtx.onPlay(() => { this.setData({ isPlaying: true }); });
+    audioCtx.onPause(() => { this.setData({ isPlaying: false }); });
+
     setTimeout(() => {
       this.fetchAllPreviews();
     }, 500);
   },
 
-  // 核心：从各个集合获取预览内容
   fetchAllPreviews() {
     wx.showLoading({ title: '同步馆藏...' });
-
-    // 1. 获取最新的一组漫画预览
     const comicTask = db.collection('comic').orderBy('order', 'asc').limit(1).get();
-    
-    // 2. 获取最新的 5 张光影图片
     const galleryTask = db.collection('gallery').orderBy('order', 'asc').limit(5).get();
-    
-    // 3. 获取最新的一段视频预览
     const videoTask = db.collection('video').orderBy('order', 'asc').limit(1).get();
-
-    // 4. 获取音乐信息
     const musicTask = db.collection('music').limit(1).get();
 
     Promise.all([comicTask, galleryTask, videoTask, musicTask]).then(res => {
+      const mItem = res[3].data[0] || null;
       this.setData({
         comicPreview: res[0].data[0] || null,
         galleryList: res[1].data || [],
         videoPreview: res[2].data[0] || null,
-        musicItem: res[3].data[0] || null
-      }, () => {
-        wx.hideLoading();
+        musicItem: mItem
       });
-    }).catch(err => {
-      console.error('获取预览失败', err);
-      wx.hideLoading();
-    });
+
+      // 3. 关键：拿到数据后，把云端音频地址给播放器
+      if (mItem && mItem.url) {
+        audioCtx.src = mItem.url;
+      }
+      
+    }).finally(() => { wx.hideLoading(); });
   },
 
   togglePlay() {
-    this.setData({
-      isPlaying: !this.data.isPlaying
-    });
+    // 4. 真正的播放/暂停逻辑
+    if (!audioCtx.src) return; 
+
     if (this.data.isPlaying) {
+      audioCtx.pause(); // 停止声音
+    } else {
+      audioCtx.play();  // 发出声音
       wx.showToast({ title: '正在播放', icon: 'none' });
     }
+    
+    // 注意：这里不需要手动 setData isPlaying 了，
+    // 因为上面的 onPlay/onPause 监听器会自动帮你处理。
   },
 
+  onUnload() {
+    // 页面关掉时销毁播放器，省电省内存
+    if (audioCtx) audioCtx.destroy();
+  },
+
+  // 跳转函数
   goToComic() { wx.navigateTo({ url: '/pages/comic/comic' }); },
   goToGallery() { wx.navigateTo({ url: '/pages/gallery/gallery' }); },
   goToVideo() { wx.navigateTo({ url: '/pages/video/video' }); }

@@ -2,7 +2,7 @@
   "description": "健雄书韵 - 吴健雄数字纪念馆",
   "cloudfunctionRoot": "cloudfunctions/",
   "packOptions": {
-    "ignore": [],
+    "ignore": [{"type":"folder","value":"scripts"}],
     "include": []
   },
   "setting": {
