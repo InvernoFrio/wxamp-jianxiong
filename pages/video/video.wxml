@@ -6,6 +6,7 @@
   </view>
 
   <view class="video-list">
+    <!-- 使用云数据库的 _id 作为 key -->
     <view class="video-item-wrapper" wx:for="{{videoList}}" wx:key="id">
       <video 
         class="video-player" 
@@ -13,13 +14,22 @@
         poster="{{item.poster}}" 
         object-fit="cover"
         title="{{item.title}}"
+        enable-play-gesture
+        bindplay="onVideoPlay"
+        id="video-{{item.id}}" 
+        data-id="video-{{item.id}}"
+        vnet-detete="true"
+        controls
       ></video>
       <view class="video-meta">
-        <text class="video-title-text">{{item.title}}</text>
+        <view style="display: flex; justify-content: space-between; align-items: center;">
+          <text class="video-title-text">{{item.title}}</text>
+          <text style="font-size: 24rpx; color: #84010D;">作者: {{item.author}}</text>
+        </view>
         <text class="video-desc-text">{{item.desc}}</text>
         <view class="video-footer">
           <text class="video-tag"># {{item.tag}}</text>
-          <text class="video-date">{{item.date}}</text>
+          <!-- 由于去掉了 date 字段，这里可以展示分类或留空 -->
         </view>
       </view>
     </view>

@@ -1,29 +1,35 @@
 // pages/comic/comic.js
+const db = wx.cloud.database()
+
 Page({
   data: {
-    comicGroups: [
-      {
-        id: 1,
-        title: "《午后的一束光》",
-        date: "2024.04.12",
-        images: [
-          "https://images.unsplash.com/photo-1541963463532-d68292c34b19?w=600",
-          "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600",
-          "https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=600"
-        ]
-      },
-      {
-        id: 2,
-        title: "《雨夜的街道》",
-        date: "2024.03.22",
-        images: [
-          "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?w=600",
-          "https://images.unsplash.com/photo-1527605151189-9116288e9970?w=600",
-          "https://images.unsplash.com/photo-1534353436294-0dbd4bdac845?w=600",
-          "https://images.unsplash.com/photo-1501183638710-841dd1904538?w=600"
-        ]
-      }
-    ]
+    comicGroups: []
+  },
+
+  onLoad() {
+    // 延迟 500ms 执行，确保 app.js 的 wx.cloud.init 彻底完成
+    setTimeout(() => {
+      this.fetchComicData();
+    }, 500);
+  },
+
+  fetchComicData() {
+    wx.showLoading({ title: '加载数据中' });
+    
+    db.collection('comic').orderBy('order', 'asc').get().then(res => {
+      console.log('【数据库原始数据】:', res.data);
+      
+      // 直接把数据库里的 cloud:// 链接塞给页面，不进行 getTempFileURL 转换
+      this.setData({
+        comicGroups: res.data
+      }, () => {
+        console.log('【页面渲染完成】请检查图片是否显示');
+        wx.hideLoading();
+      });
+    }).catch(err => {
+      console.error('数据库请求失败:', err);
+      wx.hideLoading();
+    });
   },
 
   previewImage(e) {

@@ -5,10 +5,11 @@
     <view class="title-accent"></view>
   </view>
 
-  <view class="comic-group glass" wx:for="{{comicGroups}}" wx:key="id">
+  <view class="comic-group glass" wx:for="{{comicGroups}}" wx:key="_id">
     <view class="group-info">
       <text class="group-index">#{{index + 1}}</text>
       <text class="group-title">{{item.title}}</text>
+      <text wx:if="{{item.author}}" class="group-author">By: {{item.author}}</text>
     </view>
     <view class="comic-grid">
       <image 
