@@ -1,0 +1,7 @@
+<canvas
+  type="2d"
+  id="mapCanvas"
+  class="map-canvas"
+  style="width: {{canvasWidth}}px; height: {{canvasHeight}}px;"
+  bindtap="onCanvasTap"
+/>

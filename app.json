@@ -11,7 +11,8 @@
     "pages/comic/comic",
     "pages/gallery/gallery",
     "pages/video/video",
-    "pages/about/about"
+    "pages/about/about",
+    "pages/grid-walking/grid-walking"
   ],
   "window": {
     "backgroundTextStyle": "dark",
