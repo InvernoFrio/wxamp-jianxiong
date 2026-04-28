@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "走格子 · 探索地图",
+  "usingComponents": {
+    "map-canvas": "/components/map-canvas/map-canvas"
+  }
+}

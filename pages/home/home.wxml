@@ -1,26 +1,66 @@
 <!-- pages/home/home.wxml -->
 <view class="home-page {{pageReady ? 'page-enter' : ''}}">
-  
-  <!-- 1. 顶部静谧金句 (书翻开后淡入) -->
+
+  <!-- 顶部金句 -->
   <view class="top-quote-area {{bookOpen ? 'quote-visible' : 'quote-hidden'}}">
-    <text class="quote-content serif-title">“{{quotes[currentQuote].text}}”</text>
+    <text class="quote-content serif-title">"{{quotes[currentQuote].text}}"</text>
     <view class="quote-line"></view>
   </view>
 
-  <!-- 2. 核心内容区域 -->
+  <!-- 书本 + 操作栏 -->
   <view class="main-layout {{bookOpen ? 'layout-shifted' : ''}}">
-    <!-- 书本容器：确保有足够空间显示阴影和动画 -->
-    <view class="book-container">
-      <book-cover isOpen="{{bookOpen}}" bind:toggle="onBookToggle" />
+    <view class="book-area">
+      <view class="book-container {{bookPage === 2 ? 'book-container-shrunk' : ''}}">
+        <book-cover
+          id="bookCover"
+          isOpen="{{bookOpen}}"
+          chapters="{{chapters}}"
+          bind:pagechange="onPageChange"
+          bind:gridwalking="onGridWalking"
+          bind:chaptertap="onBookChapterTap"
+        />
+      </view>
+
+      <!-- 灵动岛风格操作栏 -->
+      <view class="action-island {{bookOpen ? 'island-show' : 'island-hide'}}">
+        <!-- 第1页：探索地图 -->
+        <block wx:if="{{bookPage === 1}}">
+          <view class="island-btn" bindtap="onBarClose">
+            <text class="island-icon">📕</text>
+            <text class="island-text">合上</text>
+          </view>
+          <view class="island-divider"></view>
+          <view class="island-btn primary" bindtap="onBarExplore">
+            <text class="island-icon">🗺️</text>
+            <text class="island-text">开始探索</text>
+          </view>
+          <view class="island-divider"></view>
+          <view class="island-btn" bindtap="onBarReader">
+            <text class="island-icon">📖</text>
+            <text class="island-text">直接阅读</text>
+          </view>
+        </block>
+        <!-- 第2页：直接阅读 -->
+        <block wx:elif="{{bookPage === 2}}">
+          <view class="island-btn" bindtap="onBarMap">
+            <text class="island-icon">🗺️</text>
+            <text class="island-text">探索地图</text>
+          </view>
+          <view class="island-divider"></view>
+          <view class="island-btn" bindtap="onBarClose">
+            <text class="island-icon">📕</text>
+            <text class="island-text">合上书本</text>
+          </view>
+        </block>
+      </view>
     </view>
 
-    <!-- 3. 纵向章节列表 -->
-    <view class="chapter-list {{bookOpen ? 'fade-in' : 'fade-out'}}">
-      <view 
-        wx:for="{{chapters}}" 
-        wx:key="page" 
-        class="chapter-item active-scale" 
-        style="transition-delay: {{index * 0.1 + 0.3}}s"
+    <!-- 章节列表 -->
+    <view class="chapter-list {{bookPage === 2 ? 'list-show' : 'list-hide'}}">
+      <view
+        wx:for="{{chapters}}" wx:key="page"
+        class="chapter-item"
+        style="transition-delay: {{index * 0.06 + 0.15}}s"
         data-page="{{item.page}}"
         bindtap="onModuleTap"
       >
@@ -31,7 +71,7 @@
     </view>
   </view>
 
-  <!-- 4. 底部悬浮 AI 灵感岛 -->
+  <!-- AI 灵感岛 -->
   <view class="ai-island-wrapper {{aiExpanded ? 'expanded' : 'collapsed'}}">
     <view class="ai-island glass" bindtap="{{aiExpanded ? '' : 'toggleAi'}}">
       <view class="ai-bar" wx:if="{{!aiExpanded}}">
@@ -39,7 +79,6 @@
         <text class="serif-title">与大先生对话</text>
         <text class="expand-hint">展开 ↑</text>
       </view>
-
       <view class="ai-panel" wx:else>
         <view class="ai-panel-header">
           <text class="serif-title">吴健雄数字纪念馆</text>
@@ -60,4 +99,5 @@
   <view class="footer-slogan {{bookOpen ? 'slogan-fade' : ''}}">
     <text>科学是没有国界的，但科学家有自己的祖国。</text>
   </view>
+
 </view>

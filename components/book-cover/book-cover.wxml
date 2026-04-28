@@ -1,21 +1,48 @@
+<!-- components/book-cover/book-cover.wxml -->
 <view class="book-scene" bindtap="onTap">
-  <view class="book {{isOpen ? 'book-open' : ''}}">
-    <view class="book-spine"></view>
+  <view class="book {{isOpen ? 'book-open' : ''}} {{shrunk ? 'book-shrunk' : ''}}">
+
+    <!-- 书封内侧 -->
     <view class="book-page book-page-back">
-      <view class="page-content">
-        <text class="page-title">吴健雄传</text>
-        <text class="page-subtitle">THE BIOGRAPHY OF WU JIANXIONG</text>
-        <view class="page-line"></view>
-        <text class="page-author">张怀亮 编著</text>
+      <view class="page-center">
+        <text class="cover-title">吴 健 雄 传</text>
+        <text class="cover-en">THE BIOGRAPHY OF WU JIANXIONG</text>
+        <view class="cover-line"></view>
+        <text class="cover-author">张怀亮 编著</text>
       </view>
     </view>
+
+    <!-- 第二页：直接阅读（缩小后只显示标题图标） -->
+    <view class="book-spread {{bookPage === 2 ? 'spread-on' : 'spread-off'}}">
+      <view class="page-fill">
+        <view class="spread-head">
+          <text class="spread-emoji">📖</text>
+          <text class="spread-title serif-title">直接阅读</text>
+          <view class="spread-line"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 第一页：探索地图 -->
+    <view class="book-spread {{bookPage === 1 ? 'spread-on' : (bookPage === 0 ? 'spread-off' : 'spread-off-left')}}">
+      <view class="page-fill page-fill-map">
+        <view class="spread-head">
+          <text class="spread-emoji">🗺️</text>
+          <text class="spread-title serif-title">探索地图</text>
+          <view class="spread-line"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 书封 -->
     <view class="book-page book-page-front">
-      <view class="page-content">
-        <text class="page-title">健雄书韵</text>
-        <text class="page-subtitle">WU JIANXIONG MEMORIAL</text>
-        <view class="page-line"></view>
-        <text class="page-hint">{{isOpen ? '点击关闭' : '点击翻开'}}</text>
+      <view class="page-center">
+        <text class="cover-title">健 雄 书 韵</text>
+        <text class="cover-en">WU JIANXIONG MEMORIAL</text>
+        <view class="cover-line"></view>
+        <text class="cover-hint">点击翻开</text>
       </view>
     </view>
+
   </view>
 </view>

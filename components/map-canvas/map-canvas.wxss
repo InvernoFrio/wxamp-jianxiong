@@ -1,0 +1,5 @@
+.map-canvas {
+  display: block;
+  border-radius: 24rpx;
+  overflow: hidden;
+}

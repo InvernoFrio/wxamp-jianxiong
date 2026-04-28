@@ -1,0 +1,133 @@
+<!-- pages/grid-walking/grid-walking.wxml -->
+<view class="page-container">
+
+  <!-- 地图区域 -->
+  <view class="map-area">
+    <view class="map-wrapper">
+      <map-canvas
+        nodes="{{nodes}}"
+        currentNodeId="{{currentNodeId}}"
+        visitedNodes="{{visitedNodes}}"
+        reachableNodes="{{reachableNodes}}"
+        canvasWidth="{{canvasWidth}}"
+        canvasHeight="{{canvasHeight}}"
+        bind:nodetap="onNodeTap"
+      />
+    </view>
+    <!-- 路线标签 -->
+    <view class="route-tag" wx:if="{{currentRoute}}">
+      <text class="route-dot" style="background: {{currentRoute.color}}"></text>
+      <text class="route-name">{{currentRoute.name}}</text>
+    </view>
+  </view>
+
+  <!-- 信息面板 -->
+  <view class="info-panel {{panelVisible ? 'panel-show' : 'panel-hide'}}">
+    <!-- 拖拽指示条 -->
+    <view class="panel-handle"></view>
+
+    <!-- 当前节点信息 -->
+    <view class="node-info" wx:if="{{currentNode}}">
+      <view class="node-header">
+        <text class="node-icon">{{nodeTypeIcon}}</text>
+        <view class="node-title-area">
+          <text class="node-title serif-title">{{currentNode.title}}</text>
+          <text class="node-type-label" style="color: {{nodeTypeColor}}">{{nodeTypeLabel}}</text>
+        </view>
+      </view>
+      <text class="node-desc">{{currentNode.desc}}</text>
+    </view>
+
+    <!-- 进度条 -->
+    <view class="progress-bar">
+      <view class="progress-track">
+        <view class="progress-fill" style="width: {{progressPercent}}%"></view>
+      </view>
+      <text class="progress-text">已探索 {{visitedNodes.length}} / {{nodes.length}} 个节点</text>
+    </view>
+
+    <!-- 操作按钮区 -->
+    <view class="action-area">
+      <!-- 有内容可查看 -->
+      <view class="action-btn primary-btn" wx:if="{{currentNode && currentNode.contentId}}" bindtap="onViewContent">
+        <text>{{contentBtnText}}</text>
+      </view>
+      <!-- 可达节点提示 -->
+      <view class="reachable-hint" wx:if="{{reachableNodes.length > 0 && !isEnd}}">
+        <text class="hint-icon">👆</text>
+        <text class="hint-text">点击地图上{{reachableNodes.length}}个可到达的节点继续探索</text>
+      </view>
+      <!-- 到达终点 -->
+      <view class="action-btn end-btn" wx:if="{{isEnd}}" bindtap="onShowSummary">
+        <text>查看本轮探索摘要</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 探索摘要弹窗 -->
+  <view class="summary-overlay" wx:if="{{showSummary}}" bindtap="onCloseSummary">
+    <view class="summary-card glass" catchtap="">
+      <text class="summary-title serif-title">探索摘要</text>
+      <view class="summary-divider"></view>
+
+      <view class="summary-section">
+        <text class="summary-label">本轮路线</text>
+        <text class="summary-value" style="color: {{currentRoute.color}}">{{currentRoute.name}}</text>
+      </view>
+
+      <view class="summary-section">
+        <text class="summary-label">经过节点</text>
+        <view class="summary-nodes">
+          <text wx:for="{{routeHistory}}" wx:key="*this" class="summary-node-item">{{nodeMap[item].title}}{{index < routeHistory.length - 1 ? ' →' : ''}}</text>
+        </view>
+      </view>
+
+      <view class="summary-section">
+        <text class="summary-label">总探索进度</text>
+        <view class="summary-progress">
+          <view class="summary-progress-track">
+            <view class="summary-progress-fill" style="width: {{totalProgressPercent}}%"></view>
+          </view>
+          <text class="summary-progress-text">{{visitedNodes.length}} / {{nodes.length}} ({{totalProgressPercent}}%)</text>
+        </view>
+      </view>
+
+      <view class="summary-section" wx:if="{{completedRoutesInfo.length > 0}}">
+        <text class="summary-label">已完成路线</text>
+        <view class="completed-routes">
+          <view wx:for="{{completedRoutesInfo}}" wx:key="id" class="completed-route-tag" style="border-color: {{item.color}}">
+            <text style="color: {{item.color}}">{{item.name}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="summary-actions">
+        <view class="action-btn primary-btn" bindtap="onRestart">
+          <text>{{allRoutesCompleted ? '完成探索' : '选择新路线再走一次'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 路线选择弹窗 -->
+  <view class="route-overlay" wx:if="{{showRouteSelect}}" bindtap="onCloseRouteSelect">
+    <view class="route-card glass" catchtap="">
+      <text class="route-card-title serif-title">选择探索路线</text>
+      <view class="route-divider"></view>
+      <view
+        wx:for="{{availableRoutes}}" wx:key="id"
+        class="route-option {{item.completed ? 'route-completed' : ''}}"
+        bindtap="onSelectRoute"
+        data-route-id="{{item.id}}"
+      >
+        <view class="route-option-header">
+          <text class="route-option-dot" style="background: {{item.color}}"></text>
+          <text class="route-option-name serif-title">{{item.name}}</text>
+          <text class="route-option-check" wx:if="{{item.completed}}">✓</text>
+        </view>
+        <text class="route-option-desc">{{item.desc}}</text>
+      </view>
+    </view>
+  </view>
+
+</view>

@@ -1,7 +1,6 @@
 /* pages/home/home.wxss */
 .home-page {
   min-height: 100vh;
-  /* 恢复原本的纸张感背景 */
   background:
     radial-gradient(circle at 86% 6%, rgba(166, 33, 33, 0.05), transparent 32%),
     radial-gradient(circle at 8% 85%, rgba(212, 165, 116, 0.1), transparent 40%),
@@ -13,7 +12,7 @@
   align-items: center;
 }
 
-/* 顶部金句 */
+/* === 顶部金句 === */
 .top-quote-area {
   width: 100%;
   min-height: 160rpx;
@@ -24,15 +23,8 @@
   transition: all 0.8s ease;
 }
 
-.quote-hidden {
-  opacity: 0;
-  transform: translateY(20rpx);
-}
-
-.quote-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+.quote-hidden { opacity: 0; transform: translateY(20rpx); }
+.quote-visible { opacity: 1; transform: translateY(0); }
 
 .quote-content {
   font-size: 30rpx;
@@ -50,7 +42,7 @@
   border-radius: 2rpx;
 }
 
-/* 主体布局 */
+/* === 主体布局 === */
 .main-layout {
   width: 100%;
   display: flex;
@@ -61,61 +53,144 @@
 }
 
 .layout-shifted {
-  transform: translateY(-40rpx);
+  transform: translateY(-30rpx);
 }
 
-/* 修复书本显示：确保容器有明确的宽度和高度 */
+.book-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 .book-container {
   width: 100%;
-  height: 460rpx;
+  height: 780rpx;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 40rpx;
   z-index: 10;
+  transition: height 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* 章节列表 */
+.book-container-shrunk {
+  height: 440rpx;
+}
+
+/* === 灵动岛操作栏 === */
+.action-island {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  padding: 0 32rpx;
+  margin-top: 28rpx;
+  border-radius: 44rpx;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(24rpx);
+  -webkit-backdrop-filter: blur(24rpx);
+  border: 1rpx solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.06);
+  transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+  z-index: 20;
+}
+
+.island-show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.island-hide {
+  opacity: 0;
+  transform: translateY(16rpx) scale(0.92);
+  pointer-events: none;
+  margin-top: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.island-btn {
+  display: flex;
+  align-items: center;
+  padding: 0 20rpx;
+  height: 100%;
+  transition: opacity 0.15s;
+}
+
+.island-btn:active {
+  opacity: 0.5;
+}
+
+.island-btn.primary .island-text {
+  color: #C41E3A;
+  font-weight: 600;
+}
+
+.island-icon {
+  font-size: 28rpx;
+  margin-right: 8rpx;
+}
+
+.island-text {
+  font-size: 22rpx;
+  color: #54606B;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.island-divider {
+  width: 1rpx;
+  height: 32rpx;
+  background: rgba(0, 0, 0, 0.08);
+  margin: 0 8rpx;
+}
+
+/* === 章节列表 === */
 .chapter-list {
   width: 100%;
   padding: 0 20rpx;
   box-sizing: border-box;
-  transition: all 0.5s ease;
+  margin-top: 32rpx;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.list-hidden {
+.list-show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.list-hide {
   opacity: 0;
-  transform: translateY(40rpx);
+  transform: translateY(24rpx);
   pointer-events: none;
   height: 0;
   overflow: hidden;
-}
-
-.list-visible {
-  opacity: 1;
-  transform: translateY(0);
+  margin-top: 0;
+  padding: 0;
 }
 
 .chapter-item {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1rpx solid rgba(255, 255, 255, 0.9);
-  padding: 36rpx 40rpx;
-  border-radius: 24rpx;
-  margin-bottom: 24rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.03);
+  background: rgba(255, 255, 255, 0.65);
+  border: 1rpx solid rgba(255, 255, 255, 0.85);
+  padding: 32rpx 36rpx;
+  border-radius: 20rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 16rpx rgba(0, 0, 0, 0.03);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.chapter-num {
-  font-size: 24rpx;
-  color: var(--gold-accent);
-  margin-right: 32rpx;
-  width: 40rpx;
+.chapter-icon {
+  font-size: 34rpx;
+  margin-right: 20rpx;
 }
 
-.chapter-title {
-  font-size: 30rpx;
+.chapter-name {
+  font-size: 28rpx;
   color: var(--ink-black);
   font-weight: 500;
 }
@@ -123,11 +198,11 @@
 .chapter-arrow {
   margin-left: auto;
   color: var(--gold-accent);
-  font-size: 40rpx;
-  opacity: 0.5;
+  font-size: 36rpx;
+  opacity: 0.4;
 }
 
-/* AI 灵感岛 */
+/* === AI 灵感岛 === */
 .ai-island-wrapper {
   position: fixed;
   bottom: 60rpx;
@@ -228,6 +303,7 @@
   font-size: 24rpx;
 }
 
+/* === 底部标语 === */
 .footer-slogan {
   margin-top: auto;
   padding: 40rpx 0;
@@ -243,18 +319,4 @@
 
 .slogan-fade {
   opacity: 0;
-}
-
-.fade-in {
-  opacity: 1;
-  transform: translateY(0);
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-  pointer-events: auto;
-}
-
-.fade-out {
-  opacity: 0;
-  transform: translateY(30rpx);
-  transition: all 0.4s ease;
-  pointer-events: none;
 }
