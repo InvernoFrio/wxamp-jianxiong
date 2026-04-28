@@ -1,2 +1,178 @@
 <!--pages/physics/exp-entanglement/exp-entanglement.wxml-->
-<text>pages/physics/exp-entanglement/exp-entanglement.wxml</text>
+
+<view class="physics-page page-enter">
+
+  <!-- STEP INDICATOR -->
+  <view class="step-indicator">
+    <view
+      wx:for="{{steps}}"
+      wx:key="index"
+      class="step-dot {{currentStep >= index ? 'active' : ''}}"
+    ></view>
+  </view>
+
+  <!-- STEP 1 -->
+  <view class="step-content" wx:if="{{currentStep === 0}}">
+
+    <view class="step-hero">
+      <text class="hero-icon">⚛️</text>
+      <text class="hero-title">{{steps[0].title}}</text>
+      <text class="hero-desc">{{steps[0].desc}}</text>
+    </view>
+
+    <glass-card>
+      <text class="intro-text">
+        1935 年，爱因斯坦、波多尔斯基与罗森提出著名的 EPR 悖论：
+        两个粒子一旦发生纠缠，无论相隔多远，对其中一个的测量
+        会瞬间影响另一个的状态。
+      </text>
+    </glass-card>
+
+    <glass-card>
+      <text class="intro-text">
+        这种"超距关联"令爱因斯坦深感不安，他称之为
+        "幽灵般的超距作用"。量子纠缠是否真实存在？
+        贝尔不等式给出了可检验的答案。
+      </text>
+    </glass-card>
+
+  </view>
+
+  <!-- STEP 2 -->
+  <view class="step-content" wx:if="{{currentStep === 1}}">
+
+    <view class="step-hero">
+      <text class="hero-icon">🔗</text>
+      <text class="hero-title">{{steps[1].title}}</text>
+      <text class="hero-desc">{{steps[1].desc}}</text>
+    </view>
+
+    <glass-card>
+      <text class="intro-text">
+        纠缠粒子对处于叠加态：在测量之前，任何一个粒子的自旋
+        都没有确定值。一旦测量其中一个，两个粒子的状态
+        同时坍缩，结果呈现出严格的反关联。
+      </text>
+    </glass-card>
+
+    <glass-card>
+      <text class="intro-text">
+        在下面的模拟中，中心光源持续产生纠缠光子对。
+        两个光子向相反方向飞出，由探测器 A 和 B 分别记录。
+        经典物理无法解释它们之间的关联强度。
+      </text>
+    </glass-card>
+
+  </view>
+
+  <!-- STEP 3 EXPERIMENT -->
+  <view class="step-content experiment-step" wx:if="{{currentStep === 2}}">
+
+    <view class="canvas-container">
+      <canvas type="2d" id="physicsCanvas" class="physics-canvas"></canvas>
+    </view>
+
+    <!-- 统计面板 -->
+    <view class="stats-panel glass">
+
+      <view class="stat-item">
+        <text class="stat-label">反关联数</text>
+        <text class="stat-value stat-up">{{diffCount}}</text>
+      </view>
+
+      <view class="stat-item">
+        <text class="stat-label">总粒子对</text>
+        <text class="stat-value">{{totalPairs}}</text>
+      </view>
+
+      <view class="stat-item">
+        <text class="stat-label">同向数</text>
+        <text class="stat-value stat-down">{{sameCount}}</text>
+      </view>
+
+    </view>
+
+    <!-- 控制按钮 -->
+    <view class="controls">
+
+      <glass-button wx:if="{{!experimentRunning && !experimentDone}}" bind:tap="onStartExperiment">
+        <text>▶ 启动实验</text>
+      </glass-button>
+
+      <glass-button wx:if="{{experimentRunning}}" bind:tap="onStopExperiment">
+        <text>■ 停止</text>
+      </glass-button>
+
+    </view>
+
+    <!-- 结果面板 -->
+    <view class="result-panel" wx:if="{{experimentDone}}">
+
+      <glass-card>
+
+        <text class="result-title">关联结果</text>
+
+        <view class="result-bar">
+
+          <view class="result-bar-diff" style="width: {{correlation}}%">
+            <text class="bar-label">反关联 {{correlation}}%</text>
+          </view>
+
+          <view class="result-bar-same" style="width: {{100 - correlation}}%">
+            <text class="bar-label">同向 {{100 - correlation}}%</text>
+          </view>
+
+        </view>
+
+        <text class="result-desc">
+          反关联比例远超经典物理预测的上限（50%），
+          违反贝尔不等式，证明量子纠缠是真实存在的非局域关联。
+        </text>
+
+      </glass-card>
+
+    </view>
+
+  </view>
+
+  <!-- STEP 4 -->
+  <view class="step-content" wx:if="{{currentStep === 3}}">
+
+    <view class="step-hero">
+      <text class="hero-icon">🏁</text>
+      <text class="hero-title">{{steps[3].title}}</text>
+      <text class="hero-desc">{{steps[3].desc}}</text>
+    </view>
+
+    <glass-card>
+      <text class="intro-text">
+        1982 年，阿兰·阿斯佩首次在实验室验证了贝尔不等式的违反，
+        确认了量子纠缠的真实性。2022 年，相关研究荣获诺贝尔物理学奖。
+      </text>
+    </glass-card>
+
+    <glass-card>
+      <text class="intro-text">
+        量子纠缠不仅是物理基础研究的核心，也是量子密钥分发、
+        量子隐形传态与量子计算的重要资源。
+      </text>
+    </glass-card>
+
+  </view>
+
+  <!-- 导航 -->
+  <view class="step-nav">
+
+    <view wx:if="{{currentStep > 0}}" bindtap="onPrevStep" class="nav-btn">
+      <text>‹ 上一步</text>
+    </view>
+
+    <view wx:else class="nav-placeholder"></view>
+
+    <view wx:if="{{currentStep < 3}}" bindtap="onNextStep" class="nav-btn nav-next">
+      <text>下一步 ›</text>
+    </view>
+
+  </view>
+
+</view>
