@@ -1,24 +1,23 @@
 /* pages/physics/exp-diffusion/exp-diffusion.wxss */
-/* =======================
-   BASE LAYOUT（实验系统基底）
-======================= */
-
-.container {
-  padding: 20rpx;
+/* =========================
+   基础页面背景（扩散深空风）
+========================= */
+.physics-page {
   min-height: 100vh;
-  color: #fff;
+  padding: 20rpx 24rpx;
+  padding-bottom: 140rpx;
 
   background:
-    radial-gradient(circle at 85% 10%, rgba(56,189,248,0.18), transparent 42%),
-    radial-gradient(circle at 15% 85%, rgba(34,197,94,0.14), transparent 45%),
-    radial-gradient(circle at 50% 50%, rgba(148,163,184,0.05), transparent 60%),
-    #0f172a;
+    radial-gradient(circle at 20% 20%, rgba(79,195,247,0.16), transparent 35%),
+    radial-gradient(circle at 80% 80%, rgba(255,82,82,0.12), transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(120,120,255,0.06), transparent 60%),
+    linear-gradient(180deg, #070b1a 0%, #0b1020 50%, #0a0f1d 100%);
+  color: #e8f1ff;
 }
 
-/* =======================
-   STEP SYSTEM（严格 parity风格）
-======================= */
-
+/* =========================
+   步骤指示器（统一体系）
+========================= */
 .step-indicator {
   display: flex;
   justify-content: center;
@@ -30,98 +29,122 @@
   width: 14rpx;
   height: 14rpx;
   border-radius: 50%;
-  background: rgba(148,163,184,0.25);
+  background: rgba(200,220,255,0.25);
   transition: all 0.3s ease;
 }
 
 .step-dot.active {
-  background: #38bdf8;
-  transform: scale(1.4);
-  box-shadow: 0 0 0 10rpx rgba(56,189,248,0.12);
+  background: #4FC3F7;
+  transform: scale(1.35);
+  box-shadow: 0 0 0 10rpx rgba(79,195,247,0.12);
 }
 
-/* =======================
-   STEP CONTENT（实验叙事层）
-======================= */
+.experiment-step {
+  align-items: stretch;
+}
 
+/* =========================
+   step动画
+========================= */
 .step-content {
+  animation: fadeInUp 0.45s ease-out;
   display: flex;
   flex-direction: column;
-  gap: 28rpx;
-  animation: fadeIn 0.35s ease;
+  gap: 30rpx;
+  padding: 0 12rpx;
+  min-height: 900rpx;
+  box-sizing: border-box;
+
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(18rpx); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
+/* =========================
+   标题区
+========================= */
 .step-hero {
   text-align: center;
-  padding: 30rpx 0;
+  padding: 26rpx 0 40rpx;
 }
 
 .hero-icon {
-  font-size: 68rpx;
+  font-size: 70rpx;
   display: block;
-  margin-bottom: 10rpx;
+  margin-bottom: 14rpx;
+  filter: drop-shadow(0 0 10rpx rgba(79,195,247,0.4));
 }
 
 .hero-title {
   font-size: 40rpx;
   font-weight: bold;
+  color: #eaf3ff;
   letter-spacing: 2rpx;
+  display: block;
+  margin-bottom: 10rpx;
 }
 
 .hero-desc {
   font-size: 26rpx;
-  color: #94a3b8;
-  margin-top: 8rpx;
+  color: rgba(200,220,255,0.6);
 }
 
-/* =======================
-   GLASS CARD（统一实验卡片）
-======================= */
+/* =========================
+   glass卡片（统一）
+========================= */
+glass-card {
+  display: block;
+  padding: 28rpx;
+  border-radius: 22rpx;
 
-.card {
   background: rgba(255,255,255,0.06);
   border: 1rpx solid rgba(255,255,255,0.12);
-  border-radius: 22rpx;
-  padding: 22rpx;
+  backdrop-filter: blur(16rpx);
 
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
-  box-shadow: 0 10rpx 28rpx rgba(0,0,0,0.25);
+  box-shadow:
+    0 10rpx 30rpx rgba(0,0,0,0.25),
+    inset 0 1rpx 0 rgba(255,255,255,0.05);
 }
 
-.card-title {
-  font-size: 30rpx;
-  font-weight: bold;
-  margin-bottom: 12rpx;
-  color: #38bdf8;
+.intro-text {
+  font-size: 28rpx;
+  line-height: 2.0;
+  color: rgba(230,240,255,0.85);
 }
 
-.card-text {
-  font-size: 26rpx;
-  line-height: 1.8;
-  color: #cbd5f5;
+/* =========================
+   实验区域（扩散特化）
+========================= */
+.diffusion-canvas {
+  width: 680rpx;
+  height: 340rpx;
 }
-
-/* =======================
-   EXPERIMENT CORE AREA（canvas层）
-======================= */
 
 .canvas-container {
-  width: 100%;
-  height: 420rpx;
+  width: 680rpx;
+  height: 340rpx;
   border-radius: 26rpx;
   overflow: hidden;
+  position: relative;
 
-  background: rgba(255,255,255,0.03);
-  border: 1rpx solid rgba(255,255,255,0.08);
+  background:
+    radial-gradient(circle at 25% 50%, rgba(79,195,247,0.08), transparent),
+    radial-gradient(circle at 75% 50%, rgba(255,82,82,0.08), transparent),
+    rgba(0,0,0,0.4);
 
-  box-shadow: inset 0 0 40rpx rgba(0,0,0,0.35);
+  border: 1rpx solid rgba(79,195,247,0.25);
+
+  box-shadow:
+    0 18rpx 40rpx rgba(0,0,0,0.35),
+    inset 0 0 40rpx rgba(79,195,247,0.08);
 }
 
 .physics-canvas {
@@ -129,109 +152,103 @@
   height: 100%;
 }
 
-/* =======================
-   DETECTOR PANEL（stats升级）
-======================= */
+/* 中间隔板视觉 */
+.canvas-container::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  width: 2rpx;
+  height: 100%;
+  background: rgba(255,255,255,0.15);
+}
 
+/* =========================
+   stats（四块结构）
+========================= */
 .stats-panel {
-  display: flex;
-  justify-content: space-between;
-  padding: 22rpx;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20rpx;
+
+  padding: 24rpx;
+  border-radius: 24rpx;
 
   background: rgba(255,255,255,0.05);
-  border: 1rpx solid rgba(255,255,255,0.10);
-  border-radius: 22rpx;
+  border: 1rpx solid rgba(255,255,255,0.1);
 
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(14rpx);
+  box-sizing: border-box;
+  width: 680rpx;
 }
 
 .stat-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6rpx;
 }
 
 .stat-label {
   font-size: 22rpx;
-  color: #94a3b8;
+  color: rgba(200,220,255,0.6);
 }
 
 .stat-value {
-  font-size: 34rpx;
+  font-size: 36rpx;
   font-weight: bold;
 }
 
+/* 颜色映射 */
 .stat-up {
-  color: #38bdf8;
+  color: #4FC3F7;
 }
 
 .stat-down {
-  color: #f87171;
+  color: #FF5252;
 }
 
-/* =======================
-   CONTROL PANEL（实验控制台）
-======================= */
-
+/* =========================
+   控制区
+========================= */
 .controls {
   display: flex;
   justify-content: center;
-  gap: 12rpx;
+  margin-top: 10rpx;
 }
 
-button {
-  flex: 1;
-  border-radius: 16rpx;
-  font-size: 26rpx;
-  transition: all 0.15s ease;
+/* =========================
+   结果层
+========================= */
+.result-panel {
+  margin-top: 20rpx;
 }
 
-/* start */
-button[type="primary"] {
-  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
-  color: #fff;
+.result-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #4FC3F7;
+  margin-bottom: 18rpx;
 }
-
-/* stop */
-button:nth-child(2) {
-  background: rgba(248,113,113,0.12);
-  color: #f87171;
-}
-
-/* reset */
-button:nth-child(3) {
-  background: rgba(148,163,184,0.12);
-  color: #cbd5f5;
-}
-
-button:active {
-  transform: scale(0.96);
-  opacity: 0.85;
-}
-
-/* =======================
-   RESULT PANEL（物理结论层）
-======================= */
 
 .result-bar {
   display: flex;
-  height: 36rpx;
-  border-radius: 999rpx;
+  height: 46rpx;
+  border-radius: 14rpx;
   overflow: hidden;
-  margin-top: 16rpx;
-  border: 1rpx solid rgba(255,255,255,0.12);
+
+  box-shadow: inset 0 2rpx 8rpx rgba(0,0,0,0.3);
 }
 
-.result-bar-up {
-  background: #38bdf8;
+.result-bar-same {
+  background: linear-gradient(90deg, #4FC3F7, #29B6F6);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.result-bar-down {
-  background: #f87171;
+.result-bar-diff {
+  background: linear-gradient(90deg, #FF5252, #C41E3A);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -240,27 +257,39 @@ button:active {
 .bar-label {
   font-size: 20rpx;
   color: #fff;
+  font-weight: bold;
 }
 
-/* =======================
-   NAVIGATION（parity一致）
-======================= */
+.result-desc {
+  font-size: 26rpx;
+  color: rgba(200,220,255,0.7);
+  line-height: 1.8;
+}
 
+/* =========================
+   导航
+========================= */
 .step-nav {
   display: flex;
   justify-content: space-between;
-  margin-top: 28rpx;
+  margin-top: 30rpx;
 }
 
 .nav-btn {
-  padding: 14rpx 28rpx;
+  padding: 16rpx 34rpx;
+  border-radius: 18rpx;
+
   background: rgba(255,255,255,0.06);
-  border: 1rpx solid rgba(255,255,255,0.10);
-  border-radius: 16rpx;
-  color: #cbd5f5;
+  border: 1rpx solid rgba(255,255,255,0.12);
+
+  color: #4FC3F7;
+  font-size: 28rpx;
 }
 
 .nav-btn:active {
   transform: scale(0.95);
-  background: rgba(56,189,248,0.08);
+}
+
+.nav-placeholder {
+  width: 120rpx;
 }

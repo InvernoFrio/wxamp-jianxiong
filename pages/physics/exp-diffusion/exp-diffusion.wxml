@@ -1,20 +1,13 @@
-<!--pages/physics/exp-diffusion/exp-diffusion.wxml-->
-<view class="physics-page page-enter">
+<view class="physics-page page-enter diffusion-page">
 
-  <!-- =======================
-       Step Indicator（同 parity）
-  ======================== -->
+  <!-- step indicator -->
   <view class="step-indicator">
-    <view
-      wx:for="{{steps}}"
-      wx:key="index"
-      class="step-dot {{currentStep >= index ? 'active' : ''}}"
-    ></view>
+    <view wx:for="{{steps}}" wx:key="index"
+      class="step-dot {{currentStep >= index ? 'active' : ''}}">
+    </view>
   </view>
 
-  <!-- =======================
-       Step 0: 引入
-  ======================== -->
+  <!-- STEP 0 -->
   <view class="step-content" wx:if="{{currentStep === 0}}">
     <view class="step-hero">
       <text class="hero-icon">🌫️</text>
@@ -22,173 +15,175 @@
       <text class="hero-desc">{{steps[0].desc}}</text>
     </view>
 
-    <view class="card">
-      <text class="card-text">
-        气体扩散是分子热运动导致的宏观现象，它揭示了微观粒子统计行为与宏观规律之间的关系。
+    <glass-card>
+      <text class="intro-text">
+        气体扩散是统计物理的经典现象：大量分子在热运动驱动下，
+        从高浓度区域向低浓度区域自发迁移，最终趋向均匀分布。
       </text>
-    </view>
+    </glass-card>
+
+    <glass-card>
+      <text class="intro-text">
+        单个分子的运动完全随机，无法预测。
+        但数以亿计的分子叠加在一起，却产生出规律性极强的
+        宏观浓度梯度——这正是统计物理的魅力所在。
+      </text>
+    </glass-card>
   </view>
 
-  <!-- =======================
-       Step 1: 理论
-  ======================== -->
+  <!-- STEP 1 -->
   <view class="step-content" wx:if="{{currentStep === 1}}">
-
     <view class="step-hero">
       <text class="hero-icon">📐</text>
       <text class="hero-title">{{steps[1].title}}</text>
       <text class="hero-desc">{{steps[1].desc}}</text>
     </view>
 
-    <view class="card">
-      <text class="card-text">
-        格雷厄姆定律：扩散速率与气体分子质量的平方根成反比。
+    <glass-card>
+      <text class="intro-text">
+        格雷厄姆定律（1848年）指出：
+        在相同温度下，气体分子的扩散速率与其摩尔质量的平方根成反比。
       </text>
-    </view>
+    </glass-card>
 
-    <view class="card">
-      <text class="card-text">
-        轻同位素（U-235）比重同位素（U-238）扩散更快，从而在多级扩散中逐渐富集。
+    <glass-card>
+      <text class="intro-text">
+        U-235 与 U-238 摩尔质量仅相差约 1.3%，
+        导致 U-235 的扩散速率仅快约 0.4%。
+        单级分离效果极其微弱，需要数千级串联才能达到武器级浓缩度。
       </text>
-    </view>
+    </glass-card>
 
+    <glass-card>
+      <text class="intro-text">
+        曼哈顿计划中，橡树岭工厂建造了数千级扩散级联装置，
+        耗电量占当时美国全国用电量的约 1/6，
+        才将 U-235 浓度从天然的 0.7% 提升至 90% 以上。
+      </text>
+    </glass-card>
   </view>
 
-  <!-- =======================
-       Step 2: 实验（核心）
-  ======================== -->
+  <!-- STEP 2 实验 -->
   <view class="step-content experiment-step" wx:if="{{currentStep === 2}}">
 
-    <view class="step-hero">
-      <text class="hero-icon">🧪</text>
-      <text class="hero-title">{{steps[2].title}}</text>
-      <text class="hero-desc">{{steps[2].desc}}</text>
-    </view>
-
-    <!-- ===== canvas实验区 ===== -->
-    <view class="canvas-container">
+    <view class="canvas-container diffusion-canvas">
       <canvas id="diffCanvas" type="2d" class="physics-canvas"></canvas>
     </view>
 
-    <!-- ===== stats（严格 parity结构） ===== -->
-    <view class="stats-panel">
+    <!-- stats -->
+    <view class="stats-panel diffusion-stats">
 
       <view class="stat-item">
-        <text class="stat-label">轻同位素(U-235)</text>
-        <text class="stat-value stat-up">{{lightCount}}</text>
+        <text class="stat-label">左 U-235</text>
+        <text class="stat-value stat-up">{{leftLight}}</text>
       </view>
 
       <view class="stat-item">
-        <text class="stat-label">总粒子</text>
-        <text class="stat-value">{{totalParticles}}</text>
+        <text class="stat-label">左 U-238</text>
+        <text class="stat-value stat-down">{{leftHeavy}}</text>
       </view>
 
       <view class="stat-item">
-        <text class="stat-label">重同位素(U-238)</text>
-        <text class="stat-value stat-down">{{heavyCount}}</text>
+        <text class="stat-label">右 U-235</text>
+        <text class="stat-value stat-up">{{rightLight}}</text>
+      </view>
+
+      <view class="stat-item">
+        <text class="stat-label">右 U-238</text>
+        <text class="stat-value stat-down">{{rightHeavy}}</text>
       </view>
 
     </view>
 
-    <!-- ===== control（完全 parity同级） ===== -->
+    <!-- 控制 -->
     <view class="controls">
+      <glass-button wx:if="{{!experimentRunning}}" bind:tap="onStartExperiment">
+        ▶ 启动扩散
+      </glass-button>
 
-      <button
-        wx:if="{{!experimentRunning && !experimentDone}}"
-        bindtap="onStartExperiment"
-        type="primary"
-      >
-        ▶ 开始扩散实验
-      </button>
+      <glass-button wx:if="{{experimentRunning}}" bind:tap="onStopExperiment">
+        ■ 停止
+      </glass-button>
 
-      <button
-        wx:if="{{experimentRunning}}"
-        bindtap="onStopExperiment"
-      >
-        ■ 停止实验
-      </button>
-
-      <button
-        wx:if="{{experimentDone}}"
-        bindtap="onStartExperiment"
-        type="primary"
-      >
-        ↻ 重新实验
-      </button>
-
+      <glass-button wx:if="{{experimentDone}}" bind:tap="onResetExperiment">
+        ↻ 重置
+      </glass-button>
     </view>
 
-    <!-- ===== result（parity同款结构） ===== -->
+    <!-- 结果 -->
     <view class="result-panel" wx:if="{{experimentDone}}">
+      <glass-card>
 
-      <view class="card">
-        <text class="card-title">实验结果</text>
+        <text class="result-title">富集结果（右侧）</text>
 
         <view class="result-bar">
-          <view
-            class="result-bar-up"
-            style="width: {{enrichmentPercent}}%"
-          >
+
+          <view class="result-bar-same"
+            style="width: {{enrichmentPercent}}%">
             <text class="bar-label">U-235 {{enrichmentPercent}}%</text>
           </view>
 
-          <view
-            class="result-bar-down"
-            style="width: {{100 - enrichmentPercent}}%"
-          >
+          <view class="result-bar-diff"
+            style="width: {{100 - enrichmentPercent}}%">
             <text class="bar-label">U-238 {{100 - enrichmentPercent}}%</text>
           </view>
+
         </view>
 
-        <text class="card-text">
-          扩散过程中轻同位素富集现象显著，验证了质量依赖扩散机制。
+        <text class="result-desc">
+          经过多轮扩散，较轻的 U-235 优先穿越隔膜小孔，
+          在右侧腔室逐步富集。单级效果虽微弱，
+          但级联叠加后浓度差异显著放大。
         </text>
 
-      </view>
-
+      </glass-card>
     </view>
 
   </view>
 
-  <!-- =======================
-       Step 3: 结论
-  ======================== -->
+  <!-- STEP 3 -->
   <view class="step-content" wx:if="{{currentStep === 3}}">
-
     <view class="step-hero">
-      <text class="hero-icon">📊</text>
+      <text class="hero-icon">🏁</text>
       <text class="hero-title">{{steps[3].title}}</text>
       <text class="hero-desc">{{steps[3].desc}}</text>
     </view>
 
-    <view class="card">
-      <text class="card-text">
-        气体扩散法是早期核工业中重要的铀浓缩手段，其本质是利用分子质量差异造成的统计扩散偏差。
+    <glass-card>
+      <text class="intro-text">
+        气体扩散法揭示了统计物理最核心的思想：
+        微观层面极其微小的概率差异，经过大量粒子与多次循环的叠加，
+        最终涌现为可测量的宏观效应。
       </text>
-    </view>
+    </glass-card>
 
+    <glass-card>
+      <text class="intro-text">
+        气体扩散法因能耗巨大，1980 年代后逐渐被离心分离法取代。
+        离心机利用同位素在高速旋转中的质量差异实现分离，
+        效率是扩散法的数十倍。
+      </text>
+    </glass-card>
+
+    <glass-card>
+      <text class="intro-text">
+        今天，同位素分离技术广泛应用于核电燃料制备、
+        医用放射性同位素生产，以及基础粒子物理研究，
+        远超其最初的历史背景。
+      </text>
+    </glass-card>
   </view>
 
-  <!-- =======================
-       navigation（同 parity）
-  ======================== -->
+  <!-- nav -->
   <view class="step-nav">
 
-    <view
-      class="nav-btn"
-      wx:if="{{currentStep > 0}}"
-      bindtap="onPrevStep"
-    >
+    <view wx:if="{{currentStep > 0}}" bindtap="onPrevStep" class="nav-btn">
       ‹ 上一步
     </view>
 
-    <view class="nav-placeholder" wx:else></view>
+    <view wx:else class="nav-placeholder"></view>
 
-    <view
-      class="nav-btn nav-next"
-      wx:if="{{currentStep < 3}}"
-      bindtap="onNextStep"
-    >
+    <view wx:if="{{currentStep < 3}}" bindtap="onNextStep" class="nav-btn nav-next">
       下一步 ›
     </view>
 
