@@ -8,6 +8,7 @@ Page({
     bookOpen: false,
     bookPage: 0,
     pageReady: false,
+  
     chapters: [
       { name: '生平年表', page: 'timeline', icon: '📜' },
       { name: '书韵阅读', page: 'reader', icon: '📖' },
@@ -111,5 +112,8 @@ Page({
     } else {
       wx.navigateTo({ url: `/pages/${page}/${page}` });
     }
+  },
+  goToChat() {
+    wx.navigateTo({ url: '/pages/chat/chat' })
   }
 });

@@ -2,11 +2,16 @@
   "description": "健雄书韵 - 吴健雄数字纪念馆",
   "cloudfunctionRoot": "cloudfunctions/",
   "packOptions": {
-    "ignore": [{"type":"folder","value":"scripts"}],
+    "ignore": [
+      {
+        "value": "scripts",
+        "type": "folder"
+      }
+    ],
     "include": []
   },
   "setting": {
-    "cloud": true, 
+    "cloud": true,
     "bundle": false,
     "userConfirmedBundleSwitch": false,
     "urlCheck": true,

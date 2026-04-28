@@ -7,6 +7,9 @@
     <view class="quote-line"></view>
   </view>
 
+  <view class="ai-chat-entry" bindtap="goToChat">
+  <text>💬 对话吴健雄</text>
+</view>
   <!-- 书本 + 操作栏 -->
   <view class="main-layout {{bookOpen ? 'layout-shifted' : ''}}">
     <view class="book-area">
