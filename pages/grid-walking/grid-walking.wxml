@@ -130,4 +130,39 @@
     </view>
   </view>
 
+  <!-- 内容内嵌弹窗（阅读 / 年表） -->
+  <view class="content-modal-overlay" wx:if="{{showContentModal}}" bindtap="onCloseContentModal">
+    <view class="content-modal-card" catchtap="">
+      <view class="content-modal-header">
+        <text class="content-modal-title serif-title">{{contentModalTitle}}</text>
+        <text class="content-modal-close" bindtap="onCloseContentModal">✕</text>
+      </view>
+      <scroll-view class="content-modal-body" scroll-y enhanced show-scrollbar="{{false}}">
+        <block wx:for="{{contentModalBody}}" wx:key="index">
+          <view wx:if="{{item.type === 'heading'}}" class="content-section-title">
+            <text>{{item.text}}</text>
+          </view>
+          <view wx:elif="{{item.type === 'text'}}" class="content-paragraph">
+            <text class="content-paragraph-text">{{item.text}}</text>
+          </view>
+          <view wx:elif="{{item.type === 'timeline'}}" class="content-timeline-item">
+            <view class="content-tl-header">
+              <text class="content-tl-icon">{{item.icon}}</text>
+              <text class="content-tl-year">{{item.year}}</text>
+              <text class="content-tl-title">{{item.title}}</text>
+            </view>
+            <view class="content-tl-detail">
+              <text class="content-tl-detail-text">{{item.detail}}</text>
+            </view>
+          </view>
+        </block>
+        <view class="content-modal-footer">
+          <view class="content-close-btn" bindtap="onCloseContentModal">
+            <text>关闭 · 继续探索</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
 </view>

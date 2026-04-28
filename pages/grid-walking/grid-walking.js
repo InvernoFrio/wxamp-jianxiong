@@ -3,34 +3,38 @@ const {
   MAP_WIDTH, MAP_HEIGHT, NODE_TYPES,
   nodes, edges, routes, contentMap
 } = require('../../data/map-data.js');
+const chapterIndex = require('../../data/chapters/index.js');
+const timelineData = require('../../data/timeline.js');
+
+// 预建章节映射 { ch01: require('./ch01.js'), ... }
+const chapterModules = {};
+const chapterIds = ['ch00','ch01','ch02','ch03','ch04','ch05','ch06','ch07','ch08','ch09'];
+chapterIds.forEach(id => {
+  try { chapterModules[id] = require('../../data/chapters/' + id + '.js'); } catch(e) {}
+});
 
 Page({
   data: {
-    // 地图数据
     nodes: nodes,
     nodeMap: {},
     canvasWidth: 350,
     canvasHeight: 513,
 
-    // 游戏状态
     currentNodeId: 'start',
     currentNode: null,
     visitedNodes: ['start'],
     reachableNodes: [],
     routeHistory: ['start'],
 
-    // 路线
     currentRoute: null,
     completedRoutes: [],
     availableRoutes: [],
 
-    // UI状态
     panelVisible: true,
     showSummary: false,
     showRouteSelect: false,
     isEnd: false,
 
-    // 节点信息
     nodeTypeIcon: '🚩',
     nodeTypeLabel: '起点',
     nodeTypeColor: '#4CAF50',
@@ -38,71 +42,64 @@ Page({
     progressPercent: 0,
     totalProgressPercent: 0,
     allRoutesCompleted: false,
-    completedRoutesInfo: []
+    completedRoutesInfo: [],
+
+    // 内容内嵌弹窗
+    showContentModal: false,
+    contentModalTitle: '',
+    contentModalBody: []
   },
 
   onLoad(options) {
-    // 构建节点映射
     const nodeMap = {};
     nodes.forEach(n => { nodeMap[n.id] = n; });
 
-    // 计算画布尺寸
     const sysInfo = wx.getWindowInfo();
-    const canvasWidth = sysInfo.windowWidth - 48; // 左右各24rpx padding
+    const canvasWidth = sysInfo.windowWidth - 48;
     const canvasHeight = Math.round(canvasWidth * MAP_HEIGHT / MAP_WIDTH);
 
-    // 计算初始可达节点
     const reachable = this._getReachableNodes('start', []);
-
-    // 加载保存的进度
     const saved = this._loadProgress();
 
     this.setData({
-      nodeMap,
-      canvasWidth,
-      canvasHeight,
+      nodeMap, canvasWidth, canvasHeight,
       reachableNodes: reachable,
       currentRoute: null,
       completedRoutes: saved.completedRoutes || [],
       visitedNodes: saved.visitedNodes || ['start']
     });
 
-    // 显示路线选择
     this._updateAvailableRoutes();
     this.setData({ showRouteSelect: true });
+    // 底栏隐藏（加延迟确保生效）
+    setTimeout(() => { wx.hideTabBar({ animation: false }); }, 100);
   },
 
-  // 获取可达节点（当前节点的直接邻居）
+  onShow() {
+    // 返回本页时确保底栏隐藏
+    wx.hideTabBar({ animation: false });
+  },
+
+  /* ======== 核心逻辑 ======== */
+
   _getReachableNodes(nodeId, visited) {
     const reachable = [];
     edges.forEach(edge => {
-      if (edge.from === nodeId && !visited.includes(edge.to)) {
-        reachable.push(edge.to);
-      }
-      // 双向通行：如果边的目标是当前节点，且来源未访问
-      if (edge.to === nodeId && !visited.includes(edge.from)) {
-        reachable.push(edge.from);
-      }
+      if (edge.from === nodeId && !visited.includes(edge.to)) reachable.push(edge.to);
+      if (edge.to === nodeId && !visited.includes(edge.from)) reachable.push(edge.from);
     });
     return [...new Set(reachable)];
   },
 
-  // 获取节点类型信息
   _getNodeType(node) {
     const conf = NODE_TYPES[node.type] || NODE_TYPES.story;
-    return {
-      icon: conf.icon,
-      label: conf.label,
-      color: conf.color
-    };
+    return { icon: conf.icon, label: conf.label, color: conf.color };
   },
 
-  // 更新内容按钮文本
   _updateContentBtnText(node) {
     if (!node.contentId) return '';
     const mapping = contentMap[node.contentId];
     if (!mapping) return '查看内容';
-
     switch (mapping.type) {
       case 'reader': return '进入阅读';
       case 'timeline': return '查看年表';
@@ -111,55 +108,36 @@ Page({
     }
   },
 
-  // 更新可用路线
   _updateAvailableRoutes() {
     const { completedRoutes } = this.data;
-    const available = routes.map(r => ({
-      ...r,
-      completed: completedRoutes.includes(r.id)
-    }));
+    const available = routes.map(r => ({ ...r, completed: completedRoutes.includes(r.id) }));
     const allCompleted = available.every(r => r.completed);
-    this.setData({
-      availableRoutes: available,
-      allRoutesCompleted: allCompleted
-    });
+    this.setData({ availableRoutes: available, allRoutesCompleted: allCompleted });
   },
 
-  // 保存进度
   _saveProgress() {
-    const { visitedNodes, completedRoutes } = this.data;
     try {
       wx.setStorageSync('grid_walking_progress', {
-        visitedNodes,
-        completedRoutes,
+        visitedNodes: this.data.visitedNodes,
+        completedRoutes: this.data.completedRoutes,
         lastUpdate: Date.now()
       });
-    } catch (e) {
-      console.warn('保存走格子进度失败', e);
-    }
+    } catch (e) { /* ignore */ }
   },
 
-  // 加载进度
   _loadProgress() {
-    try {
-      return wx.getStorageSync('grid_walking_progress') || {};
-    } catch (e) {
-      return {};
-    }
+    try { return wx.getStorageSync('grid_walking_progress') || {}; } catch (e) { return {}; }
   },
 
-  // === 事件处理 ===
+  /* ======== 事件处理 ======== */
 
-  // 节点点击
   onNodeTap(e) {
     const { nodeId } = e.detail;
     const { currentNodeId, visitedNodes, nodeMap, currentRoute } = this.data;
 
-    // 验证是否可达
     const reachable = this._getReachableNodes(currentNodeId, visitedNodes);
     if (!reachable.includes(nodeId)) return;
 
-    // 移动到新节点
     const newVisited = [...visitedNodes, nodeId];
     const newHistory = [...this.data.routeHistory, nodeId];
     const node = nodeMap[nodeId];
@@ -167,30 +145,20 @@ Page({
     const newReachable = this._getReachableNodes(nodeId, newVisited);
     const isEnd = node.type === 'end';
 
-    // 检查是否在路线中
     let routeComplete = false;
-    if (currentRoute && isEnd) {
-      routeComplete = true;
-    }
+    if (currentRoute && isEnd) routeComplete = true;
 
     this.setData({
-      currentNodeId: nodeId,
-      currentNode: node,
-      visitedNodes: newVisited,
-      reachableNodes: newReachable,
-      routeHistory: newHistory,
-      isEnd,
-      nodeTypeIcon: typeInfo.icon,
-      nodeTypeLabel: typeInfo.label,
-      nodeTypeColor: typeInfo.color,
+      currentNodeId: nodeId, currentNode: node,
+      visitedNodes: newVisited, reachableNodes: newReachable,
+      routeHistory: newHistory, isEnd,
+      nodeTypeIcon: typeInfo.icon, nodeTypeLabel: typeInfo.label, nodeTypeColor: typeInfo.color,
       contentBtnText: this._updateContentBtnText(node),
       progressPercent: Math.round(newVisited.length / nodes.length * 100)
     });
 
-    // 保存进度
     this._saveProgress();
 
-    // 如果到达终点，标记路线完成
     if (routeComplete) {
       const completedRoutes = [...this.data.completedRoutes, currentRoute.id];
       this.setData({
@@ -202,9 +170,9 @@ Page({
     }
   },
 
-  // 查看内容
+  // 查看内容 → 内嵌弹窗（不走 switchTab）
   onViewContent() {
-    const { currentNode, nodeMap } = this.data;
+    const { currentNode } = this.data;
     if (!currentNode || !currentNode.contentId) return;
 
     const mapping = contentMap[currentNode.contentId];
@@ -212,28 +180,19 @@ Page({
 
     switch (mapping.type) {
       case 'reader':
-        wx.navigateTo({
-          url: `/pages/reader/reader?chapter=${mapping.chapterId}`
-        });
+        this._showReaderModal(mapping.chapterId);
         break;
       case 'timeline':
-        wx.switchTab({
-          url: '/pages/timeline/timeline'
-        });
+        this._showTimelineModal(mapping.year);
         break;
       case 'physics':
+        wx.hideTabBar({ animation: false });
         if (mapping.experiment === 'parity') {
-          wx.navigateTo({
-            url: '/pages/physics/exp-parity/exp-parity'
-          });
+          wx.navigateTo({ url: '/pages/physics/exp-parity/exp-parity' });
         } else if (mapping.experiment === 'diffusion') {
-          wx.navigateTo({
-            url: '/pages/physics/exp-diffusion/exp-diffusion'
-          });
+          wx.navigateTo({ url: '/pages/physics/exp-diffusion/exp-diffusion' });
         } else {
-          wx.switchTab({
-            url: '/pages/physics/index'
-          });
+          wx.showToast({ title: '实验内容开发中', icon: 'none' });
         }
         break;
       default:
@@ -241,13 +200,60 @@ Page({
     }
   },
 
-  // 显示摘要
+  // 关闭内容弹窗
+  onCloseContentModal() {
+    this.setData({ showContentModal: false });
+  },
+
+  // 内嵌阅读弹窗
+  _showReaderModal(chapterId) {
+    const chNum = String(chapterId);
+    // chapterId 是数字 1,2,3..., 对应 ch01, ch02...
+    const chId = 'ch' + (chNum.length === 1 ? '0' : '') + chNum;
+    const meta = chapterIndex.find(c => c.id === chId);
+    const chModule = chapterModules[chId];
+
+    const title = meta ? meta.title : '阅读';
+    const body = [];
+
+    if (chModule && chModule.sections) {
+      chModule.sections.forEach(sec => {
+        body.push({ type: 'heading', text: sec.title });
+        if (sec.paragraphs) {
+          sec.paragraphs.forEach(p => { body.push({ type: 'text', text: p }); });
+        }
+      });
+    } else {
+      body.push({ type: 'text', text: '该章节内容尚未加载，请通过阅读模块查看。' });
+    }
+
+    this.setData({
+      showContentModal: true,
+      contentModalTitle: title,
+      contentModalBody: body.slice(0, 60) // 限制条目数
+    });
+  },
+
+  // 内嵌年表弹窗
+  _showTimelineModal(year) {
+    const entries = timelineData.filter(t => t.year >= year && t.year < year + 10);
+    const body = entries.length > 0
+      ? entries.map(e => ({ type: 'timeline', year: e.year, title: e.title, detail: e.detail, icon: e.icon }))
+      : [{ type: 'text', text: '该年份附近暂无年表数据。' }];
+
+    this.setData({
+      showContentModal: true,
+      contentModalTitle: year + '年前后 · 年表',
+      contentModalBody: body
+    });
+  },
+
+  // 摘要
   onShowSummary() {
     const { visitedNodes, currentRoute, completedRoutes } = this.data;
     const completedRoutesInfo = routes
       .filter(r => completedRoutes.includes(r.id))
       .map(r => ({ id: r.id, name: r.name, color: r.color }));
-
     this.setData({
       showSummary: true,
       totalProgressPercent: Math.round(visitedNodes.length / nodes.length * 100),
@@ -255,52 +261,32 @@ Page({
     });
   },
 
-  // 关闭摘要
   onCloseSummary() {
     this.setData({ showSummary: false });
   },
 
-  // 重新开始
   onRestart() {
     this.setData({ showSummary: false });
-
     if (this.data.allRoutesCompleted) {
-      // 所有路线完成，回到首页
       wx.showToast({ title: '恭喜完成所有探索！', icon: 'success' });
-      setTimeout(() => {
-        wx.switchTab({ url: '/pages/home/home' });
-      }, 1500);
+      setTimeout(() => { wx.switchTab({ url: '/pages/home/home' }); }, 1500);
       return;
     }
-
-    // 显示路线选择
     this._updateAvailableRoutes();
     this.setData({ showRouteSelect: true });
   },
 
-  // 选择路线
+  // 选择路线 — 已完成路线也能重新体验
   onSelectRoute(e) {
     const routeId = e.currentTarget.dataset.routeId;
     const route = routes.find(r => r.id === routeId);
     if (!route) return;
 
-    // 如果该路线已完成，不允许再选
-    if (this.data.completedRoutes.includes(routeId)) {
-      wx.showToast({ title: '该路线已完成', icon: 'none' });
-      return;
-    }
-
-    // 重置游戏状态，开始新路线
     const reachable = this._getReachableNodes('start', ['start']);
-
     this.setData({
-      currentNodeId: 'start',
-      currentNode: nodes[0],
-      visitedNodes: ['start'],
-      reachableNodes: reachable,
-      routeHistory: ['start'],
-      currentRoute: route,
-      isEnd: false,
+      currentNodeId: 'start', currentNode: nodes[0],
+      visitedNodes: ['start'], reachableNodes: reachable,
+      routeHistory: ['start'], currentRoute: route, isEnd: false,
       showRouteSelect: false,
       nodeTypeIcon: NODE_TYPES.start.icon,
       nodeTypeLabel: NODE_TYPES.start.label,
@@ -310,9 +296,7 @@ Page({
     });
   },
 
-  // 关闭路线选择
   onCloseRouteSelect() {
-    // 如果没有选择路线，不允许关闭
     if (!this.data.currentRoute) {
       wx.showToast({ title: '请先选择一条路线', icon: 'none' });
       return;
@@ -320,7 +304,6 @@ Page({
     this.setData({ showRouteSelect: false });
   },
 
-  // 分享
   onShareAppMessage() {
     return {
       title: '我在「健雄书韵」探索吴健雄的足迹，快来试试吧！',

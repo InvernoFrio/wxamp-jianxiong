@@ -20,13 +20,26 @@ Page({
   onLoad() {
     this.setData({ pageReady: true });
     this._startQuoteTimer();
-    wx.hideTabBar({ animation: false });
+    // 延迟执行确保在部分机型上生效
+    setTimeout(() => wx.hideTabBar({ animation: false }), 150);
+    setTimeout(() => wx.hideTabBar({ animation: false }), 400);
   },
 
   onShow() {
+    // 返回首页时，书未翻开则确保底栏隐藏
     if (!this.data.bookOpen) {
-      wx.hideTabBar({ animation: false });
+      this._hideTabBar();
     }
+  },
+
+  _hideTabBar() {
+    wx.hideTabBar({ animation: true, fail: () => {} });
+    // 部分机型需要二次确认
+    setTimeout(() => wx.hideTabBar({ animation: false, fail: () => {} }), 300);
+  },
+
+  _showTabBar() {
+    wx.showTabBar({ animation: true, fail: () => {} });
   },
 
   _startQuoteTimer() {
@@ -53,10 +66,10 @@ Page({
     const isOpen = page > 0;
     this.setData({ bookPage: page, bookOpen: isOpen });
     if (isOpen) {
-      wx.showTabBar({ animation: true });
+      this._showTabBar();
     } else {
       this.setData({ directAccess: false });
-      wx.hideTabBar({ animation: true });
+      this._hideTabBar();
     }
   },
 
