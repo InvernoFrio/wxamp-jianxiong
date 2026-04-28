@@ -6,6 +6,7 @@
     "include": []
   },
   "setting": {
+    "cloud": true, 
     "bundle": false,
     "userConfirmedBundleSwitch": false,
     "urlCheck": true,

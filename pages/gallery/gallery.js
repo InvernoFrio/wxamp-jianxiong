@@ -1,21 +1,52 @@
 // pages/gallery/gallery.js
+const db = wx.cloud.database() // 获取云数据库实例
+
 Page({
   data: {
-    photos: [
-      { id: 1, title: '晨曦中的城市', url: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800' },
-      { id: 2, title: '冬日里的那一抹红', url: 'https://images.unsplash.com/photo-1549220917-76789e9447e1?w=800' },
-      { id: 3, title: '古镇的宁静', url: 'https://images.unsplash.com/photo-1520114878144-6123749968dd?w=800' },
-      { id: 4, title: '深秋的落叶', url: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800' },
-      { id: 5, title: '繁星点点的夜空', url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800' },
-      { id: 6, title: '无尽的海岸线', url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800' }
-    ]
+    // 初始设为空数组，等待云端数据加载
+    photos: [] 
   },
 
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad(options) {
+    // 延迟 500ms 执行，确保 app.js 的 wx.cloud.init 彻底完成
+    setTimeout(() => {
+      this.fetchPhotos();
+    }, 500);
+  },
+
+  // 获取云端图片数据
+  fetchPhotos() {
+    wx.showLoading({ title: '加载数据中' });
+    
+    // 注意：这里集合名称需改为你实际创建的名字，例如 'gallery'
+    db.collection('gallery').orderBy('order', 'asc').get().then(res => {
+      console.log('【数据库原始数据】:', res.data);
+      
+      // 直接把数据库里的数据塞给页面
+      this.setData({
+        photos: res.data
+      }, () => {
+        console.log('【页面渲染完成】');
+        wx.hideLoading();
+      });
+    }).catch(err => {
+      console.error('数据库请求失败:', err);
+      wx.hideLoading();
+    });
+  },
+
+  // 预览图片
   previewPhoto(e) {
     const url = e.currentTarget.dataset.url;
+    // 从当前 photos 数组中提取所有的 image 字段组成预览列表
+    const urls = this.data.photos.map(p => p.image);
+    
     wx.previewImage({
-      current: url,
-      urls: this.data.photos.map(p => p.url)
+      current: url, // 当前显示图片的链接
+      urls: urls    // 需要预览的图片链接列表
     });
   }
 })

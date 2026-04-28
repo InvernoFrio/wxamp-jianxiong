@@ -11,7 +11,7 @@
     <text class="hero-desc">收集岁月里的色彩、光影与回响。每一份记录都是时间的注脚。</text>
   </section>
 
-  <!-- 漫画模块 (总分结构：漫画部分) -->
+  <!-- 漫画模块预览 -->
   <section>
     <view class="section-header">
       <view class="header-indicator"></view>
@@ -19,16 +19,17 @@
       <navigator url="/pages/comic/comic" class="more-link">全集回顾</navigator>
     </view>
     <view class="glass comic-preview-card active-scale" bindtap="goToComic">
-      <image class="comic-img-mini" src="https://images.unsplash.com/photo-1541963463532-d68292c34b19?w=400" mode="aspectFill"></image>
-      <image class="comic-img-mini" src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400" mode="aspectFill"></image>
-      <image class="comic-img-mini" src="https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=400" mode="aspectFill"></image>
+      <!-- 自动展示最新漫画组的前三张图 -->
+      <image class="comic-img-mini" src="{{comicPreview.images[0]}}" mode="aspectFill"></image>
+      <image class="comic-img-mini" src="{{comicPreview.images[1]}}" mode="aspectFill"></image>
+      <image class="comic-img-mini" src="{{comicPreview.images[2]}}" mode="aspectFill"></image>
       <view class="comic-img-mini flex-center" style="background:#F5F5F5; display:flex; align-items:center; justify-content:center;">
-        <text style="font-size:24rpx; color:#8D706D;">+ 更多的故事</text>
+        <text style="font-size:24rpx; color:#8D706D;">+ {{comicPreview.title}}</text>
       </view>
     </view>
   </section>
 
-  <!-- 图片模块 (总分结构：图片部分) -->
+  <!-- 图片模块预览 -->
   <section>
     <view class="section-header">
       <view class="header-indicator"></view>
@@ -36,17 +37,18 @@
       <navigator url="/pages/gallery/gallery" class="more-link">进入画廊</navigator>
     </view>
     <scroll-view class="gallery-scroll" scroll-x="true">
-      <view class="gallery-item active-scale" wx:for="{{galleryList}}" wx:key="id" bindtap="goToGallery">
+      <view class="gallery-item active-scale" wx:for="{{galleryList}}" wx:key="_id" bindtap="goToGallery">
         <view class="photo-wrapper">
-          <image class="photo-img" src="{{item.url}}" mode="aspectFill"></image>
+          <!-- 注意：gallery 集合中的字段名为 image -->
+          <image class="photo-img" src="{{item.image}}" mode="aspectFill"></image>
         </view>
         <text class="photo-title">{{item.title}}</text>
-        <text class="photo-desc">{{item.desc}}</text>
+        <text class="photo-desc">{{item.author}}</text>
       </view>
     </scroll-view>
   </section>
 
-  <!-- 视频模块 (总分结构：视频部分) -->
+  <!-- 视频模块预览 -->
   <section>
     <view class="section-header">
       <view class="header-indicator"></view>
@@ -54,14 +56,15 @@
       <navigator url="/pages/video/video" class="more-link">查看更多</navigator>
     </view>
     <view class="video-card active-scale" bindtap="goToVideo">
-      <image class="video-thumb" src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800" mode="aspectFill"></image>
+      <!-- 使用云端视频的封面图 -->
+      <image class="video-thumb" src="{{videoPreview.poster}}" mode="aspectFill"></image>
       <view class="video-overlay">
         <view class="play-btn">
           <view class="play-icon"></view>
         </view>
       </view>
       <view class="video-info">
-        <text class="time-label">精选选集 | 03:45</text>
+        <text class="time-label">最新推荐 | {{videoPreview.title}}</text>
         <view class="progress-bar">
           <view class="progress-inner" style="width: 45%;"></view>
         </view>
@@ -79,12 +82,13 @@
     <view class="glass music-console">
       <view class="vinyl-wrapper">
         <view class="vinyl-record {{isPlaying ? 'spinning' : ''}}">
-          <image class="record-cover" src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=200" mode="aspectFill"></image>
+          <!-- 封面图也从云端获取 -->
+          <image class="record-cover" src="{{musicItem.cover}}" mode="aspectFill"></image>
         </view>
       </view>
       <view class="music-info">
-        <text class="music-name">晚风告白</text>
-        <text class="music-author">未知艺术家</text>
+        <text class="music-name">{{musicItem.title}}</text>
+        <text class="music-author">{{musicItem.author}}</text>
         <view class="music-controls">
           <text class="ctrl-icon">⏮</text>
           <view class="play-pause-btn active-scale" bindtap="togglePlay">

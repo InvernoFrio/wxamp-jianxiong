@@ -1,12 +1,52 @@
 // pages/multimedia/multimedia.js
+const db = wx.cloud.database();
+
 Page({
   data: {
     isPlaying: false,
-    galleryList: [
-      { id: 1, title: '晨曦', desc: 'Shanghai, 2024', url: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400' },
-      { id: 2, title: '街角', desc: 'Tokyo, 2023', url: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400' },
-      { id: 3, title: '雨后', desc: 'London, 2024', url: 'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?w=400' }
-    ]
+    // 以下数据将从云端动态获取
+    galleryList: [],
+    comicPreview: null,
+    videoPreview: null,
+    musicItem: null
+  },
+
+  onLoad() {
+    // 延迟 500ms 确保环境初始化
+    setTimeout(() => {
+      this.fetchAllPreviews();
+    }, 500);
+  },
+
+  // 核心：从各个集合获取预览内容
+  fetchAllPreviews() {
+    wx.showLoading({ title: '同步馆藏...' });
+
+    // 1. 获取最新的一组漫画预览
+    const comicTask = db.collection('comic').orderBy('order', 'asc').limit(1).get();
+    
+    // 2. 获取最新的 5 张光影图片
+    const galleryTask = db.collection('gallery').orderBy('order', 'asc').limit(5).get();
+    
+    // 3. 获取最新的一段视频预览
+    const videoTask = db.collection('video').orderBy('order', 'asc').limit(1).get();
+
+    // 4. 获取音乐信息
+    const musicTask = db.collection('music').limit(1).get();
+
+    Promise.all([comicTask, galleryTask, videoTask, musicTask]).then(res => {
+      this.setData({
+        comicPreview: res[0].data[0] || null,
+        galleryList: res[1].data || [],
+        videoPreview: res[2].data[0] || null,
+        musicItem: res[3].data[0] || null
+      }, () => {
+        wx.hideLoading();
+      });
+    }).catch(err => {
+      console.error('获取预览失败', err);
+      wx.hideLoading();
+    });
   },
 
   togglePlay() {
@@ -18,15 +58,7 @@ Page({
     }
   },
 
-  goToComic() {
-    wx.navigateTo({ url: '/pages/comic/comic' });
-  },
-
-  goToGallery() {
-    wx.navigateTo({ url: '/pages/gallery/gallery' });
-  },
-
-  goToVideo() {
-    wx.navigateTo({ url: '/pages/video/video' });
-  }
+  goToComic() { wx.navigateTo({ url: '/pages/comic/comic' }); },
+  goToGallery() { wx.navigateTo({ url: '/pages/gallery/gallery' }); },
+  goToVideo() { wx.navigateTo({ url: '/pages/video/video' }); }
 })
