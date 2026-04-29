@@ -63,6 +63,17 @@ Page({
     // 因为上面的 onPlay/onPause 监听器会自动帮你处理。
   },
 
+  restartMusic() {
+    if (!audioCtx.src) return;
+    // 将进度跳转至 0 秒
+    audioCtx.seek(0);
+    // 如果当前没在播放，则触发播放
+    if (!this.data.isPlaying) {
+      audioCtx.play();
+    }
+    wx.showToast({ title: '重置播放', icon: 'none' });
+  },
+
   onUnload() {
     // 页面关掉时销毁播放器，省电省内存
     if (audioCtx) audioCtx.destroy();

@@ -4,7 +4,7 @@
   <!-- 英雄标题区域 -->
   <section class="hero-section">
     <view class="title-row">
-      <text class="main-title serif-title">纸间韵律</text>
+      <text class="main-title serif-title">影音流年</text>
       <text class="en-label">MULTIMEDIA</text>
     </view>
     <view class="title-line"></view>
@@ -90,7 +90,8 @@
         <text class="music-name">{{musicItem.title}}</text>
         <text class="music-author">{{musicItem.author}}</text>
         <view class="music-controls">
-          <text class="ctrl-icon">⏮</text>
+
+          <text class="ctrl-icon" bindtap="restartMusic">↺</text>
           <view class="play-pause-btn active-scale" bindtap="togglePlay">
             <text class="ctrl-icon-main">{{isPlaying ? '⏸' : '▶'}}</text>
           </view>

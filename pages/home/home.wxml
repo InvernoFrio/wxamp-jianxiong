@@ -78,4 +78,17 @@
     <text>科学是没有国界的，但科学家有自己的祖国。</text>
   </view>
 
+  <!-- 悬浮 AI 对话球 -->
+  <view 
+    wx:if="{{bookOpen}}"
+    class="floating-chat-ball"
+    style="left: {{ballX}}px; top: {{ballY}}px;"
+    catchtouchmove="handleBallMove"
+    bindtap="handleBallTap"
+  >
+    <view class="ball-content">
+      <text class="ball-icon">💬</text>
+      <view class="ball-ripple"></view>
+    </view>
+  </view>
 </view>

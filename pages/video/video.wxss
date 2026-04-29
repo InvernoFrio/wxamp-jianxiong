@@ -63,3 +63,21 @@
   font-size: 20rpx;
   color: #8D706D;
 }
+
+.title-accent {
+  width: 40rpx;
+  height: 4rpx;
+  background: #84010D;
+  margin: 16rpx auto;
+}
+
+.page-header {
+  margin-bottom: 60rpx;
+  text-align: center;
+}
+
+.group-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #1B1C1A;
+}
