@@ -568,3 +568,4 @@ glass-card {
 }
 
 .modal-close:active { transform: scale(0.95); }
+
