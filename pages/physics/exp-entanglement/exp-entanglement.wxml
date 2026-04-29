@@ -11,7 +11,7 @@
     ></view>
   </view>
 
-  <!-- STEP 1 -->
+  <!-- ══════════ STEP 1 ══════════ -->
   <view class="step-content" wx:if="{{currentStep === 0}}">
 
     <view class="step-hero">
@@ -38,7 +38,7 @@
 
   </view>
 
-  <!-- STEP 2 -->
+  <!-- ══════════ STEP 2 ══════════ -->
   <view class="step-content" wx:if="{{currentStep === 1}}">
 
     <view class="step-hero">
@@ -65,19 +65,174 @@
 
   </view>
 
-  <!-- STEP 3 EXPERIMENT -->
+  <!-- ══════════ STEP 3 实验区 ══════════ -->
   <view class="step-content experiment-step" wx:if="{{currentStep === 2}}">
 
+    <!-- 步骤引导 -->
+    <view class="guide-banner glass">
+      <text class="guide-icon">💡</text>
+      <text class="guide-text">
+        <text wx:if="{{guideStep === 0}}">① 先调节两侧偏振片角度，观察符合率变化</text>
+        <text wx:if="{{guideStep === 1}}">② 已调节 A 角度，继续调节 B 角度对比差异</text>
+        <text wx:if="{{guideStep === 2}}">③ 观察角度差与符合率关系，然后启动实验</text>
+        <text wx:if="{{guideStep === 3}}">④ 点击「启动实验」，收集粒子对数据</text>
+        <text wx:if="{{guideStep >= 4}}">✅ 实验完成！查看结论与贝尔 S 参数</text>
+      </text>
+    </view>
+
+    <!-- Canvas -->
     <view class="canvas-container">
       <canvas type="2d" id="physicsCanvas" class="physics-canvas"></canvas>
     </view>
 
-    <!-- 统计面板 -->
+    <!-- ── 偏振片角度控制 ── -->
+    <view class="polarizer-panel glass">
+
+      <!-- 原理说明按钮 -->
+      <view class="panel-header">
+        <text class="panel-title">偏振片角度</text>
+        <view class="info-icon-btn" bindtap="onShowModal" data-type="principle">
+          <text class="info-icon">i</text>
+        </view>
+      </view>
+
+      <!-- 探测器 A -->
+      <view class="angle-row">
+        <view class="angle-label-col">
+          <view class="detector-badge detector-a">A</view>
+          <text class="angle-value">{{angleA}}°</text>
+        </view>
+        <slider
+          class="angle-slider"
+          min="0" max="360" step="1"
+          value="{{angleA}}"
+          activeColor="#4FC3F7"
+          backgroundColor="rgba(255,255,255,0.12)"
+          block-size="20"
+          bindchange="onAngleAChange"
+          bindchanging="onAngleAChange"
+        />
+      </view>
+
+      <!-- 探测器 B -->
+      <view class="angle-row">
+        <view class="angle-label-col">
+          <view class="detector-badge detector-b">B</view>
+          <text class="angle-value">{{angleB}}°</text>
+        </view>
+        <slider
+          class="angle-slider"
+          min="0" max="360" step="1"
+          value="{{angleB}}"
+          activeColor="#C41E3A"
+          backgroundColor="rgba(255,255,255,0.12)"
+          block-size="20"
+          bindchange="onAngleBChange"
+          bindchanging="onAngleBChange"
+        />
+      </view>
+
+      <!-- 角度联动建议 -->
+      <view class="suggest-row">
+        <text class="suggest-label">联动建议 B = {{suggestedB}}°（量子优势区）</text>
+        <view class="suggest-btn" bindtap="onApplySuggestedB">
+          <text>应用</text>
+        </view>
+      </view>
+
+    </view>
+
+    <!-- ── 实时符合率 ── -->
+    <view class="coinc-panel glass">
+
+      <view class="panel-header">
+        <text class="panel-title">实时符合计数率</text>
+        <view class="info-icon-btn" bindtap="onShowModal" data-type="chart">
+          <text class="info-icon">i</text>
+        </view>
+      </view>
+
+      <!-- 公式 -->
+      <view class="coinc-formula">
+        <text class="formula-text">cos²(θ</text>
+        <text class="formula-sub">A</text>
+        <text class="formula-text"> − θ</text>
+        <text class="formula-sub">B</text>
+        <text class="formula-text">) = cos²({{angleDiff}}°) = </text>
+        <text class="formula-value">{{coincRate}}%</text>
+      </view>
+
+      <!-- 进度条 -->
+      <view class="coinc-bar-track">
+        <!-- 量子预言值 -->
+        <view class="coinc-bar-fill quantum" style="width: {{coincRate}}%"></view>
+        <!-- 经典上限 50% 标记线 -->
+        <view class="coinc-bar-classic-limit"></view>
+      </view>
+
+      <view class="coinc-bar-legend">
+        <text class="legend-quantum">■ 量子预言</text>
+        <text class="legend-classic">┃ 经典上限 50%</text>
+      </view>
+
+    </view>
+
+    <!-- ── cos² 曲线（简化折线，使用 canvas 渲染） ── -->
+    <!-- 注：实际项目可用 echarts 小程序版，此处用 data 驱动的 SVG-like 条形近似 -->
+    <view class="curve-section glass">
+
+      <view class="panel-header">
+        <text class="panel-title">量子预言 vs 经典上限</text>
+        <view class="info-icon-btn" bindtap="onShowModal" data-type="chart">
+          <text class="info-icon">i</text>
+        </view>
+      </view>
+
+      <view class="curve-chart">
+        <!-- 19 个采样柱，代表 0~180° 的量子符合率 -->
+        <view
+          wx:for="{{curvePoints}}"
+          wx:key="deg"
+          class="curve-col {{item.deg === angleDiff ? 'curve-col-active' : ''}}"
+        >
+          <!-- 量子预言柱 -->
+          <view class="curve-bar-q" style="height: {{item.qVal * 0.9}}rpx"></view>
+          <!-- 经典上限参考线（固定高度） -->
+          <view class="curve-bar-c"></view>
+        </view>
+      </view>
+
+      <view class="curve-axis">
+        <text>0°</text>
+        <text>45°</text>
+        <text>90°</text>
+        <text>135°</text>
+        <text>180°</text>
+      </view>
+
+      <view class="curve-legend">
+        <view class="curve-legend-item">
+          <view class="curve-legend-dot quantum-dot"></view>
+          <text>量子 cos²(Δθ)</text>
+        </view>
+        <view class="curve-legend-item">
+          <view class="curve-legend-dot classic-dot"></view>
+          <text>经典上限 50%</text>
+        </view>
+        <view class="curve-legend-item">
+          <view class="curve-legend-dot active-dot"></view>
+          <text>当前角度差 {{angleDiff}}°</text>
+        </view>
+      </view>
+
+    </view>
+
+    <!-- ── 统计面板 ── -->
     <view class="stats-panel glass">
 
       <view class="stat-item">
-        <text class="stat-label">反关联数</text>
-        <text class="stat-value stat-up">{{diffCount}}</text>
+        <text class="stat-label">符合数</text>
+        <text class="stat-value stat-coinc">{{diffCount}}</text>
       </view>
 
       <view class="stat-item">
@@ -86,13 +241,39 @@
       </view>
 
       <view class="stat-item">
-        <text class="stat-label">同向数</text>
-        <text class="stat-value stat-down">{{sameCount}}</text>
+        <text class="stat-label">未符合</text>
+        <text class="stat-value stat-miss">{{sameCount}}</text>
       </view>
 
     </view>
 
-    <!-- 控制按钮 -->
+    <!-- ── 贝尔 S 参数 ── -->
+    <view class="bell-panel glass">
+
+      <view class="panel-header">
+        <text class="panel-title">贝尔 S 参数（CHSH）</text>
+        <view class="info-icon-btn" bindtap="onShowModal" data-type="bell">
+          <text class="info-icon">i</text>
+        </view>
+      </view>
+
+      <view class="bell-s-row">
+        <text class="bell-s-value {{bellViolated ? 'bell-violated' : 'bell-ok'}}">S = {{bellS}}</text>
+        <view class="bell-verdict {{bellViolated ? 'verdict-violated' : 'verdict-ok'}}">
+          <text>{{bellViolated ? '违反贝尔不等式 ✓' : '未违反'}}</text>
+        </view>
+      </view>
+
+      <view class="bell-limit-bar">
+        <view class="bell-limit-fill" style="width: {{bellS / 2.828 * 100}}%"></view>
+        <view class="bell-limit-mark">
+          <text class="bell-limit-label">经典极限 |S|=2</text>
+        </view>
+      </view>
+
+    </view>
+
+    <!-- ── 控制按钮 ── -->
     <view class="controls">
 
       <glass-button wx:if="{{!experimentRunning && !experimentDone}}" bind:tap="onStartExperiment">
@@ -103,9 +284,21 @@
         <text>■ 停止</text>
       </glass-button>
 
+      <view class="btn-row">
+        <view class="ctrl-btn reset-btn" bindtap="onResetExperiment">
+          <text>↺ 重置</text>
+        </view>
+        <view class="ctrl-btn share-btn" bindtap="onSaveCanvas">
+          <text>📷 截图</text>
+        </view>
+        <view class="ctrl-btn share-btn" open-type="share">
+          <text>↗ 分享</text>
+        </view>
+      </view>
+
     </view>
 
-    <!-- 结果面板 -->
+    <!-- ── 实验结果面板 ── -->
     <view class="result-panel" wx:if="{{experimentDone}}">
 
       <glass-card>
@@ -113,20 +306,18 @@
         <text class="result-title">关联结果</text>
 
         <view class="result-bar">
-
           <view class="result-bar-diff" style="width: {{correlation}}%">
-            <text class="bar-label">反关联 {{correlation}}%</text>
+            <text class="bar-label">符合 {{correlation}}%</text>
           </view>
-
           <view class="result-bar-same" style="width: {{100 - correlation}}%">
-            <text class="bar-label">同向 {{100 - correlation}}%</text>
+            <text class="bar-label">未符合 {{100 - correlation}}%</text>
           </view>
-
         </view>
 
         <text class="result-desc">
-          反关联比例远超经典物理预测的上限（50%），
-          违反贝尔不等式，证明量子纠缠是真实存在的非局域关联。
+          符合率 {{correlation}}%，量子预言 {{coincRate}}%。
+          实测值超过经典物理上限（50%），违反贝尔不等式，
+          证明量子纠缠是真实存在的非局域关联。
         </text>
 
       </glass-card>
@@ -135,7 +326,7 @@
 
   </view>
 
-  <!-- STEP 4 -->
+  <!-- ══════════ STEP 4 ══════════ -->
   <view class="step-content" wx:if="{{currentStep === 3}}">
 
     <view class="step-hero">
@@ -160,13 +351,12 @@
 
   </view>
 
-  <!-- 导航 -->
+  <!-- ══════════ 导航 ══════════ -->
   <view class="step-nav">
 
     <view wx:if="{{currentStep > 0}}" bindtap="onPrevStep" class="nav-btn">
       <text>‹ 上一步</text>
     </view>
-
     <view wx:else class="nav-placeholder"></view>
 
     <view wx:if="{{currentStep < 3}}" bindtap="onNextStep" class="nav-btn nav-next">
@@ -175,4 +365,78 @@
 
   </view>
 
+</view>
+
+
+<!-- ══════════ 原理弹窗 ══════════ -->
+<view class="modal-mask" wx:if="{{showModal}}" bindtap="onModalTap">
+  <view class="modal-box" catchtap="onModalContentTap">
+
+    <view class="modal-header">
+      <text class="modal-title">
+        <text wx:if="{{modalType === 'principle'}}">量子纠缠 · 原理</text>
+        <text wx:if="{{modalType === 'bell'}}">贝尔 S 参数</text>
+        <text wx:if="{{modalType === 'chart'}}">符合率曲线</text>
+      </text>
+      <view class="modal-close-btn" bindtap="onHideModal">
+        <text>✕</text>
+      </view>
+    </view>
+
+    <!-- 原理内容 -->
+    <view wx:if="{{modalType === 'principle'}}">
+      <text class="modal-text">
+        正负电子湮灭产生两个极化互补的光子。通过偏振片时，
+        透射概率由马吕斯定律决定。对于纠缠光子对，
+        两侧探测器"同时响应"的概率（符合计数率）遵循：
+      </text>
+      <view class="modal-formula">
+        <text>P(符合) = cos²(θ</text>
+        <text class="formula-sub-sm">A</text>
+        <text> − θ</text>
+        <text class="formula-sub-sm">B</text>
+        <text>)</text>
+      </view>
+      <text class="modal-text">
+        当 θA = θB 时，符合率 = 1（100%）；
+        当差值为 90° 时，符合率 = 0（完全反关联）。
+        经典物理预测的上限仅为 50%，量子结果远超于此。
+      </text>
+    </view>
+
+    <!-- 贝尔 S 参数内容 -->
+    <view wx:if="{{modalType === 'bell'}}">
+      <text class="modal-text">
+        CHSH 贝尔不等式要求任何经典隐变量理论满足 |S| ≤ 2。
+        量子力学在最优角度设置下给出：
+      </text>
+      <view class="modal-formula">
+        <text>S = 2√2 ≈ 2.828</text>
+      </view>
+      <text class="modal-text">
+        其中 S = E(a,b) − E(a,b') + E(a',b) + E(a',b')，
+        E(θ₁,θ₂) = cos[2(θ₁−θ₂)]。
+        实验测得 S &gt; 2，即"违反贝尔不等式"，
+        证明自然界不存在满足定域实在性的隐变量理论。
+      </text>
+    </view>
+
+    <!-- 符合率曲线内容 -->
+    <view wx:if="{{modalType === 'chart'}}">
+      <text class="modal-text">
+        横轴为两侧偏振片角度差 Δθ（0°~180°），
+        纵轴为符合计数率（0~1）。
+      </text>
+      <view class="modal-formula">
+        <text>量子：cos²(Δθ)</text>
+      </view>
+      <text class="modal-text">
+        经典隐变量理论只能预测形如"折线"或更低的相关性，
+        最大符合率不超过 50%。
+        量子预言的 cos² 曲线在 Δθ = 0° 时达到 100%，
+        形状与经典预言截然不同，已被多次实验证实。
+      </text>
+    </view>
+
+  </view>
 </view>

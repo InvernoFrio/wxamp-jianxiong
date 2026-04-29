@@ -1,6 +1,7 @@
 /* pages/physics/exp-diffusion/exp-diffusion.wxss */
+
 /* =========================
-   基础页面背景（扩散深空风）
+   基础页面背景
 ========================= */
 .physics-page {
   min-height: 100vh;
@@ -16,7 +17,7 @@
 }
 
 /* =========================
-   步骤指示器（统一体系）
+   步骤指示器
 ========================= */
 .step-indicator {
   display: flex;
@@ -39,34 +40,69 @@
   box-shadow: 0 0 0 10rpx rgba(79,195,247,0.12);
 }
 
-.experiment-step {
-  align-items: stretch;
-}
-
 /* =========================
-   step动画
+   步骤动画
 ========================= */
 .step-content {
   animation: fadeInUp 0.45s ease-out;
   display: flex;
   flex-direction: column;
-  gap: 30rpx;
-  padding: 0 12rpx;
+  gap: 24rpx;
+  padding: 0 4rpx;
   min-height: 900rpx;
   box-sizing: border-box;
+}
 
+.experiment-step {
+  align-items: stretch;
 }
 
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(24rpx);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(24rpx); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+
+/* =========================
+   步骤引导条
+========================= */
+.guide-bar {
+  background: rgba(79,195,247,0.08);
+  border: 1rpx solid rgba(79,195,247,0.22);
+  border-radius: 18rpx;
+  padding: 16rpx 22rpx;
+  position: relative;
+}
+
+.guide-text {
+  font-size: 23rpx;
+  color: rgba(160,220,255,0.85);
+  line-height: 1.7;
+}
+
+/* =========================
+   信息按钮
+========================= */
+.info-btn-wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -10rpx;
+  margin-bottom: -6rpx;
+}
+
+.info-btn {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  background: rgba(79,195,247,0.15);
+  border: 1rpx solid rgba(79,195,247,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  color: #4FC3F7;
+}
+
+.info-btn:active { transform: scale(0.9); }
 
 /* =========================
    标题区
@@ -98,17 +134,15 @@
 }
 
 /* =========================
-   glass卡片（统一）
+   glass 卡片
 ========================= */
 glass-card {
   display: block;
   padding: 28rpx;
   border-radius: 22rpx;
-
   background: rgba(255,255,255,0.06);
   border: 1rpx solid rgba(255,255,255,0.12);
   backdrop-filter: blur(16rpx);
-
   box-shadow:
     0 10rpx 30rpx rgba(0,0,0,0.25),
     inset 0 1rpx 0 rgba(255,255,255,0.05);
@@ -121,30 +155,24 @@ glass-card {
 }
 
 /* =========================
-   实验区域（扩散特化）
+   Canvas 容器
 ========================= */
 .diffusion-canvas {
-  width: 680rpx;
-  height: 340rpx;
+  width: 100%;
+  height: 320rpx;
 }
 
 .canvas-container {
-  width: 680rpx;
-  height: 340rpx;
-  border-radius: 26rpx;
+  width: 100%;
+  height: 320rpx;
+  border-radius: 22rpx;
   overflow: hidden;
   position: relative;
-
-  background:
-    radial-gradient(circle at 25% 50%, rgba(79,195,247,0.08), transparent),
-    radial-gradient(circle at 75% 50%, rgba(255,82,82,0.08), transparent),
-    rgba(0,0,0,0.4);
-
+  background: #0b1020;
   border: 1rpx solid rgba(79,195,247,0.25);
-
   box-shadow:
     0 18rpx 40rpx rgba(0,0,0,0.35),
-    inset 0 0 40rpx rgba(79,195,247,0.08);
+    inset 0 0 40rpx rgba(79,195,247,0.06);
 }
 
 .physics-canvas {
@@ -152,35 +180,173 @@ glass-card {
   height: 100%;
 }
 
-/* 中间隔板视觉 */
-.canvas-container::after {
-  content: "";
+/* 图例 */
+.legend {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 0;
-  width: 2rpx;
-  height: 100%;
-  background: rgba(255,255,255,0.15);
+  bottom: 12rpx;
+  left: 16rpx;
+  display: flex;
+  gap: 20rpx;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.legend-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+}
+
+.legend-light { background: #4FC3F7; box-shadow: 0 0 6rpx #4FC3F7; }
+.legend-heavy { background: #C41E3A; box-shadow: 0 0 6rpx #C41E3A; }
+
+.legend-label {
+  font-size: 20rpx;
+  color: rgba(200,220,255,0.6);
 }
 
 /* =========================
-   stats（四块结构）
+   丰度面板
+========================= */
+.abundance-panel {
+  display: flex;
+  gap: 20rpx;
+  align-items: stretch;
+}
+
+.abundance-main {
+  flex: 1;
+  background: rgba(79,195,247,0.06);
+  border: 1rpx solid rgba(79,195,247,0.18);
+  border-radius: 20rpx;
+  padding: 22rpx 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.abundance-label {
+  font-size: 22rpx;
+  color: rgba(160,220,255,0.6);
+}
+
+.abundance-value {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #4FC3F7;
+  letter-spacing: 1rpx;
+}
+
+.abundance-bar-bg {
+  height: 10rpx;
+  border-radius: 10rpx;
+  background: rgba(79,195,247,0.12);
+  overflow: hidden;
+}
+
+.abundance-bar-fill {
+  height: 100%;
+  border-radius: 10rpx;
+  background: linear-gradient(90deg, #29B6F6, #4FC3F7);
+  transition: width 0.6s ease;
+  min-width: 4rpx;
+}
+
+.alpha-box {
+  background: rgba(255,180,0,0.07);
+  border: 1rpx solid rgba(255,200,0,0.18);
+  border-radius: 20rpx;
+  padding: 22rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  min-width: 160rpx;
+}
+
+.alpha-label {
+  font-size: 20rpx;
+  color: rgba(255,220,100,0.6);
+}
+
+.alpha-value {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #FFD54F;
+}
+
+/* =========================
+   级联进度条
+========================= */
+.cascade-panel {
+  background: rgba(255,255,255,0.04);
+  border: 1rpx solid rgba(255,255,255,0.10);
+  border-radius: 20rpx;
+  padding: 22rpx 24rpx;
+}
+
+.cascade-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14rpx;
+}
+
+.cascade-title {
+  font-size: 24rpx;
+  color: rgba(200,220,255,0.7);
+}
+
+.cascade-count {
+  font-size: 24rpx;
+  color: #FFD54F;
+  font-weight: bold;
+}
+
+.cascade-bar-bg {
+  height: 14rpx;
+  border-radius: 14rpx;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+  margin-bottom: 10rpx;
+}
+
+.cascade-bar-fill {
+  height: 100%;
+  border-radius: 14rpx;
+  background: linear-gradient(90deg, #4FC3F7, #FFD54F, #FF5252);
+  transition: width 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  min-width: 4rpx;
+}
+
+.cascade-labels {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cascade-lbl {
+  font-size: 18rpx;
+  color: rgba(180,200,255,0.4);
+}
+
+/* =========================
+   粒子统计
 ========================= */
 .stats-panel {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20rpx;
-
-  padding: 24rpx;
-  border-radius: 24rpx;
-
+  gap: 14rpx;
+  padding: 20rpx;
+  border-radius: 20rpx;
   background: rgba(255,255,255,0.05);
-  border: 1rpx solid rgba(255,255,255,0.1);
-
+  border: 1rpx solid rgba(255,255,255,0.10);
   backdrop-filter: blur(14rpx);
   box-sizing: border-box;
-  width: 680rpx;
 }
 
 .stat-item {
@@ -190,38 +356,72 @@ glass-card {
 }
 
 .stat-label {
-  font-size: 22rpx;
-  color: rgba(200,220,255,0.6);
+  font-size: 20rpx;
+  color: rgba(200,220,255,0.55);
 }
 
 .stat-value {
-  font-size: 36rpx;
+  font-size: 34rpx;
   font-weight: bold;
 }
 
-/* 颜色映射 */
-.stat-up {
-  color: #4FC3F7;
-}
-
-.stat-down {
-  color: #FF5252;
-}
+.stat-up   { color: #4FC3F7; }
+.stat-down { color: #FF5252; }
 
 /* =========================
-   控制区
+   控制按钮组
 ========================= */
 .controls {
   display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
   justify-content: center;
-  margin-top: 10rpx;
+}
+
+.ctrl-btn {
+  flex: 1;
+  min-width: 140rpx;
+  max-width: 200rpx;
+}
+
+.ctrl-cascade {
+  color: #FFD54F !important;
+  border-color: rgba(255,213,79,0.3) !important;
+}
+
+.ctrl-speed {
+  color: #69F0AE !important;
+  border-color: rgba(105,240,174,0.3) !important;
+}
+
+.ctrl-reset {
+  color: rgba(200,200,255,0.7) !important;
 }
 
 /* =========================
-   结果层
+   截图按钮
+========================= */
+.save-row {
+  display: flex;
+  justify-content: center;
+}
+
+.save-btn {
+  padding: 14rpx 36rpx;
+  border-radius: 16rpx;
+  background: rgba(255,255,255,0.05);
+  border: 1rpx solid rgba(255,255,255,0.10);
+  color: rgba(200,220,255,0.6);
+  font-size: 24rpx;
+}
+
+.save-btn:active { transform: scale(0.95); opacity: 0.8; }
+
+/* =========================
+   结果面板
 ========================= */
 .result-panel {
-  margin-top: 20rpx;
+  margin-top: 10rpx;
 }
 
 .result-title {
@@ -229,6 +429,7 @@ glass-card {
   font-weight: bold;
   color: #4FC3F7;
   margin-bottom: 18rpx;
+  display: block;
 }
 
 .result-bar {
@@ -236,8 +437,8 @@ glass-card {
   height: 46rpx;
   border-radius: 14rpx;
   overflow: hidden;
-
   box-shadow: inset 0 2rpx 8rpx rgba(0,0,0,0.3);
+  margin-bottom: 18rpx;
 }
 
 .result-bar-same {
@@ -245,6 +446,7 @@ glass-card {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: width 0.5s ease;
 }
 
 .result-bar-diff {
@@ -252,6 +454,7 @@ glass-card {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: width 0.5s ease;
 }
 
 .bar-label {
@@ -278,18 +481,90 @@ glass-card {
 .nav-btn {
   padding: 16rpx 34rpx;
   border-radius: 18rpx;
-
   background: rgba(255,255,255,0.06);
   border: 1rpx solid rgba(255,255,255,0.12);
-
   color: #4FC3F7;
   font-size: 28rpx;
 }
 
-.nav-btn:active {
-  transform: scale(0.95);
+.nav-btn:active { transform: scale(0.95); }
+
+.nav-placeholder { width: 120rpx; }
+
+/* =========================
+   原理弹窗
+========================= */
+.modal-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn 0.2s ease;
 }
 
-.nav-placeholder {
-  width: 120rpx;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
+
+.modal-card {
+  width: 620rpx;
+  background: linear-gradient(160deg, #0f1a30, #111827);
+  border: 1rpx solid rgba(79,195,247,0.25);
+  border-radius: 28rpx;
+  padding: 44rpx 40rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+  box-shadow: 0 30rpx 80rpx rgba(0,0,0,0.6);
+  animation: scaleIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.85); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #eaf3ff;
+  letter-spacing: 1rpx;
+}
+
+.modal-formula {
+  font-size: 34rpx;
+  color: #FFD54F;
+  font-family: 'Courier New', monospace;
+  background: rgba(255,213,79,0.07);
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  letter-spacing: 1rpx;
+}
+
+.modal-sub {
+  font-size: 24rpx;
+  color: rgba(200,220,255,0.7);
+  line-height: 1.8;
+}
+
+.modal-divider {
+  height: 1rpx;
+  background: rgba(255,255,255,0.08);
+}
+
+.modal-close {
+  align-self: center;
+  margin-top: 8rpx;
+  padding: 16rpx 44rpx;
+  border-radius: 16rpx;
+  background: rgba(79,195,247,0.12);
+  border: 1rpx solid rgba(79,195,247,0.28);
+  color: #4FC3F7;
+  font-size: 26rpx;
+}
+
+.modal-close:active { transform: scale(0.95); }

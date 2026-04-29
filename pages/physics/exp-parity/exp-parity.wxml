@@ -1,4 +1,37 @@
 <view class="physics-page page-enter">
+  <!-- 顶部控制栏 -->
+  <view class="top-control-bar">
+    <view class="control-group">
+      <view class="info-btn" bindtap="onShowFormula">
+        <text>ⓘ</text>
+      </view>
+      <view class="reset-btn" bindtap="onResetExperiment">
+        <text>↻</text>
+      </view>
+    </view>
+    <view class="mirror-toggle">
+      <text class="toggle-label">镜像模式</text>
+      <view class="switch {{mirrorMode ? 'active' : ''}}" bindtap="onToggleMirror"></view>
+    </view>
+  </view>
+
+  <!-- 公式弹窗 -->
+  <view class="modal-overlay {{showFormula ? 'show' : ''}}" bindtap="onHideFormula">
+    <view class="formula-modal" catchtap>
+      <view class="modal-close" bindtap="onHideFormula">×</view>
+      <view class="modal-title">β衰变反应式</view>
+      <view class="formula-content">
+        <text class="formula-equation">n → p + e⁻ + ν̄ₑ</text>
+        <text class="formula-desc">中子衰变为质子、电子和反电子中微子</text>
+      </view>
+      <view class="parity-info">
+        <text class="parity-title">宇称不守恒</text>
+        <text class="parity-explain">宇称算符 P 不是守恒量，β粒子优先沿一个方向发射</text>
+      </view>
+      <view class="formula-hint">吴健雄通过极低温下的钴-60实验证实了这一发现</view>
+    </view>
+  </view>
+
   <!-- 步骤指示器 -->
   <view class="step-indicator">
     <view
@@ -18,6 +51,11 @@
     <glass-card>
       <text class="intro-text">1956年，杨振宁和李政道提出一个大胆的理论：在弱相互作用中，宇称可能不守恒。但这个想法太激进了，全世界的物理学家都认为不可能。只有吴健雄站了出来，决定用实验来验证。</text>
     </glass-card>
+    <glass-card>
+      <text class="intro-text" style="font-size: 24rpx; color: #8B9DAF;">
+        <text style="color: #C41E3A; font-weight: bold;">实验要点：</text> 在极低温环境中，使用极化的钴-60核进行β衰变，观察电子发射方向是否对称。
+      </text>
+    </glass-card>
   </view>
 
   <!-- 步骤2: 宇称概念 -->
@@ -33,19 +71,74 @@
     <glass-card>
       <text class="intro-text">吴健雄的实验要验证的是：在弱相互作用（如β衰变）中，这种镜像对称是否真的成立？如果粒子更倾向于向一个方向发射，那宇称就不守恒。</text>
     </glass-card>
+    <view class="guide-tip">
+      <text class="tip-icon">💡</text>
+      <text class="tip-text">下一步中，你可以通过"镜像模式"开关观察实验结果如何随之改变，从而直观感受宇称不守恒的含义。</text>
+    </view>
   </view>
 
   <!-- 步骤3: 实验演示 -->
   <view class="step-content experiment-step" wx:if="{{currentStep === 2}}">
-    <view class="canvas-container">
-      <canvas type="2d" id="physicsCanvas" class="physics-canvas"></canvas>
+    <view class="experiment-guide">
+      <text class="guide-text">⚙ 实验控制面板</text>
+      <view class="guide-steps">
+        <text>1. 调整温度（影响极化度）</text>
+        <text>2. 点击"开始实验"</text>
+        <text>3. 切换"镜像模式"对比结果</text>
+      </view>
+    </view>
+
+    <!-- 温度控制滑块 -->
+    <view class="temperature-control">
+      <view class="temp-header">
+        <text class="temp-label">极化温度</text>
+        <text class="temp-value">{{temperature}}K</text>
+      </view>
+      <view class="temp-slider-container">
+        <text class="temp-text">高温</text>
+        <slider
+          class="temp-slider"
+          value="{{temperature}}"
+          min="0"
+          max="100"
+          bindchange="onTemperatureChange"
+          bindtouchstart="onSliderTouchStart"
+          bindtouchend="onSliderTouchEnd"
+        />
+        <text class="temp-text">低温</text>
+      </view>
+      <view class="temp-hint">
+        <text class="hint-icon">🌡️</text>
+        <text class="hint-text">{{temperature < 30 ? '极化最优' : temperature < 70 ? '部分极化' : '无序态'}}</text>
+      </view>
+    </view>
+
+    <!-- 显示模式容器 -->
+    <view class="display-container {{splitScreen ? 'split-mode' : 'normal-mode'}}">
+      <!-- 真实世界或单屏显示 -->
+      <view class="canvas-wrapper {{splitScreen ? 'half-width' : ''}}">
+        <view class="world-label {{splitScreen ? 'show' : 'hide'}}">🌍 真实世界</view>
+        <view class="canvas-container">
+          <canvas type="2d" id="physicsCanvas" class="physics-canvas"></canvas>
+        </view>
+        <view class="canvas-label">向下偏向比例: {{mirrorMode ? (100 - asymmetryPercent) : asymmetryPercent}}%</view>
+      </view>
+
+      <!-- 镜像世界（分屏时显示） -->
+      <view class="canvas-wrapper {{splitScreen ? 'half-width' : 'hide'}}" wx:if="{{splitScreen}}">
+        <view class="world-label">🪞 镜像世界</view>
+        <view class="canvas-container">
+          <canvas type="2d" id="mirrorCanvas" class="physics-canvas"></canvas>
+        </view>
+        <view class="canvas-label">向下偏向比例: {{mirrorMode ? asymmetryPercent : (100 - asymmetryPercent)}}%</view>
+      </view>
     </view>
 
     <!-- 统计面板 -->
     <view class="stats-panel glass">
       <view class="stat-item">
         <text class="stat-label">向上粒子</text>
-        <text class="stat-value stat-up">{{particlesUp}}</text>
+        <text class="stat-value stat-up">{{mirrorMode ? particlesDown : particlesUp}}</text>
       </view>
       <view class="stat-item">
         <text class="stat-label">总粒子数</text>
@@ -53,7 +146,7 @@
       </view>
       <view class="stat-item">
         <text class="stat-label">向下粒子</text>
-        <text class="stat-value stat-down">{{particlesDown}}</text>
+        <text class="stat-value stat-down">{{mirrorMode ? particlesUp : particlesDown}}</text>
       </view>
     </view>
 
@@ -70,19 +163,25 @@
       </glass-button>
     </view>
 
-    <!-- 结果 -->
+    <!-- 结果面板 -->
     <view class="result-panel" wx:if="{{experimentDone}}">
       <glass-card>
-        <text class="result-title">实验结果</text>
-        <view class="result-bar">
-          <view class="result-bar-up" style="width: {{100 - asymmetryPercent}}%">
-            <text class="bar-label">↑ {{100 - asymmetryPercent}}%</text>
-          </view>
-          <view class="result-bar-down" style="width: {{asymmetryPercent}}%">
-            <text class="bar-label">↓ {{asymmetryPercent}}%</text>
+        <view class="result-header">
+          <text class="result-title">实验结果{{mirrorMode ? '（镜像翻转后）' : ''}}</text>
+          <view class="share-btn" bindtap="onShareResult">
+            <text>⤴️</text>
           </view>
         </view>
-        <text class="result-desc">向下发射比例明显偏离50%的对称预期，证实了宇称不守恒！</text>
+        <view class="result-bar">
+          <view class="result-bar-up" style="width: {{mirrorMode ? (100 - asymmetryPercent) : (100 - asymmetryPercent)}}%">
+            <text class="bar-label" wx:if="{{mirrorMode ? (100 - asymmetryPercent) : (100 - asymmetryPercent) > 15}}">↑ {{mirrorMode ? (100 - asymmetryPercent) : (100 - asymmetryPercent)}}%</text>
+          </view>
+          <view class="result-bar-down" style="width: {{mirrorMode ? asymmetryPercent : asymmetryPercent}}%">
+            <text class="bar-label" wx:if="{{mirrorMode ? asymmetryPercent : asymmetryPercent > 15}}">↓ {{mirrorMode ? asymmetryPercent : asymmetryPercent}}%</text>
+          </view>
+        </view>
+        <text class="result-desc">{{mirrorMode ? '镜像世界中' : '真实世界中'}}，向下发射比例{{mirrorMode ? (100 - asymmetryPercent) : asymmetryPercent}}%，明显偏离50%的对称预期！</text>
+        <text class="result-conclusion">{{ temperature < 30 ? '✓ 极化效果明显，宇称不守恒现象显著' : temperature < 70 ? '⚠ 部分极化，宇称违反程度中等' : '✗ 温度过高，极化失效，接近对称' }}</text>
       </glass-card>
     </view>
   </view>
@@ -103,6 +202,10 @@
     <glass-card class="quote-card">
       <text class="intro-text quote-text">"我做实验，不是为了得到什么奖，而是为了探索自然的真理。" —— 吴健雄</text>
     </glass-card>
+    <view class="conclusion-box">
+      <text class="conclusion-title">宇称不守恒 = 宇宙的不对称性</text>
+      <text class="conclusion-text">这个发现告诉我们，自然界远比我们想象的要复杂和有趣。左和右并不总是等价的，这为现代粒子物理学奠定了基础。</text>
+    </view>
   </view>
 
   <!-- 步骤导航 -->
