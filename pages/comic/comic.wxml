@@ -1,29 +1,48 @@
 <!-- pages/comic/comic.wxml -->
-<scroll-view class="sub-page-container" scroll-y="true">
-  <view class="page-header">
-    <text class="page-title serif-title">叙事漫画</text>
-    <view class="title-accent"></view>
-  </view>
+<scroll-view scroll-y="true" class="page-container">
+  <main class="main-content">
+    <block wx:for="{{comicGroups}}" wx:key="_id">
+      <!-- 每一篇漫画条目 (Article) -->
+      <article class="comic-article">
+        
+        <!-- 章节头部信息 -->
+        <view class="entry-header">
+          <view class="header-left">
+            <text class="font-headline-md text-headline-md section-index">#{{item.order < 10 ? '0' + item.order : item.order}}</text>
+            <view class="font-headline-lg text-headline-lg entry-title">{{item.title}}</view>
+            <view class="red-accent-bar"></view>
+          </view>
+          <view class="header-right">
+            <text class="font-label-md text-label-md text-outline author-name"><text>作者：</text>{{item.author || ''}}</text>
+            <text class="font-caption text-caption text-outline date-text">{{item.date}}</text>
+          </view>
+        </view>
+        <!-- 章节尾部描述 -->
+        
+        <view class="font-caption text-caption" wx:if="{{item.description}}">
+          <view>描述：</view>{{item.description}}
+        </view>
+        <!-- 图片网格布局 (Asymmetric Image Grid) -->
+        <view class="grid-container">
+          <block wx:for="{{item.images}}" wx:for-item="img" wx:for-index="imgIdx" wx:key="*this">
+            <view 
+              class="image-wrapper image-tactile {{imgIdx === 0 ? 'col-span-2 aspect-16-9' : 'aspect-square'}}"
+              bindtap="previewImage" 
+              data-current="{{img}}" 
+              data-urls="{{item.images}}"
+            >
+              <image 
+                class="comic-image" 
+                src="{{img}}" 
+                mode="aspectFill" 
+                lazy-load
+              />
+            </view>
+          </block>
+        </view>
 
-  <view class="comic-group glass" wx:for="{{comicGroups}}" wx:key="_id">
-    <view class="group-info">
-      <text class="group-index">#{{index + 1}}</text>
-      <text class="group-title">{{item.title}}</text>
-      <text wx:if="{{item.author}}" class="group-author">By: {{item.author}}</text>
-    </view>
-    <view class="comic-grid">
-      <image 
-        wx:for="{{item.images}}" 
-        wx:for-item="img" 
-        wx:key="*this"
-        class="comic-item" 
-        src="{{img}}" 
-        mode="aspectFill" 
-        bindtap="previewImage" 
-        data-urls="{{item.images}}" 
-        data-current="{{img}}"
-      ></image>
-    </view>
-    <text class="group-date">{{item.date}}</text>
-  </view>
+
+      </article>
+    </block>
+  </main>
 </scroll-view>

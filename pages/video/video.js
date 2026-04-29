@@ -12,17 +12,17 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    // 延迟 500ms 执行，确保云环境初始化完全完成
+    // 延迟 100ms 执行，确保云环境初始化完全完成
     setTimeout(() => {
       this.fetchVideoData();
-    }, 500);
+    }, 100);
   },
 
   // 从云数据库获取视频数据
   fetchVideoData() {
     wx.showLoading({ title: '加载影像中...' });
 
-    // 这里的 'videos' 需对应你在后台创建的集合名称
+    // 这里的 'video' 需对应你在后台创建的集合名称
     db.collection('video').orderBy('order', 'asc').get().then(res => {
       console.log('【视频原始数据】:', res.data);
 

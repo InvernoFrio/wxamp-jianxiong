@@ -11,10 +11,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    // 延迟 500ms 执行，确保 app.js 的 wx.cloud.init 彻底完成
+    // 延迟 100ms 执行，确保 app.js 的 wx.cloud.init 彻底完成
     setTimeout(() => {
       this.fetchPhotos();
-    }, 500);
+    }, 100);
   },
 
   // 获取云端图片数据
