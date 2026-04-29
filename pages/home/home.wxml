@@ -7,9 +7,6 @@
     <view class="quote-line"></view>
   </view>
 
-  <view class="ai-chat-entry" bindtap="goToChat">
-  <text>💬 对话吴健雄</text>
-</view>
   <!-- 书本 + 操作栏 -->
   <view class="main-layout {{bookOpen ? 'layout-shifted' : ''}}">
     <view class="book-area">
@@ -63,6 +60,8 @@
       <view
         wx:for="{{chapters}}" wx:key="page"
         class="chapter-item"
+        hover-class="active" 
+        hover-stay-time="100"
         style="transition-delay: {{index * 0.06 + 0.15}}s"
         data-page="{{item.page}}"
         bindtap="onModuleTap"
@@ -70,30 +69,6 @@
         <text class="chapter-icon">{{item.icon}}</text>
         <text class="chapter-name serif-title">{{item.name}}</text>
         <text class="chapter-arrow">›</text>
-      </view>
-    </view>
-  </view>
-
-  <!-- AI 灵感岛 -->
-  <view class="ai-island-wrapper {{aiExpanded ? 'expanded' : 'collapsed'}}">
-    <view class="ai-island glass" bindtap="{{aiExpanded ? '' : 'toggleAi'}}">
-      <view class="ai-bar" wx:if="{{!aiExpanded}}">
-        <view class="status-dot"></view>
-        <text class="serif-title">与大先生对话</text>
-        <text class="expand-hint">展开 ↑</text>
-      </view>
-      <view class="ai-panel" wx:else>
-        <view class="ai-panel-header">
-          <text class="serif-title">吴健雄数字纪念馆</text>
-          <text class="close-icon" catchtap="toggleAi">×</text>
-        </view>
-        <scroll-view class="ai-chat-box" scroll-y>
-          <view class="ai-msg">你好，我是吴健雄。科学研究没有捷径，你想了解什么？</view>
-        </scroll-view>
-        <view class="ai-input-group">
-          <input placeholder="向大先生请教..." placeholder-style="color:#999" />
-          <view class="ai-send-btn">发送</view>
-        </view>
       </view>
     </view>
   </view>

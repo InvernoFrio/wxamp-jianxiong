@@ -14,6 +14,7 @@ Page({
       { name: '书韵阅读', page: 'reader', icon: '📖' },
       { name: '物理之光', page: 'physics', icon: '⚛️' },
       { name: '影音流年', page: 'multimedia', icon: '🎞️' },
+      { name: '与大先生对话', page: 'chat', icon: '💬' },
       { name: '关于', page: 'about', icon: 'ℹ️' }
     ]
   },

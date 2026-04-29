@@ -13,7 +13,6 @@
     "pages/video/video",
     "pages/about/about",
     "pages/grid-walking/grid-walking",
-    "pages/chat",
     "pages/chat/chat"
   ],
   "window": {
