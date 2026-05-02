@@ -1,11 +1,10 @@
 <!-- pages/comic/comic.wxml -->
+<!-- pages/comic/comic.wxml -->
 <scroll-view scroll-y="true" class="page-container">
   <main class="main-content">
     <block wx:for="{{comicGroups}}" wx:key="_id">
-      <!-- 每一篇漫画条目 (Article) -->
       <article class="comic-article">
-        
-        <!-- 章节头部信息 -->
+        <!-- 电影放映视窗标题框 -->
         <view class="entry-header">
           <view class="header-left">
             <text class="font-headline-md text-headline-md section-index">#{{item.order < 10 ? '0' + item.order : item.order}}</text>
@@ -17,31 +16,21 @@
             <text class="font-caption text-caption text-outline date-text">{{item.date}}</text>
           </view>
         </view>
-        <!-- 章节尾部描述 -->
         
-        <view class="font-caption text-caption" wx:if="{{item.description}}">
-          <view>描述：</view>{{item.description}}
+        <view class="font-caption text-caption description-box" wx:if="{{item.description}}">
+          {{item.description}}
         </view>
-        <!-- 图片网格布局 (Asymmetric Image Grid) -->
-        <view class="grid-container">
-          <block wx:for="{{item.images}}" wx:for-item="img" wx:for-index="imgIdx" wx:key="*this">
-            <view 
-              class="image-wrapper image-tactile {{imgIdx === 0 ? 'col-span-2 aspect-16-9' : 'aspect-square'}}"
-              bindtap="previewImage" 
-              data-current="{{img}}" 
-              data-urls="{{item.images}}"
-            >
-              <image 
-                class="comic-image" 
-                src="{{img}}" 
-                mode="aspectFill" 
-                lazy-load
-              />
+
+        <!-- 电影胶卷带 -->
+        <scroll-view scroll-x="true" class="film-strip" enable-flex="true">
+          <view class="film-spacer"></view>
+          <block wx:for="{{item.images}}" wx:for-item="img" wx:key="*this">
+            <view class="film-frame image-tactile" bindtap="previewImage" data-current="{{img}}" data-urls="{{item.images}}">
+              <image class="comic-image" src="{{img}}" mode="aspectFill" lazy-load />
             </view>
           </block>
-        </view>
-
-
+          <view class="film-spacer"></view>
+        </scroll-view>
       </article>
     </block>
   </main>
