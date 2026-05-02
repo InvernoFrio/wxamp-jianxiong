@@ -57,18 +57,18 @@ Page({
   // 当视频开始播放时触发
   onVideoPlay(e) {
     const newVideoId = e.currentTarget.dataset.id;
-    const lastVideoId = this.data.currVideoId;
-
-    // 如果当前有其他视频在播放，且不是现在点击的这个
-    if (lastVideoId && lastVideoId !== newVideoId) {
-      // 停止上一个视频
-      const lastVideoContext = wx.createVideoContext(lastVideoId, this);
-      lastVideoContext.pause(); // 也可以用 stop()
+    if (this.data.currVideoId && this.data.currVideoId !== newVideoId) {
+      wx.createVideoContext(this.data.currVideoId, this).pause();
     }
+    this.setData({ currVideoId: newVideoId });
+  },
 
-    // 更新当前正在播放的 ID
-    this.setData({
-      currVideoId: newVideoId
-    });
+  handleTapVideo(e) {
+    const videoId = e.currentTarget.dataset.id;
+    const videoCtx = wx.createVideoContext(videoId, this);
+    // 可选：如果希望点击视频直接全屏
+    // videoCtx.requestFullScreen(); 
   }
+
 })
+

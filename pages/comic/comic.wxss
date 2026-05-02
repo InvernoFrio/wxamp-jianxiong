@@ -1,150 +1,93 @@
-/* --- 全局配置 --- */
-page {
-  background-color: #F8F6F2;
-  color: #261817;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+/* pages/comic/comic.wxss */
+
+page { 
+  background-color: #F8F6F2; 
+  color: #261817; 
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
 }
 
-.page-container {
-  height: 100vh;
+.page-container { height: 100vh; }
+
+.main-content { 
+  padding: 60rpx 40rpx 100rpx 40rpx; 
+  box-sizing: border-box; 
 }
 
-.main-content {
-  max-width: 100%;
-  padding: 40rpx; /* margin-screen */
-  box-sizing: border-box;
+.comic-article { 
+  display: flex; 
+  flex-direction: column; 
+  margin-bottom: 120rpx; 
 }
 
-/* --- 漫画条目布局 --- */
-.comic-article {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 80rpx; /* gap-default */
-}
-
-/* 章节头部 */
+/* 电影标题容器：模拟放映室视窗 */
 .entry-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  background: #EEEBE6;
+  padding: 30rpx;
+  border: 2rpx solid #D6D2CC;
+  border-radius: 20rpx;
+  box-shadow: inset 0 0 20rpx rgba(0,0,0,0.05);
   margin-bottom: 30rpx;
+  display: flex; 
+  justify-content: space-between; 
+  align-items: flex-start;
 }
 
-.header-left {
-  display: flex;
-  flex-direction: column;
-}
+.header-left { display: flex; flex-direction: column; }
+.section-index { color: #84010D; }
+.entry-title { margin-top: 4rpx; color: #261817; }
+.red-accent-bar { width: 80rpx; height: 6rpx; background-color: #84010D; margin-top: 16rpx; }
+.header-right { text-align: right; display: flex; flex-direction: column; }
+.description-box { margin-bottom: 24rpx; padding: 16rpx; background: rgba(0,0,0,0.03); border-radius: 12rpx; }
 
-.section-index {
-  color: #84010D;
-}
-
-.entry-title {
-  margin-top: 4rpx;
-  color: #261817;
-}
-
-.red-accent-bar {
-  width: 80rpx;
-  height: 6rpx;
-  background-color: #84010D;
-  margin-top: 16rpx;
-}
-
-.header-right {
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-}
-
-/* --- 图片网格 (Grid) --- */
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16rpx;
-  margin-top: 24rpx;
-}
-
-.image-wrapper {
-  overflow: hidden;
-  border-radius: 24rpx;
-  background-color: #E8E4DE;
-  border: 1px solid #E8E4DE;
+/* 电影胶卷带：封闭式内嵌齿孔设计 */
+.film-strip { 
+  display: flex; 
+  flex-direction: row; 
+  width: 100%; 
+  height: 520rpx; 
+  background-color: #261817; /* 胶卷主色 */
+  border: 8rpx solid #000;    /* 胶卷边缘矩形边框 */
+  border-radius: 30rpx;
   position: relative;
+  padding: 60rpx 0;          /* 为齿孔预留上下空间 */
+  box-sizing: border-box;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  
+  /* 封闭齿孔绘制：使用两个重复线性渐变，分别定位在上下 Padding 区 */
+  background-image: 
+    repeating-linear-gradient(90deg, #FFF 0, #FFF 20rpx, #261817 20rpx, #261817 40rpx),
+    repeating-linear-gradient(90deg, #FFF 0, #FFF 20rpx, #261817 20rpx, #261817 40rpx);
+  background-position: 0 15rpx, 0 calc(100% - 15rpx);
+  background-size: 100% 25rpx;
+  background-repeat: no-repeat;
 }
 
-.col-span-2 {
-  grid-column: span 2;
-}
-
-.comic-image {
-  width: 100%;
+.film-frame { 
+  flex: 0 0 70%; 
   height: 100%;
-  display: block;
+  margin-right: 20rpx;
+  border-radius: 8rpx;
+  overflow: hidden;
+  background-color: #E8E4DE;
+  scroll-snap-align: center;
+  flex-shrink: 0;
+  border: 4rpx solid #444; 
 }
 
-/* 比例控制 */
-.aspect-16-9 {
-  aspect-ratio: 16 / 9;
-}
+.film-spacer { flex: 0 0 15%; }
+.comic-image { width: 100%; height: 100%; display: block; }
 
-.aspect-square {
-  aspect-ratio: 1 / 1;
-}
+.image-tactile { transition: transform 0.2s ease; }
+.image-tactile:active { transform: scale(0.97); }
 
-/* 触感反馈 */
-.image-tactile {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.image-tactile:active {
-  transform: scale(0.98);
-  opacity: 0.9;
-}
-
-/* --- 字体排版 (Typography) --- */
-/* 1. 大标题 - 强烈的衬线感 */
-.font-headline-lg { 
-  /* 优先使用 iOS/Android 系统衬线体 */
-  font-family: "Georgia", "Times New Roman", serif; 
-  font-weight: 600; 
-}
-.text-headline-lg { 
-  font-size: 52rpx; 
-  line-height: 1.3; 
-}
-
-/* 2. 中标题 - 优雅的叙事感 */
-.font-headline-md { 
-  font-family: "Georgia", "Times New Roman", serif; 
-  font-weight: 500; 
-}
-.text-headline-md { 
-  font-size: 40rpx; 
-  line-height: 1.4; 
-}
-
-/* 3. 标签/作者名 - 也可以使用衬线体增加精致度 */
-.font-label-md { 
-  font-family: "Georgia", serif; 
-  font-weight: 500; 
-}
-.text-label-md { 
-  font-size: 26rpx; 
-  letter-spacing: 0.05em; 
-}
-
-/* 4. 说明文字 - 建议保持系统默认或轻微衬线，确保小字清晰 */
-.font-caption { 
-  font-family: "Georgia", serif; 
-  font-weight: 400; 
-}
-.text-caption { 
-  font-size: 22rpx; 
-  opacity: 0.7; 
-}
-
-/* 辅助颜色类 */
-.text-outline { 
-  color: #8D706D; 
-}
+/* 字体样式 */
+.font-headline-lg { font-family: "Georgia", serif; font-weight: 600; }
+.text-headline-lg { font-size: 52rpx; line-height: 1.3; }
+.font-headline-md { font-family: "Georgia", serif; font-weight: 500; }
+.text-headline-md { font-size: 40rpx; line-height: 1.4; }
+.font-label-md { font-family: "Georgia", serif; font-weight: 500; }
+.text-label-md { font-size: 26rpx; letter-spacing: 0.05em; }
+.font-caption { font-family: "Georgia", serif; font-weight: 400; }
+.text-caption { font-size: 22rpx; opacity: 0.7; }
+.text-outline { color: #8D706D; }

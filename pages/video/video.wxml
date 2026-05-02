@@ -6,30 +6,33 @@
   </view>
 
   <view class="video-list">
-    <!-- 使用云数据库的 _id 作为 key -->
     <view class="video-item-wrapper" wx:for="{{videoList}}" wx:key="id">
+      <!-- 电视机屏幕 -->
       <video 
         class="video-player" 
         src="{{item.url}}" 
         poster="{{item.poster}}" 
-        object-fit="cover"
+        object-fit="contain"
         title="{{item.title}}"
-        enable-play-gesture
+        enable-play-gesture="{{true}}"
+        show-fullscreen-btn="{{true}}"
+        enable-fullscreen-gesture="{{true}}"
         bindplay="onVideoPlay"
+        bindtap="handleTapVideo"
         id="video-{{item.id}}" 
         data-id="video-{{item.id}}"
-        vnet-detete="true"
         controls
       ></video>
+      
+      <!-- 电视机下方信息区 -->
       <view class="video-meta">
         <view style="display: flex; justify-content: space-between; align-items: center;">
           <text class="video-title-text">{{item.title}}</text>
-          <text style="font-size: 24rpx; color: #84010D;">作者: {{item.author}}</text>
+          <text style="font-size: 22rpx; color: #84010D; font-family: monospace;">{{item.author}}</text>
         </view>
         <text class="video-desc-text">{{item.desc}}</text>
         <view class="video-footer">
           <text class="video-tag"># {{item.tag}}</text>
-          <!-- 由于去掉了 date 字段，这里可以展示分类或留空 -->
         </view>
       </view>
     </view>

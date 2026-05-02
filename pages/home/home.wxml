@@ -82,8 +82,10 @@
   <view 
     wx:if="{{bookOpen}}"
     class="floating-chat-ball"
-    style="left: {{ballX}}px; top: {{ballY}}px;"
+    style="left: {{ballX}}px; top: {{ballY}}px; transition: {{isDragging ? 'none' : 'all 0.3s ease-out'}};"
     catchtouchmove="handleBallMove"
+    bindtouchstart="handleBallStart"
+    bindtouchend="handleBallEnd"
     bindtap="handleBallTap"
   >
     <view class="ball-content">

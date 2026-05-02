@@ -12,7 +12,8 @@ Page({
     ballY: 500,      // 初始纵坐标
     windowWidth: 375,
     windowHeight: 667,
-  
+    isDragging: false, // 新增状态
+
     chapters: [
       { name: '生平年表', page: 'timeline', icon: '📜' },
       { name: '书韵阅读', page: 'reader', icon: '📖' },
@@ -48,6 +49,10 @@ Page({
   },
 
   // 悬浮球拖拽逻辑
+  handleBallStart() {
+    this.setData({ isDragging: true });
+  },
+
   handleBallMove(e) {
     const touch = e.touches[0];
     const ballSize = 56; // 对应 CSS 中的宽高 112rpx / 2
@@ -64,6 +69,23 @@ Page({
     this.setData({
       ballX: x,
       ballY: y
+    });
+  },
+
+  handleBallEnd(e) {
+    const ballSize = 56;
+    const { windowWidth } = this.data;
+    
+    // 获取抬起时的最终坐标
+    let x = this.data.ballX;
+    
+    // 判断吸附到左边还是右边
+    // 如果 x 小于屏幕宽度的一半，吸附到左侧，否则吸附到右侧
+    x = (x < windowWidth / 2 - ballSize / 2) ? 10 : (windowWidth - ballSize - 10);
+    
+    this.setData({
+      isDragging: false, // 恢复 CSS 过渡
+      ballX: x
     });
   },
 
