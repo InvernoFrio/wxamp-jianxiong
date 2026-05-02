@@ -19,8 +19,16 @@
         </view>
       </view>
       
-      <view class="suggestions-title">你可以这样问我：</view>
-      <view class="suggestions">
+      <!-- 推荐问题标题 + 换一批按钮 -->
+      <view class="suggestions-header">
+        <view class="suggestions-title">你可以这样问我：</view>
+        <view class="change-suggestions" bindtap="refreshSuggestions">
+          换一批
+        </view>
+      </view>
+
+      <!-- 初始随机推荐问题 -->
+      <view class="suggestions suggestion-list">
         <view 
           class="suggestion-item" 
           wx:for="{{suggestions}}" 
@@ -47,6 +55,26 @@
         <text class="loading-dot">·</text>
         <text class="loading-dot">·</text>
         <text class="loading-dot">·</text>
+      </view>
+    </view>
+
+    <!-- AI 回复后的后续话题按钮 -->
+    <view
+      wx:if="{{messages.length > 0 && followUpQuestions.length > 0 && !loading}}"
+      class="followup-area"
+    >
+      <view class="followup-title">可以继续聊：</view>
+
+      <view class="followup-list">
+        <view
+          wx:for="{{followUpQuestions}}"
+          wx:key="*this"
+          class="followup-btn"
+          data-text="{{item}}"
+          bindtap="useFollowUp"
+        >
+          {{item}}
+        </view>
       </view>
     </view>
 
