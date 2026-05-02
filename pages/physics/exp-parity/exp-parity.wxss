@@ -8,6 +8,209 @@
   padding-bottom: 120rpx;
 }
 
+/* 顶部控制栏 */
+.top-control-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding: 12rpx 16rpx;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12rpx);
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.6);
+}
+
+.control-group {
+  display: flex;
+  gap: 12rpx;
+}
+
+.info-btn,
+.reset-btn {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: rgba(196, 30, 58, 0.12);
+  border: 1rpx solid rgba(196, 30, 58, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  transition: all 0.2s ease;
+}
+
+.info-btn:active,
+.reset-btn:active {
+  transform: scale(0.9);
+  background: rgba(196, 30, 58, 0.2);
+}
+
+.mirror-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.toggle-label {
+  font-size: 24rpx;
+  color: #2C2C2C;
+  font-weight: 500;
+}
+
+.switch {
+  width: 52rpx;
+  height: 28rpx;
+  border-radius: 14rpx;
+  background: #D0D0D0;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.switch::after {
+  content: '';
+  position: absolute;
+  width: 24rpx;
+  height: 24rpx;
+  border-radius: 50%;
+  background: white;
+  top: 2rpx;
+  left: 2rpx;
+  transition: left 0.3s ease;
+  box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+}
+
+.switch.active {
+  background: #C41E3A;
+}
+
+.switch.active::after {
+  left: 26rpx;
+}
+
+/* 公式弹窗 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.modal-overlay.show {
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.formula-modal {
+  background: white;
+  border-radius: 28rpx;
+  padding: 40rpx 32rpx;
+  max-width: 90%;
+  max-height: 80vh;
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 16rpx;
+  right: 20rpx;
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  color: #8B9DAF;
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #C41E3A;
+  margin-bottom: 24rpx;
+  text-align: center;
+  font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+}
+
+.formula-content {
+  background: rgba(79, 195, 247, 0.08);
+  border-left: 4rpx solid #4FC3F7;
+  padding: 20rpx 24rpx;
+  border-radius: 8rpx;
+  margin-bottom: 24rpx;
+}
+
+.formula-equation {
+  display: block;
+  font-size: 32rpx;
+  font-family: 'Courier New', monospace;
+  color: #0288D1;
+  text-align: center;
+  margin-bottom: 16rpx;
+  font-weight: bold;
+}
+
+.formula-desc {
+  display: block;
+  font-size: 26rpx;
+  color: #2C2C2C;
+  text-align: center;
+}
+
+.parity-info {
+  background: rgba(196, 30, 58, 0.08);
+  border-left: 4rpx solid #C41E3A;
+  padding: 20rpx 24rpx;
+  border-radius: 8rpx;
+  margin-bottom: 20rpx;
+}
+
+.parity-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #C41E3A;
+  margin-bottom: 8rpx;
+}
+
+.parity-explain {
+  display: block;
+  font-size: 26rpx;
+  color: #2C2C2C;
+  line-height: 1.6;
+}
+
+.formula-hint {
+  display: block;
+  font-size: 24rpx;
+  color: #8B9DAF;
+  text-align: center;
+  font-style: italic;
+}
+
 /* 步骤指示器 */
 .step-indicator {
   display: flex;
@@ -108,6 +311,166 @@
   background: rgba(196, 30, 58, 0.04);
 }
 
+/* 引导提示 */
+.guide-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 12rpx;
+  background: rgba(79, 195, 247, 0.1);
+  padding: 16rpx 20rpx;
+  border-radius: 12rpx;
+  border-left: 4rpx solid #4FC3F7;
+}
+
+.tip-icon {
+  font-size: 28rpx;
+  flex-shrink: 0;
+  margin-top: 2rpx;
+}
+
+.tip-text {
+  font-size: 26rpx;
+  color: #2C2C2C;
+  line-height: 1.6;
+}
+
+.experiment-guide {
+  background: rgba(196, 30, 58, 0.08);
+  padding: 20rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid rgba(196, 30, 58, 0.2);
+}
+
+.guide-text {
+  display: block;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #C41E3A;
+  margin-bottom: 12rpx;
+}
+
+.guide-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.guide-steps text {
+  font-size: 24rpx;
+  color: #2C2C2C;
+}
+
+/* 温度控制 */
+.temperature-control {
+  background: rgba(255, 255, 255, 0.35);
+  border: 1rpx solid rgba(255, 255, 255, 0.6);
+  border-radius: 20rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.temp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.temp-label {
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #2C2C2C;
+}
+
+.temp-value {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #C41E3A;
+  font-family: 'Courier New', monospace;
+}
+
+.temp-slider-container {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.temp-text {
+  font-size: 20rpx;
+  color: #8B9DAF;
+  min-width: 50rpx;
+  text-align: center;
+}
+
+.temp-slider {
+  flex: 1;
+}
+
+.slider {
+  width: 100%;
+  height: 4rpx;
+  background: linear-gradient(90deg, #E53935 0%, #FFB74D 50%, #4FC3F7 100%);
+  border-radius: 2rpx;
+}
+
+.temp-hint {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 24rpx;
+  color: #8B9DAF;
+}
+
+.hint-icon {
+  font-size: 28rpx;
+}
+
+.hint-text {
+  font-weight: 500;
+}
+
+/* 显示容器 */
+.display-container {
+  margin-bottom: 20rpx;
+}
+
+.display-container.normal-mode {
+  display: flex;
+  justify-content: center;
+}
+
+.display-container.split-mode {
+  display: flex;
+  gap: 12rpx;
+}
+
+.canvas-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.canvas-wrapper.half-width {
+  flex: 1;
+}
+
+.canvas-wrapper.hide {
+  display: none;
+}
+
+.world-label {
+  text-align: center;
+  font-size: 24rpx;
+  font-weight: bold;
+  color: #2C2C2C;
+  margin-bottom: 8rpx;
+}
+
+.world-label.hide {
+  display: none;
+}
+
 /* 实验步骤 */
 .experiment-step {
   display: flex;
@@ -119,14 +482,25 @@
   height: 430rpx;
   border-radius: 28rpx;
   overflow: hidden;
-  margin-bottom: 20rpx;
+  margin-bottom: 12rpx;
   box-shadow: 0 12rpx 30rpx rgba(37, 28, 22, 0.18);
   border: 1rpx solid rgba(255, 255, 255, 0.38);
+}
+
+.display-container.split-mode .canvas-container {
+  height: 340rpx;
 }
 
 .physics-canvas {
   width: 100%;
   height: 100%;
+}
+
+.canvas-label {
+  text-align: center;
+  font-size: 22rpx;
+  color: #8B9DAF;
+  margin-bottom: 8rpx;
 }
 
 /* 统计面板 */
@@ -180,13 +554,35 @@
   margin-top: 16rpx;
 }
 
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
 .result-title {
   font-size: 30rpx;
   font-weight: bold;
   color: #C41E3A;
-  display: block;
-  margin-bottom: 16rpx;
   font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+}
+
+.share-btn {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: rgba(196, 30, 58, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  transition: all 0.2s ease;
+}
+
+.share-btn:active {
+  transform: scale(0.9);
+  background: rgba(196, 30, 58, 0.3);
 }
 
 .result-bar {
@@ -195,7 +591,7 @@
   border-radius: 12rpx;
   overflow: hidden;
   margin-bottom: 16rpx;
-  box-shadow: inset 0 2rpx 6rpx rgba(0,0,0,0.08);
+  box-shadow: inset 0 2rpx 6rpx rgba(0, 0, 0, 0.08);
 }
 
 .result-bar-up {
@@ -224,6 +620,44 @@
   font-size: 26rpx;
   color: #8B9DAF;
   display: block;
+  line-height: 1.6;
+  margin-bottom: 12rpx;
+}
+
+.result-conclusion {
+  display: block;
+  font-size: 26rpx;
+  color: #2C2C2C;
+  font-weight: 500;
+  padding: 12rpx;
+  background: rgba(196, 30, 58, 0.08);
+  border-radius: 8rpx;
+  border-left: 4rpx solid #C41E3A;
+}
+
+/* 结论框 */
+.conclusion-box {
+  background: rgba(255, 255, 255, 0.5);
+  border: 2rpx solid rgba(196, 30, 58, 0.3);
+  border-radius: 16rpx;
+  padding: 24rpx;
+  text-align: center;
+}
+
+.conclusion-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #C41E3A;
+  margin-bottom: 12rpx;
+  font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+}
+
+.conclusion-text {
+  display: block;
+  font-size: 26rpx;
+  color: #2C2C2C;
+  line-height: 1.8;
 }
 
 /* 步骤导航 */
@@ -244,6 +678,7 @@
   background: rgba(255, 255, 255, 0.55);
   border: 1rpx solid rgba(139, 157, 175, 0.24);
   border-radius: 20rpx;
+  transition: all 0.15s ease;
 }
 
 .nav-btn text {
@@ -254,7 +689,6 @@
 .nav-btn:active {
   transform: scale(0.95);
   background: rgba(196, 30, 58, 0.1);
-  transition: all 0.15s ease;
 }
 
 .nav-next {

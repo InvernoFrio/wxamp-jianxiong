@@ -17,7 +17,7 @@
 }
 
 /* =========================
-   步骤指示器（统一宇称风格）
+   步骤指示器
 ========================= */
 .step-indicator {
   display: flex;
@@ -41,7 +41,7 @@
 }
 
 /* =========================
-   step内容基础动画
+   step 内容
 ========================= */
 .step-content {
   animation: fadeInUp 0.45s ease-out;
@@ -52,18 +52,12 @@
 }
 
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(24rpx);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(24rpx); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* =========================
-   step标题区（统一风格）
+   step 标题区
 ========================= */
 .step-hero {
   text-align: center;
@@ -92,21 +86,17 @@
 }
 
 /* =========================
-   glass卡片（统一宇称实验）
+   glass 卡片（保持原有）
 ========================= */
 glass-card {
   display: block;
   padding: 28rpx;
   border-radius: 22rpx;
-
   background: rgba(255,255,255,0.06);
   border: 1rpx solid rgba(255,255,255,0.12);
   backdrop-filter: blur(16rpx);
   -webkit-backdrop-filter: blur(16rpx);
-
-  box-shadow:
-    0 10rpx 30rpx rgba(0,0,0,0.25),
-    inset 0 1rpx 0 rgba(255,255,255,0.05);
+  box-shadow: 0 10rpx 30rpx rgba(0,0,0,0.25), inset 0 1rpx 0 rgba(255,255,255,0.05);
 }
 
 .intro-text {
@@ -116,23 +106,16 @@ glass-card {
 }
 
 /* =========================
-   实验区域容器（核心）
+   实验区 Canvas
 ========================= */
 .canvas-container {
   width: 100%;
   height: 460rpx;
   border-radius: 26rpx;
   overflow: hidden;
-
-  background: radial-gradient(circle at center,
-    rgba(79,195,247,0.08),
-    rgba(0,0,0,0.4));
-
+  background: radial-gradient(circle at center, rgba(79,195,247,0.08), rgba(0,0,0,0.4));
   border: 1rpx solid rgba(79,195,247,0.25);
-
-  box-shadow:
-    0 18rpx 40rpx rgba(0,0,0,0.35),
-    inset 0 0 40rpx rgba(79,195,247,0.08);
+  box-shadow: 0 18rpx 40rpx rgba(0,0,0,0.35), inset 0 0 40rpx rgba(79,195,247,0.08);
 }
 
 .physics-canvas {
@@ -141,19 +124,334 @@ glass-card {
 }
 
 /* =========================
-   统计面板（量子信息风格）
+   通用 glass 面板
+========================= */
+.glass {
+  background: rgba(255,255,255,0.05);
+  border: 1rpx solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(14rpx);
+  -webkit-backdrop-filter: blur(14rpx);
+  border-radius: 24rpx;
+  padding: 28rpx;
+}
+
+/* 面板公共 header */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.panel-title {
+  font-size: 26rpx;
+  font-weight: bold;
+  color: rgba(200,220,255,0.85);
+}
+
+.info-icon-btn {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: rgba(79,195,247,0.15);
+  border: 1rpx solid rgba(79,195,247,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-icon {
+  font-size: 22rpx;
+  color: #4FC3F7;
+  font-style: italic;
+  font-weight: bold;
+}
+
+/* =========================
+   步骤引导 Banner
+========================= */
+.guide-banner {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 20rpx 24rpx;
+}
+
+.guide-icon {
+  font-size: 32rpx;
+  flex-shrink: 0;
+}
+
+.guide-text {
+  font-size: 24rpx;
+  color: rgba(200,220,255,0.8);
+  line-height: 1.6;
+}
+
+/* =========================
+   偏振片角度控制面板
+========================= */
+.polarizer-panel {
+  /* 继承 .glass */
+}
+
+.angle-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 16rpx;
+}
+
+.angle-label-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6rpx;
+  flex-shrink: 0;
+  width: 80rpx;
+}
+
+.detector-badge {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  font-weight: bold;
+}
+
+.detector-a {
+  background: rgba(79,195,247,0.2);
+  border: 1rpx solid rgba(79,195,247,0.5);
+  color: #4FC3F7;
+}
+
+.detector-b {
+  background: rgba(196,30,58,0.2);
+  border: 1rpx solid rgba(196,30,58,0.5);
+  color: #C41E3A;
+}
+
+.angle-value {
+  font-size: 22rpx;
+  font-weight: bold;
+  color: #eaf3ff;
+}
+
+.angle-slider {
+  flex: 1;
+}
+
+/* 角度联动建议行 */
+.suggest-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid rgba(255,255,255,0.08);
+}
+
+.suggest-label {
+  font-size: 22rpx;
+  color: rgba(200,220,255,0.5);
+  flex: 1;
+}
+
+.suggest-btn {
+  padding: 10rpx 26rpx;
+  border-radius: 14rpx;
+  background: rgba(79,195,247,0.15);
+  border: 1rpx solid rgba(79,195,247,0.3);
+}
+
+.suggest-btn text {
+  font-size: 22rpx;
+  color: #4FC3F7;
+}
+
+/* =========================
+   实时符合率面板
+========================= */
+.coinc-panel {
+  /* 继承 .glass */
+}
+
+.coinc-formula {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 16rpx;
+  flex-wrap: wrap;
+}
+
+.formula-text {
+  font-size: 26rpx;
+  color: rgba(200,220,255,0.75);
+}
+
+.formula-sub {
+  font-size: 20rpx;
+  color: rgba(200,220,255,0.5);
+  vertical-align: sub;
+}
+
+.formula-value {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #4FC3F7;
+}
+
+/* 符合率进度条 */
+.coinc-bar-track {
+  height: 20rpx;
+  background: rgba(255,255,255,0.08);
+  border-radius: 10rpx;
+  overflow: visible;
+  position: relative;
+  margin-bottom: 12rpx;
+}
+
+.coinc-bar-fill {
+  height: 100%;
+  border-radius: 10rpx;
+  transition: width 0.4s ease;
+}
+
+.coinc-bar-fill.quantum {
+  background: linear-gradient(90deg, #4FC3F7, #29B6F6);
+}
+
+/* 经典上限 50% 标记竖线 */
+.coinc-bar-classic-limit {
+  position: absolute;
+  top: -8rpx;
+  left: 50%;
+  width: 3rpx;
+  height: 36rpx;
+  background: #C41E3A;
+  border-radius: 2rpx;
+  opacity: 0.8;
+}
+
+.coinc-bar-legend {
+  display: flex;
+  justify-content: space-between;
+}
+
+.legend-quantum {
+  font-size: 20rpx;
+  color: #4FC3F7;
+}
+
+.legend-classic {
+  font-size: 20rpx;
+  color: #C41E3A;
+}
+
+/* =========================
+   cos² 曲线（柱状近似）
+========================= */
+.curve-section {
+  /* 继承 .glass */
+}
+
+.curve-chart {
+  display: flex;
+  align-items: flex-end;
+  height: 100rpx;
+  gap: 3rpx;
+  padding: 0 4rpx;
+  margin-bottom: 8rpx;
+  position: relative;
+}
+
+.curve-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  position: relative;
+}
+
+.curve-bar-q {
+  width: 100%;
+  min-height: 2rpx;
+  background: rgba(79,195,247,0.55);
+  border-radius: 2rpx 2rpx 0 0;
+  transition: height 0.3s ease;
+}
+
+/* 经典上限参考线：固定在柱图 50% 高度处 */
+.curve-bar-c {
+  position: absolute;
+  bottom: 45rpx;  /* = 100rpx * 50% */
+  width: 100%;
+  height: 1rpx;
+  background: rgba(196,30,58,0.4);
+}
+
+/* 当前角度差对应的柱高亮 */
+.curve-col-active .curve-bar-q {
+  background: #FFD54F;
+  box-shadow: 0 0 8rpx rgba(255,213,79,0.5);
+}
+
+/* 坐标轴 */
+.curve-axis {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 4rpx;
+  margin-bottom: 16rpx;
+}
+
+.curve-axis text {
+  font-size: 18rpx;
+  color: rgba(200,220,255,0.4);
+}
+
+/* 图例 */
+.curve-legend {
+  display: flex;
+  gap: 20rpx;
+  flex-wrap: wrap;
+}
+
+.curve-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.curve-legend-item text {
+  font-size: 20rpx;
+  color: rgba(200,220,255,0.55);
+}
+
+.curve-legend-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 3rpx;
+}
+
+.quantum-dot  { background: rgba(79,195,247,0.8); }
+.classic-dot  { background: rgba(196,30,58,0.7); }
+.active-dot   { background: #FFD54F; }
+
+/* =========================
+   统计面板（保持原有，改标签）
 ========================= */
 .stats-panel {
   display: flex;
   justify-content: space-around;
   align-items: center;
-
   padding: 24rpx;
   border-radius: 24rpx;
-
   background: rgba(255,255,255,0.05);
   border: 1rpx solid rgba(255,255,255,0.1);
-
   backdrop-filter: blur(14rpx);
 }
 
@@ -175,12 +473,78 @@ glass-card {
   color: #eaf3ff;
 }
 
-.stat-item:nth-child(1) .stat-value {
+.stat-coinc { color: #4FC3F7; }
+.stat-miss  { color: #FF5252; }
+
+/* =========================
+   贝尔 S 参数面板
+========================= */
+.bell-panel {
+  /* 继承 .glass */
+}
+
+.bell-s-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.bell-s-value {
+  font-size: 40rpx;
+  font-weight: bold;
+}
+
+.bell-violated { color: #4FC3F7; }
+.bell-ok       { color: rgba(200,220,255,0.5); }
+
+.bell-verdict {
+  padding: 8rpx 20rpx;
+  border-radius: 16rpx;
+  font-size: 22rpx;
+}
+
+.verdict-violated {
+  background: rgba(79,195,247,0.15);
+  border: 1rpx solid rgba(79,195,247,0.3);
   color: #4FC3F7;
 }
 
-.stat-item:nth-child(3) .stat-value {
-  color: #FF5252;
+.verdict-ok {
+  background: rgba(255,255,255,0.06);
+  border: 1rpx solid rgba(255,255,255,0.1);
+  color: rgba(200,220,255,0.5);
+}
+
+/* 贝尔 S 进度条 */
+.bell-limit-bar {
+  height: 14rpx;
+  background: rgba(255,255,255,0.08);
+  border-radius: 7rpx;
+  position: relative;
+  overflow: visible;
+}
+
+.bell-limit-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4FC3F7, #29B6F6);
+  border-radius: 7rpx;
+  transition: width 0.5s ease;
+  max-width: 100%;
+}
+
+/* 经典极限标记 */
+.bell-limit-mark {
+  position: absolute;
+  left: 70.7%;   /* 2 / 2.828 = 70.7% */
+  top: -28rpx;
+  transform: translateX(-50%);
+}
+
+.bell-limit-label {
+  font-size: 18rpx;
+  color: rgba(196,30,58,0.8);
+  white-space: nowrap;
 }
 
 /* =========================
@@ -188,16 +552,41 @@ glass-card {
 ========================= */
 .controls {
   display: flex;
-  justify-content: center;
-  margin-top: 10rpx;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.btn-row {
+  display: flex;
+  gap: 16rpx;
+  width: 100%;
+}
+
+.ctrl-btn {
+  flex: 1;
+  padding: 16rpx 0;
+  border-radius: 18rpx;
+  text-align: center;
+  font-size: 26rpx;
+}
+
+.reset-btn {
+  background: rgba(255,255,255,0.06);
+  border: 1rpx solid rgba(255,255,255,0.12);
+  color: rgba(200,220,255,0.7);
+}
+
+.share-btn {
+  background: rgba(79,195,247,0.08);
+  border: 1rpx solid rgba(79,195,247,0.2);
+  color: #4FC3F7;
 }
 
 /* =========================
-   结果面板（纠缠强化版）
+   结果面板（保持原有）
 ========================= */
-.result-panel {
-  margin-top: 20rpx;
-}
+.result-panel { margin-top: 20rpx; }
 
 .result-title {
   font-size: 30rpx;
@@ -207,18 +596,15 @@ glass-card {
   margin-bottom: 18rpx;
 }
 
-/* 结果条 */
 .result-bar {
   display: flex;
   height: 46rpx;
   border-radius: 14rpx;
   overflow: hidden;
   margin-bottom: 16rpx;
-
   box-shadow: inset 0 2rpx 8rpx rgba(0,0,0,0.3);
 }
 
-/* 相同 */
 .result-bar-same {
   background: linear-gradient(90deg, #4FC3F7, #29B6F6);
   display: flex;
@@ -227,7 +613,6 @@ glass-card {
   transition: width 0.5s ease;
 }
 
-/* 不同 */
 .result-bar-diff {
   background: linear-gradient(90deg, #FF5252, #C41E3A);
   display: flex;
@@ -249,7 +634,7 @@ glass-card {
 }
 
 /* =========================
-   步骤导航（统一宇称风格）
+   步骤导航
 ========================= */
 .step-nav {
   display: flex;
@@ -261,10 +646,8 @@ glass-card {
 .nav-btn {
   padding: 16rpx 34rpx;
   border-radius: 18rpx;
-
   background: rgba(255,255,255,0.06);
   border: 1rpx solid rgba(255,255,255,0.12);
-
   color: #4FC3F7;
   font-size: 28rpx;
 }
@@ -274,11 +657,91 @@ glass-card {
   background: rgba(79,195,247,0.1);
 }
 
-.nav-placeholder {
-  width: 120rpx;
-}
+.nav-placeholder { width: 120rpx; }
 
 .nav-next {
   border-color: rgba(79,195,247,0.3);
   background: rgba(79,195,247,0.08);
 }
+
+/* =========================
+   原理弹窗
+========================= */
+.modal-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-box {
+  width: 86%;
+  background: #0f1a2e;
+  border: 1rpx solid rgba(79,195,247,0.25);
+  border-radius: 28rpx;
+  padding: 36rpx;
+  box-shadow: 0 0 60rpx rgba(79,195,247,0.12);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #4FC3F7;
+}
+
+.modal-close-btn {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close-btn text {
+  font-size: 24rpx;
+  color: rgba(200,220,255,0.6);
+}
+
+.modal-text {
+  font-size: 26rpx;
+  line-height: 1.9;
+  color: rgba(200,220,255,0.75);
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.modal-formula {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  background: rgba(79,195,247,0.08);
+  border: 1rpx solid rgba(79,195,247,0.2);
+  border-radius: 16rpx;
+  padding: 18rpx 28rpx;
+  margin: 16rpx 0;
+}
+
+.modal-formula text {
+  font-size: 30rpx;
+  color: #eaf3ff;
+  font-family: monospace;
+}
+
+.formula-sub-sm {
+  font-size: 22rpx !important;
+  color: rgba(200,220,255,0.6) !important;
+  vertical-align: sub;
+}
+
