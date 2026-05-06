@@ -1,0 +1,9 @@
+// utils/filter.wxs
+function toFixed(num, digits) {
+  if (num === null || num === undefined) return '--';
+  // 确保是数字后再调用 toFixed
+  return num.toFixed(digits);
+}
+module.exports = {
+  toFixed: toFixed
+}

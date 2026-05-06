@@ -1,4 +1,5 @@
 // pages/physics/exp-entanglement/exp-entanglement.js
+
 Page({
   data: {
     currentStep: 0,
@@ -65,9 +66,15 @@ Page({
   },
 
   // ════════════════════════════════════
-  //   步骤导航（保持原有逻辑）
+  //   步骤导航
   // ════════════════════════════════════
   onNextStep() {
+    if (this.data.currentStep >= 3) {
+      wx.navigateBack({
+        delta: 1
+      });
+      return;
+    }
     const next = this.data.currentStep + 1
     this.setData({ currentStep: next })
     if (next === 2) {

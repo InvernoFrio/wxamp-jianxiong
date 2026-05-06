@@ -21,16 +21,14 @@
     </view>
 
     <glass-card>
-      <text class="intro-text">
-        1935 年，爱因斯坦、波多尔斯基与罗森提出著名的 EPR 悖论：
+      <text class="intro-text">1935 年，爱因斯坦、波多尔斯基与罗森提出著名的 EPR 悖论：
         两个粒子一旦发生纠缠，无论相隔多远，对其中一个的测量
         会瞬间影响另一个的状态。
       </text>
     </glass-card>
 
     <glass-card>
-      <text class="intro-text">
-        这种"超距关联"令爱因斯坦深感不安，他称之为
+      <text class="intro-text">这种"超距关联"令爱因斯坦深感不安，他称之为
         "幽灵般的超距作用"。量子纠缠是否真实存在？
         贝尔不等式给出了可检验的答案。
       </text>
@@ -48,16 +46,14 @@
     </view>
 
     <glass-card>
-      <text class="intro-text">
-        纠缠粒子对处于叠加态：在测量之前，任何一个粒子的自旋
+      <text class="intro-text">纠缠粒子对处于叠加态：在测量之前，任何一个粒子的自旋
         都没有确定值。一旦测量其中一个，两个粒子的状态
         同时坍缩，结果呈现出严格的反关联。
       </text>
     </glass-card>
 
     <glass-card>
-      <text class="intro-text">
-        在下面的模拟中，中心光源持续产生纠缠光子对。
+      <text class="intro-text">在下面的模拟中，中心光源持续产生纠缠光子对。
         两个光子向相反方向飞出，由探测器 A 和 B 分别记录。
         经典物理无法解释它们之间的关联强度。
       </text>
@@ -314,8 +310,7 @@
           </view>
         </view>
 
-        <text class="result-desc">
-          符合率 {{correlation}}%，量子预言 {{coincRate}}%。
+        <text class="result-desc">符合率 {{correlation}}%，量子预言 {{coincRate}}%。
           实测值超过经典物理上限（50%），违反贝尔不等式，
           证明量子纠缠是真实存在的非局域关联。
         </text>
@@ -336,15 +331,13 @@
     </view>
 
     <glass-card>
-      <text class="intro-text">
-        1982 年，阿兰·阿斯佩首次在实验室验证了贝尔不等式的违反，
+      <text class="intro-text">1982 年，阿兰·阿斯佩首次在实验室验证了贝尔不等式的违反，
         确认了量子纠缠的真实性。2022 年，相关研究荣获诺贝尔物理学奖。
       </text>
     </glass-card>
 
     <glass-card>
-      <text class="intro-text">
-        量子纠缠不仅是物理基础研究的核心，也是量子密钥分发、
+      <text class="intro-text">量子纠缠不仅是物理基础研究的核心，也是量子密钥分发、
         量子隐形传态与量子计算的重要资源。
       </text>
     </glass-card>
@@ -353,16 +346,16 @@
 
   <!-- ══════════ 导航 ══════════ -->
   <view class="step-nav">
-
-    <view wx:if="{{currentStep > 0}}" bindtap="onPrevStep" class="nav-btn">
+    <view class="nav-btn" wx:if="{{currentStep > 0}}" bindtap="onPrevStep">
       <text>‹ 上一步</text>
     </view>
-    <view wx:else class="nav-placeholder"></view>
-
-    <view wx:if="{{currentStep < 3}}" bindtap="onNextStep" class="nav-btn nav-next">
+    <view class="nav-placeholder" wx:else></view>
+    <view class="nav-btn nav-next" wx:if="{{currentStep < 3}}" bindtap="onNextStep">
       <text>下一步 ›</text>
     </view>
-
+    <view class="nav-btn nav-next" wx:if="{{currentStep === 3}}" bindtap="onNextStep">
+      <text>返回 ›</text>
+    </view>
   </view>
 
 </view>
@@ -385,8 +378,7 @@
 
     <!-- 原理内容 -->
     <view wx:if="{{modalType === 'principle'}}">
-      <text class="modal-text">
-        正负电子湮灭产生两个极化互补的光子。通过偏振片时，
+      <text class="modal-text">正负电子湮灭产生两个极化互补的光子。通过偏振片时，
         透射概率由马吕斯定律决定。对于纠缠光子对，
         两侧探测器"同时响应"的概率（符合计数率）遵循：
       </text>
@@ -397,24 +389,21 @@
         <text class="formula-sub-sm">B</text>
         <text>)</text>
       </view>
-      <text class="modal-text">
-        当 θA = θB 时，符合率 = 1（100%）；
-        当差值为 90° 时，符合率 = 0（完全反关联）。
-        经典物理预测的上限仅为 50%，量子结果远超于此。
+      <text class="modal-text">当 θA = θB 时，符合率 = 1（100%）
+        当差值为 90° 时，符合率 = 0（完全反关联）
+        经典物理预测的上限仅为 50%，量子结果远超于此
       </text>
     </view>
 
     <!-- 贝尔 S 参数内容 -->
     <view wx:if="{{modalType === 'bell'}}">
-      <text class="modal-text">
-        CHSH 贝尔不等式要求任何经典隐变量理论满足 |S| ≤ 2。
+      <text class="modal-text">CHSH 贝尔不等式要求任何经典隐变量理论满足 |S| ≤ 2。
         量子力学在最优角度设置下给出：
       </text>
       <view class="modal-formula">
         <text>S = 2√2 ≈ 2.828</text>
       </view>
-      <text class="modal-text">
-        其中 S = E(a,b) − E(a,b') + E(a',b) + E(a',b')，
+      <text class="modal-text">其中 S = E(a,b) − E(a,b') + E(a',b) + E(a',b')，
         E(θ₁,θ₂) = cos[2(θ₁−θ₂)]。
         实验测得 S &gt; 2，即"违反贝尔不等式"，
         证明自然界不存在满足定域实在性的隐变量理论。
@@ -423,15 +412,13 @@
 
     <!-- 符合率曲线内容 -->
     <view wx:if="{{modalType === 'chart'}}">
-      <text class="modal-text">
-        横轴为两侧偏振片角度差 Δθ（0°~180°），
+      <text class="modal-text">横轴为两侧偏振片角度差 Δθ（0°~180°），
         纵轴为符合计数率（0~1）。
       </text>
       <view class="modal-formula">
         <text>量子：cos²(Δθ)</text>
       </view>
-      <text class="modal-text">
-        经典隐变量理论只能预测形如"折线"或更低的相关性，
+      <text class="modal-text">经典隐变量理论只能预测形如"折线"或更低的相关性，
         最大符合率不超过 50%。
         量子预言的 cos² 曲线在 Δθ = 0° 时达到 100%，
         形状与经典预言截然不同，已被多次实验证实。

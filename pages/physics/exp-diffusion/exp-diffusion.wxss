@@ -9,11 +9,11 @@
   padding-bottom: 140rpx;
 
   background:
-    radial-gradient(circle at 20% 20%, rgba(79,195,247,0.16), transparent 35%),
-    radial-gradient(circle at 80% 80%, rgba(255,82,82,0.12), transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(120,120,255,0.06), transparent 60%),
-    linear-gradient(180deg, #070b1a 0%, #0b1020 50%, #0a0f1d 100%);
-  color: #e8f1ff;
+    radial-gradient(circle at 20% 20%, rgba(219, 103, 255, 0.16), transparent 35%),
+    radial-gradient(circle at 80% 80%, rgba(250, 162, 73, 0.12), transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(58, 210, 252, 0.06), transparent 60%),
+    linear-gradient(180deg, #e9e9ea 0%, #c2c6d3 50%, #becaec 100%);
+  color: #222222;
 }
 
 /* =========================
@@ -75,7 +75,7 @@
 
 .guide-text {
   font-size: 23rpx;
-  color: rgba(160,220,255,0.85);
+  color: rgba(34,34,34,0.85);
   line-height: 1.7;
 }
 
@@ -99,7 +99,7 @@
   align-items: center;
   justify-content: center;
   font-size: 28rpx;
-  color: #4FC3F7;
+  color: #222222;
 }
 
 .info-btn:active { transform: scale(0.9); }
@@ -122,15 +122,16 @@
 .hero-title {
   font-size: 40rpx;
   font-weight: bold;
-  color: #eaf3ff;
+  color: #222222;
   letter-spacing: 2rpx;
   display: block;
   margin-bottom: 10rpx;
+  font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
 }
 
 .hero-desc {
   font-size: 26rpx;
-  color: rgba(200,220,255,0.6);
+  color: rgba(34,34,34,0.6);
 }
 
 /* =========================
@@ -151,7 +152,7 @@ glass-card {
 .intro-text {
   font-size: 28rpx;
   line-height: 2.0;
-  color: rgba(230,240,255,0.85);
+  color: rgba(34,34,34,0.85);
 }
 
 /* =========================
@@ -206,7 +207,7 @@ glass-card {
 
 .legend-label {
   font-size: 20rpx;
-  color: rgba(200,220,255,0.6);
+  color: rgba(34,34,34,0.6);
 }
 
 /* =========================
@@ -231,7 +232,7 @@ glass-card {
 
 .abundance-label {
   font-size: 22rpx;
-  color: rgba(160,220,255,0.6);
+  color: rgba(34,34,34,0.6);
 }
 
 .abundance-value {
@@ -271,13 +272,13 @@ glass-card {
 
 .alpha-label {
   font-size: 20rpx;
-  color: rgba(255,220,100,0.6);
+  color: rgba(34,34,34,0.6);
 }
 
 .alpha-value {
   font-size: 30rpx;
   font-weight: bold;
-  color: #FFD54F;
+  color: #685105;
 }
 
 /* =========================
@@ -299,12 +300,12 @@ glass-card {
 
 .cascade-title {
   font-size: 24rpx;
-  color: rgba(200,220,255,0.7);
+  color: rgba(34,34,34,0.7);
 }
 
 .cascade-count {
   font-size: 24rpx;
-  color: #FFD54F;
+  color: #685105;
   font-weight: bold;
 }
 
@@ -331,7 +332,7 @@ glass-card {
 
 .cascade-lbl {
   font-size: 18rpx;
-  color: rgba(180,200,255,0.4);
+  color: rgba(34,34,34,0.4);
 }
 
 /* =========================
@@ -357,7 +358,7 @@ glass-card {
 
 .stat-label {
   font-size: 20rpx;
-  color: rgba(200,220,255,0.55);
+  color: rgba(34,34,34,0.55);
 }
 
 .stat-value {
@@ -395,7 +396,7 @@ glass-card {
 }
 
 .ctrl-reset {
-  color: rgba(200,200,255,0.7) !important;
+  color: rgba(34,34,34,0.7) !important;
 }
 
 /* =========================
@@ -411,7 +412,7 @@ glass-card {
   border-radius: 16rpx;
   background: rgba(255,255,255,0.05);
   border: 1rpx solid rgba(255,255,255,0.10);
-  color: rgba(200,220,255,0.6);
+  color: rgba(34,34,34,0.6);
   font-size: 24rpx;
 }
 
@@ -430,6 +431,7 @@ glass-card {
   color: #4FC3F7;
   margin-bottom: 18rpx;
   display: block;
+  font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
 }
 
 .result-bar {
@@ -465,7 +467,7 @@ glass-card {
 
 .result-desc {
   font-size: 26rpx;
-  color: rgba(200,220,255,0.7);
+  color: rgba(34,34,34,0.7);
   line-height: 1.8;
 }
 
@@ -483,7 +485,7 @@ glass-card {
   border-radius: 18rpx;
   background: rgba(255,255,255,0.06);
   border: 1rpx solid rgba(255,255,255,0.12);
-  color: #4FC3F7;
+  color: #222222;
   font-size: 28rpx;
 }
 
@@ -531,14 +533,15 @@ glass-card {
 .modal-title {
   font-size: 34rpx;
   font-weight: bold;
-  color: #eaf3ff;
+  color: #222222;
   letter-spacing: 1rpx;
+  font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
 }
 
 .modal-formula {
   font-size: 34rpx;
   color: #FFD54F;
-  font-family: 'Courier New', monospace;
+  font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
   background: rgba(255,213,79,0.07);
   border-radius: 12rpx;
   padding: 16rpx 20rpx;
@@ -547,7 +550,7 @@ glass-card {
 
 .modal-sub {
   font-size: 24rpx;
-  color: rgba(200,220,255,0.7);
+  color: rgba(34,34,34,0.7);
   line-height: 1.8;
 }
 
