@@ -304,3 +304,26 @@ section {
   color: #fff;
   font-size: 36rpx;
 }
+
+/* 设置图标的基础大小 */
+.ctrl-icon {
+  width: 25rpx;    /* 根据你的视觉需求调整大小 */
+  height: 25rpx;
+  margin: 0 15rpx;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* 主按钮图标通常大一点 */
+.ctrl-icon-main {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+/* 确保容器弹性布局正常工作 */
+.music-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20rpx;
+}
