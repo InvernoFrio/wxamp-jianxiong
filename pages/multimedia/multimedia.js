@@ -8,16 +8,19 @@ Page({
     galleryList: [],
     comicPreview: null,
     videoPreview: null,
-    musicItem: null
+    musicList:[], 
+    musicItem: null,
+    currentIndex: 0,   // 当前播放的索引
+    playMode: 'list', // list: 顺序播放, random: 随机播放, single: 单曲循环
   },
 
   onLoad() {
-    // 2. 页面加载时初始化播放器
     audioCtx = wx.createInnerAudioContext();
     
     // 监听播放器状态，确保 UI 和声音同步
     audioCtx.onPlay(() => { this.setData({ isPlaying: true }); });
     audioCtx.onPause(() => { this.setData({ isPlaying: false }); });
+    audioCtx.onEnded(() => this.playNext()); // 自动播放下一首
 
     setTimeout(() => {
       this.fetchAllPreviews();
@@ -29,48 +32,93 @@ Page({
     const comicTask = db.collection('comic').orderBy('order', 'asc').limit(1).get();
     const galleryTask = db.collection('gallery').orderBy('order', 'asc').limit(5).get();
     const videoTask = db.collection('video').orderBy('order', 'asc').limit(1).get();
-    const musicTask = db.collection('music').limit(1).get();
+    const musicTask = db.collection('music').limit(10).get();
 
     Promise.all([comicTask, galleryTask, videoTask, musicTask]).then(res => {
-      const mItem = res[3].data[0] || null;
+      const musicList = res[3].data || [];
       this.setData({
         comicPreview: res[0].data[0] || null,
         galleryList: res[1].data || [],
         videoPreview: res[2].data[0] || null,
-        musicItem: mItem
+        musicList: musicList,
+        musicItem: musicList.length > 0 ? musicList[0] : null,
+        currentIndex: 0
       });
 
-      // 3. 关键：拿到数据后，把云端音频地址给播放器
-      if (mItem && mItem.url) {
-        audioCtx.src = mItem.url;
+      // 初始化播放源
+      if (musicList.length > 0) {
+        audioCtx.src = musicList[0].url;
       }
       
     }).finally(() => { wx.hideLoading(); });
   },
 
+  // 播放/暂停控制
   togglePlay() {
-    // 4. 真正的播放/暂停逻辑
     if (!audioCtx.src) return; 
-
-    if (this.data.isPlaying) {
-      audioCtx.pause(); // 停止声音
-    } else {
-      audioCtx.play();  // 发出声音
-      wx.showToast({ title: '正在播放', icon: 'none' });
-    }
-    
-    // 注意：这里不需要手动 setData isPlaying 了，
-    // 因为上面的 onPlay/onPause 监听器会自动帮你处理。
+    this.data.isPlaying ? audioCtx.pause() : audioCtx.play();
   },
 
+  // 上一首
+  playPrev() {
+    if (this.data.musicList.length === 0) return;
+    let index = (this.data.currentIndex - 1 + this.data.musicList.length) % this.data.musicList.length;
+    this.switchMusic(index);
+  },
+
+  // 切换播放模式
+  toggleMode() {
+    const modes = ['list', 'random', 'single'];
+    let currentIndex = modes.indexOf(this.data.playMode);
+    let nextMode = modes[(currentIndex + 1) % modes.length];
+    
+    this.setData({ playMode: nextMode });
+    
+    const modeNames = { list: '顺序播放', random: '随机播放', single: '单曲循环' };
+    wx.showToast({ title: modeNames[nextMode], icon: 'none' });
+  },
+
+  // 下一首
+  playNext() {
+    const { musicList, currentIndex, playMode } = this.data;
+    if (musicList.length === 0) return;
+
+    let nextIndex = currentIndex;
+
+    if (playMode === 'single') {
+      // 单曲循环：不改变索引，重播
+      audioCtx.seek(0);
+      audioCtx.play();
+      return;
+    } else if (playMode === 'random') {
+      // 随机播放
+      nextIndex = Math.floor(Math.random() * musicList.length);
+    } else {
+      // 顺序播放
+      nextIndex = (currentIndex + 1) % musicList.length;
+    }
+    this.switchMusic(nextIndex);
+  },
+
+  // 切换音乐核心逻辑
+  switchMusic(index) {
+    const nextMusic = this.data.musicList[index];
+    this.setData({
+      currentIndex: index,
+      musicItem: nextMusic
+    });
+    audioCtx.stop();
+    audioCtx.src = nextMusic.url;
+    audioCtx.play();
+  },
+
+  // 重置播放
   restartMusic() {
     if (!audioCtx.src) return;
-    // 将进度跳转至 0 秒
-    audioCtx.seek(0);
-    // 如果当前没在播放，则触发播放
+    audioCtx.seek(0);       // 将进度跳转至 0 秒
     if (!this.data.isPlaying) {
       audioCtx.play();
-    }
+    }                     // 如果当前没在播放，则触发播放
     wx.showToast({ title: '重置播放', icon: 'none' });
   },
 

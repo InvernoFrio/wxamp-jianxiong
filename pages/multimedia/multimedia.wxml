@@ -90,12 +90,21 @@
         <text class="music-name">{{musicItem.title}}</text>
         <text class="music-author">{{musicItem.author}}</text>
         <view class="music-controls">
-
-          <text class="ctrl-icon" bindtap="restartMusic">↺</text>
+          <!-- 上一首 -->
+          <image class="ctrl-icon" src="/assets/icons/prev.png" bindtap="playPrev" mode="aspectFit"></image>
+          <!-- 重新播放 -->
+          <image class="ctrl-icon" src="/assets/icons/restart.png" bindtap="restartMusic" mode="aspectFit"></image>
+          <!-- 播放/暂停 -->
           <view class="play-pause-btn active-scale" bindtap="togglePlay">
-            <text class="ctrl-icon-main">{{isPlaying ? '⏸' : '▶'}}</text>
+            <image class="ctrl-icon-main" src="{{isPlaying ? '/assets/icons/pause.png' : '/assets/icons/play.png'}}" mode="aspectFit"></image>
           </view>
-          <text class="ctrl-icon">⏭</text>
+          <!-- 模式切换 -->
+          <image class="ctrl-icon" 
+                src="{{playMode === 'list' ? '/assets/icons/mode-list.png' : (playMode === 'random' ? '/assets/icons/mode-random.png' : '/assets/icons/mode-single.png')}}" 
+                bindtap="toggleMode" 
+                mode="aspectFit"></image>
+          <!-- 下一首 -->
+          <image class="ctrl-icon" src="/assets/icons/next.png" bindtap="playNext" mode="aspectFit"></image>
         </view>
       </view>
     </view>
