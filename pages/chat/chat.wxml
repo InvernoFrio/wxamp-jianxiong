@@ -90,11 +90,11 @@
       bindinput="onInput"
       confirm-type="send"
       bindconfirm="sendMessage"
-      disabled="{{loading}}"/>
+      disabled="{{loading || typing}}"/>
     <button 
       class="send-btn"
       bindtap="sendMessage"
-      disabled="{{loading || !inputText}}">
+      disabled="{{loading || typing || !inputText}}">
       发送
     </button>
   </view>
