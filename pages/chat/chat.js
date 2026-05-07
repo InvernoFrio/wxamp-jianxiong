@@ -96,6 +96,12 @@ function pickRandomQuestions(pool, count) {
   return arr.slice(0, count)
 }
 
+function normalizeQuestionText(text) {
+  return (text || '')
+    .replace(/[“”"‘’'\s，。！？?、：:；;,.!]/g, '')
+    .toLowerCase()
+}
+
 function detectMainTopic(question, answer) {
   const q = question || ''
   const a = answer || ''
@@ -178,73 +184,123 @@ function detectMainTopic(question, answer) {
   return 'default'
 }
 
-function buildFollowUpQuestions(question, answer) {
+function buildFollowUpQuestions(question, answer, messages = []) {
   const q = question || ''
   const a = answer || ''
-  const text = `${q}\n${a}`
 
-  // 1. 优先根据“刚刚这次回答”的核心内容判断主题
-  // 不再把所有命中的题库混在一起随机抽，避免跳题。
+  const usedQuestionSet = new Set()
+
+  // 1. 收集所有历史用户已经问过的问题
+  messages.forEach(msg => {
+    if (msg && msg.role === 'user' && msg.content) {
+      usedQuestionSet.add(normalizeQuestionText(msg.content))
+    }
+  })
+
+  // 2. 当前这个问题也加入禁止重复列表
+  usedQuestionSet.add(normalizeQuestionText(q))
+
   const topic = detectMainTopic(q, a)
 
-  // 2. 根据主题生成递进式问题：
-  // 第一个问“原理/概念”
-  // 第二个问“实验/细节”
-  // 第三个问“意义/影响/延伸”
+  // 每类问题多放几个，方便过滤重复后还有备用问题
   const topicMap = {
     parity: [
       '为什么说宇称不守恒打破了人们对“镜像世界”的直觉？',
       '钴-60实验中，最关键的观察结果是什么？',
-      '宇称不守恒这个发现后来怎样影响了粒子物理的发展？'
+      '如果宇称守恒，实验结果应该是什么样？',
+      '宇称不守恒这个发现后来怎样影响了粒子物理的发展？',
+      '弱相互作用为什么和左右对称有关？',
+      '普通人应该怎样理解“镜像世界不完全一样”？'
     ],
 
     experiment: [
       '您刚才提到实验条件很严格，具体哪些条件最难控制？',
       '为什么实验物理必须反复验证数据，而不能只看一次结果？',
+      '一个好实验最重要的标准是什么？',
+      '实验中的误差通常来自哪些地方？',
+      '为什么低温条件对钴-60实验很关键？',
       '这个实验方法对后来的物理研究有什么启发？'
     ],
 
     theoryExperiment: [
       '理论物理学家的想法为什么需要实验来检验？',
       '在这项研究中，理论预言和实验验证分别起了什么作用？',
-      '您觉得理论与实验之间最理想的关系是什么？'
+      '您觉得理论与实验之间最理想的关系是什么？',
+      '为什么一个实验结果可以改变理论物理的发展方向？',
+      '李政道、杨振宁的理论和您的实验是怎样互相配合的？'
     ],
 
     nobel: [
       '您如何看待科学贡献和科学荣誉之间的不完全一致？',
       '为什么实验工作有时比理论工作更不容易被公众看见？',
-      '这段经历对后来女性科学家的处境有什么影响？'
+      '这段经历对后来女性科学家的处境有什么影响？',
+      '您认为科学家的价值应该由奖项决定吗？',
+      '如果学生问起诺贝尔奖的遗憾，您会怎样回答？'
     ],
 
     womenScience: [
       '您当时作为女性科学家，遇到的最大阻力是什么？',
       '面对不公平的环境，您靠什么坚持做研究？',
-      '您会给今天想走科研道路的女生什么建议？'
+      '您会给今天想走科研道路的女生什么建议？',
+      '今天的女生学物理还会遇到哪些挑战？',
+      '科学界应该怎样减少对女性研究者的偏见？'
     ],
 
     nuclear: [
       '核物理研究为什么在20世纪变得如此重要？',
       '您在核物理实验中最核心的贡献是什么？',
-      '科学家应该怎样看待科学成果可能带来的社会影响？'
+      '科学家应该怎样看待科学成果可能带来的社会影响？',
+      '曼哈顿计划对您后来的研究有什么影响？',
+      '哥伦比亚大学时期对您的科研道路有什么影响？'
     ],
 
     studyAdvice: [
       '如果学生物理基础薄弱，应该先补哪些基础？',
       '学习抽象物理概念时，怎样避免只背结论？',
-      '您认为真正的科学训练最重要的是什么？'
+      '您认为真正的科学训练最重要的是什么？',
+      '学生应该如何培养实验思维？',
+      '如果我想理解宇称不守恒，应该先学哪些知识？'
     ],
 
     default: [
       '您刚才回答中最核心的一点是什么？',
       '能不能用一个更生活化的比喻解释这个问题？',
-      '如果继续深入学习这个话题，下一步应该了解什么？'
+      '如果继续深入学习这个话题，下一步应该了解什么？',
+      '这个问题最容易被误解的地方是什么？',
+      '这个发现对现代物理有什么影响？'
     ]
   }
 
-  const result = topicMap[topic] || topicMap.default
+  const primaryList = topicMap[topic] || topicMap.default
 
-  // 3. 避免和用户刚刚问过的问题完全重复
-  return result.filter(item => item !== q).slice(0, 3)
+  // 3. 优先从当前主题里选问题
+  let candidates = primaryList.filter(item => {
+    return !usedQuestionSet.has(normalizeQuestionText(item))
+  })
+
+  // 4. 如果当前主题过滤后不够 3 个，再从 default 里补
+  if (candidates.length < 3) {
+    const backup = topicMap.default.filter(item => {
+      return !usedQuestionSet.has(normalizeQuestionText(item)) &&
+             !candidates.some(q => normalizeQuestionText(q) === normalizeQuestionText(item))
+    })
+
+    candidates = candidates.concat(backup)
+  }
+
+  // 5. 如果还不够，再从所有题库里补
+  if (candidates.length < 3) {
+    const allQuestions = Object.values(topicMap).flat()
+
+    const extra = allQuestions.filter(item => {
+      return !usedQuestionSet.has(normalizeQuestionText(item)) &&
+             !candidates.some(q => normalizeQuestionText(q) === normalizeQuestionText(item))
+    })
+
+    candidates = candidates.concat(extra)
+  }
+
+  return candidates.slice(0, 3)
 }
 
 
@@ -269,6 +325,7 @@ Page({
     messages: [],
     inputText: '',
     loading: false,
+    typing: false,
     scrollTo: '',
     suggestions: [],
     followUpQuestions: []
@@ -308,7 +365,7 @@ Page({
 
   async sendMessage() {
     const userText = this.data.inputText.trim();
-    if (!userText || this.data.loading) return;
+if (!userText || this.data.loading || this.data.typing) return;
   
     const newMessages = [
       ...this.data.messages,
@@ -334,22 +391,24 @@ Page({
   
       if (res.result && res.result.success) {
         const reply = res.result.reply || '抱歉，我暂时没有得到有效回复，请你再问一次。';
-  
+      
+        const assistantIndex = newMessages.length;
+      
         const finalMessages = [
           ...newMessages,
-          { role: 'assistant', content: reply }
+          { role: 'assistant', content: '' }
         ];
-  
+      
         this.setData({
           messages: finalMessages,
           loading: false,
-  
-          // 新增：根据这次用户问题和 AI 回答，生成 3 个后续话题
-          followUpQuestions: buildFollowUpQuestions(userText, reply),
-  
-          scrollTo: `msg-${finalMessages.length - 1}`
+          typing: true,
+          followUpQuestions: [],
+          scrollTo: `msg-${assistantIndex}`
+        }, () => {
+          this.typeAssistantReply(reply, assistantIndex, userText);
         });
-      } else {
+      }else {
         this.setData({
           loading: false,
           followUpQuestions: []
@@ -367,6 +426,56 @@ Page({
   
       this.showError('网络异常，请稍后重试');
     }
+  },
+
+  typeAssistantReply(fullText, assistantIndex, userText) {
+    if (this.typingTimer) {
+      clearInterval(this.typingTimer);
+      this.typingTimer = null;
+    }
+  
+    let currentLength = 0;
+    const step = 2;      // 每次显示 2 个字
+    const speed = 35;    // 每 35 毫秒刷新一次
+  
+    this.typingTimer = setInterval(() => {
+      currentLength += step;
+  
+      const currentText = fullText.slice(0, currentLength);
+      const messages = [...this.data.messages];
+  
+      if (!messages[assistantIndex]) {
+        clearInterval(this.typingTimer);
+        this.typingTimer = null;
+  
+        this.setData({
+          typing: false
+        });
+  
+        return;
+      }
+  
+      messages[assistantIndex] = {
+        ...messages[assistantIndex],
+        content: currentText
+      };
+  
+      this.setData({
+        messages,
+        scrollTo: `msg-${assistantIndex}`
+      });
+  
+      if (currentLength >= fullText.length) {
+        clearInterval(this.typingTimer);
+        this.typingTimer = null;
+  
+        this.setData({
+          typing: false,
+          followUpQuestions: buildFollowUpQuestions(userText, fullText, messages),
+          scrollTo: `msg-${assistantIndex}`
+        });
+      }
+    }, speed);
   },
 
   showError(msg) {
