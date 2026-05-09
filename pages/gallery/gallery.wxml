@@ -1,12 +1,15 @@
 <!-- pages/gallery/gallery.wxml -->
-<scroll-view class="sub-page-container" scroll-y="true">
+<!-- 页面容器 -->
+<view class="sub-page-container">
+  
+  <!-- 顶部标题区 -->
   <view class="page-header">
     <text class="page-title serif-title">岁时光影</text>
     <view class="title-accent"></view>
   </view>
 
+  <!-- 图片网格 -->
   <view class="gallery-grid">
-    <!-- wx:key 使用数据库自带的 _id -->
     <view 
       class="gallery-card active-scale" 
       wx:for="{{photos}}" 
@@ -14,7 +17,6 @@
       bindtap="previewPhoto" 
       data-url="{{item.image}}"
     >
-      <!-- src 直接引用数据库中的 image 字段 (cloud://...) -->
       <image 
         class="gallery-img" 
         src="{{item.image}}" 
@@ -22,8 +24,22 @@
         lazy-load="true"
       ></image>
       <view class="gallery-info-overlay">
-        <text class="gallery-text">{{item.title}}</text>
+        <text class="gallery-text">{{item.author || '匿名人士'}}</text>
       </view>
     </view>
   </view>
-</scroll-view>
+
+  <!-- 加载状态提示 -->
+  <view class="load-status">
+    <block wx:if="{{photos.length > 0}}">
+      <view class="loading-icon" wx:if="{{!isFinished}}">正在加载美好...</view>
+      <view class="finished-text" wx:else>—— 故事到此，未完待续 ——</view>
+    </block>
+    
+    <!-- 空状态 -->
+    <view class="empty-box" wx:if="{{photos.length === 0 && !loading}}">
+      <image src="/images/empty.png" mode="aspectFit" class="empty-img"></image>
+      <text>相册还没有照片</text>
+    </view>
+  </view>
+</view>

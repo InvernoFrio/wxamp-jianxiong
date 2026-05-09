@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "岁时光影"
+  "navigationBarTitleText": "岁时光影",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#F8F6F2",
+  "backgroundTextStyle": "dark"
 }

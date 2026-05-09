@@ -42,7 +42,7 @@
           <!-- 注意：gallery 集合中的字段名为 image -->
           <image class="photo-img" src="{{item.image}}" mode="aspectFill"></image>
         </view>
-        <text class="photo-title">{{item.title}}</text>
+        <!-- <text class="photo-title">{{item.title}}</text> -->
         <text class="photo-desc">{{item.author}}</text>
       </view>
     </scroll-view>
