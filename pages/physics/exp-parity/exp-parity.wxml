@@ -182,7 +182,7 @@
             <text class="bar-label" wx:if="{{mirrorMode ? asymmetryPercent : asymmetryPercent > 15}}">↓ {{mirrorMode ? asymmetryPercent : asymmetryPercent}}%</text>
           </view>
         </view>
-        <text class="result-desc">{{mirrorMode ? '镜像世界中' : '真实世界中'}}，向下发射比例{{mirrorMode ? (100 - asymmetryPercent) : asymmetryPercent}}%，明显偏离50%的对称预期！</text>
+        <text class="result-desc">{{mirrorMode ? '镜像世界中' : '真实世界中'}}，向下发射比例{{mirrorMode ? (100 - asymmetryPercent) : asymmetryPercent}}%{{ (mirrorMode ? (100 - asymmetryPercent) : asymmetryPercent) >= 48 && (mirrorMode ? (100 - asymmetryPercent) : asymmetryPercent) <= 52? '，符合预期': '，明显偏离50%的对称预期！' }}</text>
         <text class="result-conclusion">{{ temperature < 0.03 ? '✓ 极化效果明显，宇称不守恒现象显著' : temperature < 0.07 ? '⚠ 部分极化，宇称违反程度中等' : '✗ 温度过高，极化失效，接近对称' }}</text>
       </glass-card>
     </view>
