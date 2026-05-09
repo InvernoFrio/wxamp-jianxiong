@@ -62,7 +62,12 @@ Page({
   // step 导航
   // ======================
   onNextStep() {
-    if (this.data.currentStep >= 3) return;
+    if (this.data.currentStep >= 3) {
+      wx.navigateBack({
+        delta: 1
+      });
+      return;
+    }
     const next = this.data.currentStep + 1;
     this.setData({ currentStep: next });
     if (next === 2) {

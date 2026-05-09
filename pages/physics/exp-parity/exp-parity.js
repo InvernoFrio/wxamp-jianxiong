@@ -19,7 +19,8 @@ Page({
     // 新增数据字段
     mirrorMode: false,
     splitScreen: false,
-    temperature: 50,
+    temperature: 0.01,
+    sliderValue: 7,
     showFormula: false
   },
 
@@ -40,7 +41,8 @@ Page({
     const canSplitScreen = systemInfo.screenWidth > 600;
     this.setData({ 
       splitScreen: canSplitScreen,
-      temperature: 50 
+      temperature: 0.01,
+      sliderValue: 7
     });
   },
 
@@ -50,7 +52,12 @@ Page({
 
   // ========== 步骤导航 ==========
   onNextStep() {
-    if (this.data.currentStep >= 3) return;
+    if (this.data.currentStep >= 3) {
+      wx.navigateBack({
+        delta: 1
+      });
+      return;
+    }
     const next = this.data.currentStep + 1;
     this.setData({ currentStep: next });
     if (next === 2) {
@@ -99,7 +106,9 @@ Page({
 
   // ========== 温度控制 ==========
   onTemperatureChange(e) {
-    this.setData({ temperature: e.detail.value });
+    const tempRange = 0.1 - 0.003;
+    const temperature = 0.003 + (e.detail.value / 100) * tempRange;
+    this.setData({ temperature: temperature, sliderValue: e.detail.value });
     this._triggerVibration(20);
   },
 
@@ -123,7 +132,8 @@ Page({
       totalParticles: 0,
       asymmetryPercent: '0',
       mirrorMode: false,
-      temperature: 50,
+      temperature: 0.01,
+      sliderValue: 7,
       showFormula: false,
       _particles: []
     });
@@ -253,7 +263,7 @@ Page({
     ctx.clearRect(0, 0, w, h);
 
     // 背景
-    ctx.fillStyle = '#1a1a2e';
+    ctx.fillStyle = '#18182a';
     ctx.fillRect(0, 0, w, h);
 
     // 磁场线（竖直方向）
@@ -311,16 +321,16 @@ Page({
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
-    // 箭头方向：温度低 → 向下（强极化），温度高 → 无方向（随机）
-    const polarization = 1 - (this.data.temperature / 100);
-    
-    if (polarization > 0.3) {
+    // 箭头方向
+    const polarization = 0.000139 / this.data.temperature;
+
+    if (polarization > 0.001) {
       // 绘制向下的自旋箭头
       ctx.beginPath();
       ctx.moveTo(cx, cy - 16);
       ctx.lineTo(cx, cy + 16);
       ctx.stroke();
-      
+
       // 箭头头部
       ctx.beginPath();
       ctx.moveTo(cx - 6, cy + 10);
@@ -370,23 +380,27 @@ Page({
       this._drawStatic();
 
       // 根据温度计算β粒子偏向性
-      const polarization = 1 - (this.data.temperature / 100);
-      const downwardProbability = 0.5 + (polarization * 0.2); // 0.5~0.7
+      const polarization = 0.000139 / this.data.temperature;
+      const downwardProbability = 0.5 + (polarization * 3); // 0.5~0.7
 
       // 生成新粒子
-      if (frameCount % 3 === 0) {
-        const goDown = Math.random() < downwardProbability;
-        const angle = (Math.random() - 0.5) * Math.PI * 0.6;
-        const speed = 1.5 + Math.random() * 2;
-        this._particles.push({
-          x: cx,
-          y: cy,
-          vx: Math.sin(angle) * speed,
-          vy: goDown ? Math.abs(Math.cos(angle) * speed) : -Math.abs(Math.cos(angle) * speed),
-          life: 1.0,
-          isDown: goDown,
-          color: goDown ? '#C41E3A' : '#4FC3F7'
-        });
+      if (frameCount % 1 === 0) {
+        const batchSize = 3 + Math.floor(Math.random() * 4);
+        for (let i = 0; i < batchSize; i++) {
+          // ... 创建粒子代码
+          const goDown = Math.random() < downwardProbability;
+          const angle = (Math.random() - 0.5) * Math.PI * 0.6;
+          const speed = 0.8 + Math.random() * 2;
+          this._particles.push({
+            x: cx,
+            y: cy,
+            vx: Math.sin(angle) * speed,
+            vy: goDown ? Math.abs(Math.cos(angle) * speed) : -Math.abs(Math.cos(angle) * speed),
+            life: 1.0,
+            isDown: goDown,
+            color: goDown ? '#C41E3A' : '#4FC3F7'
+          });
+        }
       }
 
       // 更新和绘制粒子
@@ -449,8 +463,8 @@ Page({
         ctx.draw();
       }
 
-      // 结束条件：300个粒子
-      if (this.data.totalParticles >= 300) {
+      // 结束条件：1000个粒子
+      if (this.data.totalParticles >= 2500) {
         this._stopAnimation();
         this._calculateResults();
         return;

@@ -16,17 +16,15 @@
     </view>
 
     <glass-card>
-      <text class="intro-text">
-        气体扩散是统计物理的经典现象：大量分子在热运动驱动下，
+      <text class="intro-text">气体扩散是统计物理的经典现象：大量分子在热运动驱动下，
         从高浓度区域向低浓度区域自发迁移，最终趋向均匀分布。
       </text>
     </glass-card>
 
     <glass-card>
-      <text class="intro-text">
-        单个分子的运动完全随机，无法预测。
+      <text class="intro-text">单个分子的运动完全随机，无法预测
         但数以亿计的分子叠加在一起，却产生出规律性极强的
-        宏观浓度梯度——这正是统计物理的魅力所在。
+        宏观浓度梯度——这正是统计物理的魅力所在
       </text>
     </glass-card>
   </view>
@@ -40,23 +38,20 @@
     </view>
 
     <glass-card>
-      <text class="intro-text">
-        格雷厄姆定律（1848年）指出：
+      <text class="intro-text">格雷厄姆定律（1848年）指出：
         在相同温度下，气体分子的扩散速率与其摩尔质量的平方根成反比。
       </text>
     </glass-card>
 
     <glass-card>
-      <text class="intro-text">
-        U-235 与 U-238 摩尔质量仅相差约 1.3%，
+      <text class="intro-text">U-235 与 U-238 摩尔质量仅相差约 1.3%，
         导致 U-235 的扩散速率仅快约 0.4%。
         单级分离系数 α ≈ 1.0043，效果极其微弱。
       </text>
     </glass-card>
 
     <glass-card>
-      <text class="intro-text">
-        曼哈顿计划中，橡树岭工厂建造了数千级扩散级联装置，
+      <text class="intro-text">曼哈顿计划中，橡树岭工厂建造了数千级扩散级联装置，
         耗电量占当时美国全国用电量的约 1/6，
         才将 U-235 浓度从天然的 0.7% 提升至 90% 以上。
       </text>
@@ -180,8 +175,7 @@
             <text class="bar-label">U-238 {{100 - enrichmentPercent}}%</text>
           </view>
         </view>
-        <text class="result-desc">
-          经过多轮扩散，较轻的 U-235 优先穿越隔膜小孔，
+        <text class="result-desc">经过多轮扩散，较轻的 U-235 优先穿越隔膜小孔，
           在右侧腔室逐步富集。单级效果虽微弱，
           但级联叠加后浓度差异显著放大。
         </text>
@@ -199,24 +193,21 @@
     </view>
 
     <glass-card>
-      <text class="intro-text">
-        气体扩散法揭示了统计物理最核心的思想：
+      <text class="intro-text">气体扩散法揭示了统计物理最核心的思想：
         微观层面极其微小的概率差异，经过大量粒子与多次循环的叠加，
         最终涌现为可测量的宏观效应。
       </text>
     </glass-card>
 
     <glass-card>
-      <text class="intro-text">
-        气体扩散法因能耗巨大，1980 年代后逐渐被离心分离法取代。
+      <text class="intro-text">气体扩散法因能耗巨大，1980 年代后逐渐被离心分离法取代。
         离心机利用同位素在高速旋转中的质量差异实现分离，
         效率是扩散法的数十倍。
       </text>
     </glass-card>
 
     <glass-card>
-      <text class="intro-text">
-        今天，同位素分离技术广泛应用于核电燃料制备、
+      <text class="intro-text">今天，同位素分离技术广泛应用于核电燃料制备、
         医用放射性同位素生产，以及基础粒子物理研究，
         远超其最初的历史背景。
       </text>
@@ -225,9 +216,16 @@
 
   <!-- 导航 -->
   <view class="step-nav">
-    <view wx:if="{{currentStep > 0}}" bindtap="onPrevStep" class="nav-btn">‹ 上一步</view>
-    <view wx:else class="nav-placeholder"></view>
-    <view wx:if="{{currentStep < 3}}" bindtap="onNextStep" class="nav-btn nav-next">下一步 ›</view>
+    <view class="nav-btn" wx:if="{{currentStep > 0}}" bindtap="onPrevStep">
+      <text>‹ 上一步</text>
+    </view>
+    <view class="nav-placeholder" wx:else></view>
+    <view class="nav-btn nav-next" wx:if="{{currentStep < 3}}" bindtap="onNextStep">
+      <text>下一步 ›</text>
+    </view>
+    <view class="nav-btn nav-next" wx:if="{{currentStep === 3}}" bindtap="onNextStep">
+      <text>返回 ›</text>
+    </view>
   </view>
 
   <!-- 原理弹窗 -->

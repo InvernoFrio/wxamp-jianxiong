@@ -1,3 +1,5 @@
+<wxs src="/utils/filter.wxs" module="filter" />
+
 <view class="physics-page page-enter">
   <!-- 顶部控制栏 -->
   <view class="top-control-bar">
@@ -92,24 +94,24 @@
     <view class="temperature-control">
       <view class="temp-header">
         <text class="temp-label">极化温度</text>
-        <text class="temp-value">{{temperature}}K</text>
+        <text class="temp-value">{{filter.toFixed(temperature, 4)}}K</text>
       </view>
       <view class="temp-slider-container">
-        <text class="temp-text">高温</text>
+        <text class="temp-text">低温</text>
         <slider
           class="temp-slider"
-          value="{{temperature}}"
+          value="{{sliderValue}}"
           min="0"
           max="100"
           bindchange="onTemperatureChange"
           bindtouchstart="onSliderTouchStart"
           bindtouchend="onSliderTouchEnd"
         />
-        <text class="temp-text">低温</text>
+        <text class="temp-text">高温</text>
       </view>
       <view class="temp-hint">
         <text class="hint-icon">🌡️</text>
-        <text class="hint-text">{{temperature < 30 ? '极化最优' : temperature < 70 ? '部分极化' : '无序态'}}</text>
+        <text class="hint-text">{{temperature < 0.03 ? '极化最优' : temperature < 0.07 ? '部分极化' : '无序态'}}</text>
       </view>
     </view>
 
@@ -181,7 +183,7 @@
           </view>
         </view>
         <text class="result-desc">{{mirrorMode ? '镜像世界中' : '真实世界中'}}，向下发射比例{{mirrorMode ? (100 - asymmetryPercent) : asymmetryPercent}}%，明显偏离50%的对称预期！</text>
-        <text class="result-conclusion">{{ temperature < 30 ? '✓ 极化效果明显，宇称不守恒现象显著' : temperature < 70 ? '⚠ 部分极化，宇称违反程度中等' : '✗ 温度过高，极化失效，接近对称' }}</text>
+        <text class="result-conclusion">{{ temperature < 0.03 ? '✓ 极化效果明显，宇称不守恒现象显著' : temperature < 0.07 ? '⚠ 部分极化，宇称违反程度中等' : '✗ 温度过高，极化失效，接近对称' }}</text>
       </glass-card>
     </view>
   </view>
@@ -216,6 +218,9 @@
     <view class="nav-placeholder" wx:else></view>
     <view class="nav-btn nav-next" wx:if="{{currentStep < 3}}" bindtap="onNextStep">
       <text>下一步 ›</text>
+    </view>
+    <view class="nav-btn nav-next" wx:if="{{currentStep === 3}}" bindtap="onNextStep">
+      <text>返回 ›</text>
     </view>
   </view>
 </view>

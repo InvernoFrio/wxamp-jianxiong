@@ -1,11 +1,12 @@
 .physics-page {
   min-height: 100vh;
+  padding: 20rpx 24rpx;
+  padding-bottom: 140rpx;
+
   background:
     radial-gradient(circle at 92% -2%, rgba(196, 30, 58, 0.13), transparent 30%),
     radial-gradient(circle at 6% 96%, rgba(79, 195, 247, 0.16), transparent 34%),
     linear-gradient(180deg, #f8f3eb 0%, #f5f0e8 55%, #efe6da 100%);
-  padding: 20rpx 24rpx;
-  padding-bottom: 120rpx;
 }
 
 /* 顶部控制栏 */
@@ -434,6 +435,11 @@
 /* 显示容器 */
 .display-container {
   margin-bottom: 20rpx;
+  width: 140rpx;
+  height: 425rpx;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .display-container.normal-mode {

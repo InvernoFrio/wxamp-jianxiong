@@ -11,7 +11,7 @@
   background:
     radial-gradient(circle at 20% 10%, rgba(79,195,247,0.16), transparent 35%),
     radial-gradient(circle at 80% 90%, rgba(196,30,58,0.12), transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(120,120,255,0.06), transparent 60%),
+    radial-gradient(circle at 50% 50%, rgba(165, 165, 255, 0.06), transparent 60%),
     linear-gradient(180deg, #070b1a 0%, #0b1020 50%, #0a0f1d 100%);
   color: #e8f1ff;
 }
@@ -78,6 +78,7 @@
   letter-spacing: 2rpx;
   display: block;
   margin-bottom: 10rpx;
+  font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
 }
 
 .hero-desc {
@@ -697,6 +698,7 @@ glass-card {
   font-size: 32rpx;
   font-weight: bold;
   color: #4FC3F7;
+  font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
 }
 
 .modal-close-btn {
@@ -736,7 +738,7 @@ glass-card {
 .modal-formula text {
   font-size: 30rpx;
   color: #eaf3ff;
-  font-family: monospace;
+  font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
 }
 
 .formula-sub-sm {
