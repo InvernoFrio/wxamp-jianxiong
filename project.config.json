@@ -1,5 +1,5 @@
 {
-  "description": "健雄书韵 - 吴健雄数字纪念馆",
+  "description": "钴光拾遗 - 吴健雄数字纪念馆",
   "cloudfunctionRoot": "cloudfunctions/",
   "packOptions": {
     "ignore": [
@@ -52,7 +52,7 @@
   "compileType": "miniprogram",
   "libVersion": "3.15.1",
   "appid": "wx84ae682b385a7702",
-  "projectname": "jianxiong-reader",
+  "projectname": "钴光拾遗",
   "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",

@@ -1,4 +1,6 @@
 // pages/physics/exp-diffusion/exp-diffusion.js
+const haptics = require('../../../utils/haptics.js');
+
 Page({
   data: {
     currentStep: 0,
@@ -209,7 +211,7 @@ Page({
   // 震动反馈
   // ======================
   _vibrate() {
-    wx.vibrateShort({ type: 'light' }).catch(() => {});
+    haptics.tap();
   },
 
   // ======================

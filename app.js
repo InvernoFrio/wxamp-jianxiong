@@ -1,7 +1,11 @@
-// app.js - 健雄书韵 小程序入口
+// app.js - 钴光拾遗 小程序入口
+const haptics = require('./utils/haptics.js');
+
+haptics.installGlobalHaptics();
+
 App({
   onLaunch() {
-    console.log('健雄书韵 - 吴健雄数字纪念馆 启动');
+    console.log('钴光拾遗 - 吴健雄数字纪念馆 启动');
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力');
     } else {

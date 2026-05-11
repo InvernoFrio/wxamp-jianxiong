@@ -4,4 +4,8 @@
   class="map-canvas"
   style="width: {{canvasWidth}}px; height: {{canvasHeight}}px;"
   bindtap="onCanvasTap"
+  bindtouchstart="onTouchStart"
+  catchtouchmove="onTouchMove"
+  bindtouchend="onTouchEnd"
+  bindtouchcancel="onTouchEnd"
 />

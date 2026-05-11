@@ -1,8 +1,8 @@
 <view class="about-page page-enter">
   <!-- 头部 -->
   <view class="about-header">
-    <text class="about-logo">📖</text>
-    <text class="about-title">健雄书韵</text>
+    <text class="about-logo">⚛️</text>
+    <text class="about-title">钴光拾遗</text>
     <text class="about-subtitle">吴健雄数字纪念馆</text>
     <text class="about-version">v1.0.0</text>
   </view>
@@ -11,7 +11,7 @@
   <view class="section">
     <text class="section-title">项目介绍</text>
     <glass-card>
-      <text class="section-text">「健雄书韵」是一个致敬吴健雄先生的微信小程序，通过数字化的方式呈现她的生平事迹、科学成就和人格魅力。项目旨在让更多人了解这位伟大的物理学家，传承她的科学精神与爱国情怀。</text>
+      <text class="section-text">「钴光拾遗」是一个致敬吴健雄先生的微信小程序，以钴-60实验为精神线索，通过数字化方式呈现她的生平事迹、科学成就和人格魅力。项目旨在让更多人了解这位伟大的物理学家，传承她的科学精神与爱国情怀。</text>
     </glass-card>
   </view>
 
@@ -25,7 +25,7 @@
         class="team-card glass"
       >
         <view class="team-avatar">
-          <text>{{item.name.charAt(0)}}</text>
+          <image class="team-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
         </view>
         <view class="team-info">
           <text class="team-name">{{item.name}}</text>
@@ -56,13 +56,13 @@
   <view class="section">
     <text class="section-title">致谢</text>
     <glass-card>
-      <text class="section-text">感谢张怀亮先生编著的《吴健雄传》为本项目提供了宝贵的传记资料。感谢南京大学、哥伦比亚大学等机构的历史文献与照片资料。</text>
+      <text class="section-text">感谢张怀亮先生编著的《吴健雄传》为本项目提供了宝贵的传记资料。感谢南京大学、哥伦比亚大学等机构的历史文献与照片资料。感谢所有将吴健雄精神制作成可视化图像、视频、音乐的同学。</text>
       <text class="section-text" style="margin-top: 16rpx;">本项目仅用于学术与教育目的，向所有为科学事业做出贡献的前辈致敬。</text>
     </glass-card>
   </view>
 
   <!-- 底部 -->
   <view class="about-footer">
-    <text>© 2026 健雄书韵团队</text>
+    <text>© 2026 钴光拾遗团队</text>
   </view>
 </view>

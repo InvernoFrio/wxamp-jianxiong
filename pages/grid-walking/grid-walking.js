@@ -1,6 +1,6 @@
 // pages/grid-walking/grid-walking.js
 const {
-  MAP_WIDTH, MAP_HEIGHT, NODE_TYPES,
+  MAP_WIDTH, MAP_HEIGHT, START_NODE_ID, NODE_TYPES,
   nodes, edges, routes, contentMap
 } = require('../../data/map-data.js');
 const chapterIndex = require('../../data/chapters/index.js');
@@ -20,11 +20,11 @@ Page({
     canvasWidth: 350,
     canvasHeight: 513,
 
-    currentNodeId: 'start',
+    currentNodeId: START_NODE_ID,
     currentNode: null,
-    visitedNodes: ['start'],
+    visitedNodes: [START_NODE_ID],
     reachableNodes: [],
-    routeHistory: ['start'],
+    routeHistory: [START_NODE_ID],
 
     currentRoute: null,
     completedRoutes: [],
@@ -58,15 +58,20 @@ Page({
     const canvasWidth = sysInfo.windowWidth - 48;
     const canvasHeight = Math.round(canvasWidth * MAP_HEIGHT / MAP_WIDTH);
 
-    const reachable = this._getReachableNodes('start', []);
-    const saved = this._loadProgress();
+    const reachable = this._getReachableNodes(START_NODE_ID);
+    const saved = this._normalizeProgress(this._loadProgress(), nodeMap);
+    const startNode = nodeMap[START_NODE_ID] || nodes[0];
 
     this.setData({
       nodeMap, canvasWidth, canvasHeight,
       reachableNodes: reachable,
       currentRoute: null,
+      currentNodeId: START_NODE_ID,
+      currentNode: startNode,
       completedRoutes: saved.completedRoutes || [],
-      visitedNodes: saved.visitedNodes || ['start']
+      visitedNodes: saved.visitedNodes || [START_NODE_ID],
+      routeHistory: saved.routeHistory || [START_NODE_ID],
+      progressPercent: Math.round(1 / nodes.length * 100)
     });
 
     this._updateAvailableRoutes();
@@ -82,11 +87,11 @@ Page({
 
   /* ======== 核心逻辑 ======== */
 
-  _getReachableNodes(nodeId, visited) {
+  _getReachableNodes(nodeId) {
     const reachable = [];
     edges.forEach(edge => {
-      if (edge.from === nodeId && !visited.includes(edge.to)) reachable.push(edge.to);
-      if (edge.to === nodeId && !visited.includes(edge.from)) reachable.push(edge.from);
+      if (edge.from === nodeId) reachable.push(edge.to);
+      if (edge.to === nodeId) reachable.push(edge.from);
     });
     return [...new Set(reachable)];
   },
@@ -129,20 +134,38 @@ Page({
     try { return wx.getStorageSync('grid_walking_progress') || {}; } catch (e) { return {}; }
   },
 
+  _normalizeProgress(saved, nodeMap) {
+    const validRouteIds = routes.map(r => r.id);
+    const visitedNodes = Array.isArray(saved.visitedNodes)
+      ? saved.visitedNodes.filter(id => nodeMap[id])
+      : [];
+    const completedRoutes = Array.isArray(saved.completedRoutes)
+      ? saved.completedRoutes.filter(id => validRouteIds.includes(id))
+      : [];
+
+    return {
+      visitedNodes: visitedNodes.length ? visitedNodes : [START_NODE_ID],
+      routeHistory: [START_NODE_ID],
+      completedRoutes
+    };
+  },
+
   /* ======== 事件处理 ======== */
 
   onNodeTap(e) {
     const { nodeId } = e.detail;
     const { currentNodeId, visitedNodes, nodeMap, currentRoute } = this.data;
 
-    const reachable = this._getReachableNodes(currentNodeId, visitedNodes);
+    const reachable = this._getReachableNodes(currentNodeId);
     if (!reachable.includes(nodeId)) return;
 
-    const newVisited = [...visitedNodes, nodeId];
+    const newVisited = visitedNodes.includes(nodeId)
+      ? visitedNodes
+      : [...visitedNodes, nodeId];
     const newHistory = [...this.data.routeHistory, nodeId];
     const node = nodeMap[nodeId];
     const typeInfo = this._getNodeType(node);
-    const newReachable = this._getReachableNodes(nodeId, newVisited);
+    const newReachable = this._getReachableNodes(nodeId);
     const isEnd = node.type === 'end';
 
     let routeComplete = false;
@@ -160,7 +183,9 @@ Page({
     this._saveProgress();
 
     if (routeComplete) {
-      const completedRoutes = [...this.data.completedRoutes, currentRoute.id];
+      const completedRoutes = this.data.completedRoutes.includes(currentRoute.id)
+        ? this.data.completedRoutes
+        : [...this.data.completedRoutes, currentRoute.id];
       this.setData({
         completedRoutes,
         totalProgressPercent: Math.round(newVisited.length / nodes.length * 100)
@@ -282,11 +307,12 @@ Page({
     const route = routes.find(r => r.id === routeId);
     if (!route) return;
 
-    const reachable = this._getReachableNodes('start', ['start']);
+    const reachable = this._getReachableNodes(START_NODE_ID);
+    const startNode = this.data.nodeMap[START_NODE_ID] || nodes[0];
     this.setData({
-      currentNodeId: 'start', currentNode: nodes[0],
-      visitedNodes: ['start'], reachableNodes: reachable,
-      routeHistory: ['start'], currentRoute: route, isEnd: false,
+      currentNodeId: START_NODE_ID, currentNode: startNode,
+      visitedNodes: [START_NODE_ID], reachableNodes: reachable,
+      routeHistory: [START_NODE_ID], currentRoute: route, isEnd: false,
       showRouteSelect: false,
       nodeTypeIcon: NODE_TYPES.start.icon,
       nodeTypeLabel: NODE_TYPES.start.label,
@@ -306,7 +332,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '我在「健雄书韵」探索吴健雄的足迹，快来试试吧！',
+      title: '我在「钴光拾遗」探索吴健雄的足迹，快来试试吧！',
       path: '/pages/grid-walking/grid-walking'
     };
   }

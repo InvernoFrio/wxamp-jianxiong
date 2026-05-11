@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**健雄书韵** — a WeChat Mini Program (微信小程序) digital memorial for physicist Wu Jianxiong (吴健雄). Built with the **native WeChat Mini Program framework** (no React/Vue, no npm dependencies). Uses **WeChat Cloud Development** (腾讯云开发) as a serverless backend.
+**钴光拾遗** — a WeChat Mini Program (微信小程序) digital memorial for physicist Wu Jianxiong (吴健雄). Built with the **native WeChat Mini Program framework** (no React/Vue, no npm dependencies). Uses **WeChat Cloud Development** (腾讯云开发) as a serverless backend.
 
 - **App ID**: `wx84ae682b385a7702`
 - **Cloud Environment**: `cloud1-d1g022q9nafce6169`

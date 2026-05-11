@@ -1,4 +1,5 @@
 // pages/physics/exp-entanglement/exp-entanglement.js
+const haptics = require('../../../utils/haptics.js');
 
 Page({
   data: {
@@ -301,7 +302,7 @@ Page({
   //   震动反馈
   // ════════════════════════════════════
   _vibrate() {
-    wx.vibrateShort({ type: 'light' })
+    haptics.tap()
   },
 
   // ════════════════════════════════════

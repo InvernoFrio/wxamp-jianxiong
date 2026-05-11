@@ -1,0 +1,62 @@
+// map_points.js - WeChat Mini Program runtime copy of map_points.json.
+// Keep this file in sync with map_points.json because Mini Program require() does not load JSON files.
+
+module.exports = {
+  image_path: 'map.jpg',
+  image_size: [
+    1280,
+    1745
+  ],
+  points: [
+    {
+      name: '正门',
+      x: 821,
+      y: 1062
+    },
+    {
+      name: '北大楼',
+      x: 993,
+      y: 632
+    },
+    {
+      name: '图书馆',
+      x: 884,
+      y: 1005
+    },
+    {
+      name: '逸夫楼',
+      x: 570,
+      y: 641
+    },
+    {
+      name: '校史博物馆',
+      x: 943,
+      y: 961
+    },
+    {
+      name: '物理楼',
+      x: 729,
+      y: 977
+    },
+    {
+      name: '大礼堂',
+      x: 899,
+      y: 737
+    },
+    {
+      name: '科技馆',
+      x: 1046,
+      y: 937
+    },
+    {
+      name: '知行楼',
+      x: 725,
+      y: 905
+    },
+    {
+      name: '树华楼',
+      x: 786,
+      y: 887
+    }
+  ]
+};

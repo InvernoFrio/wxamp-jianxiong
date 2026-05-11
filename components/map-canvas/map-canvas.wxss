@@ -1,5 +1,6 @@
 .map-canvas {
   display: block;
-  border-radius: 24rpx;
+  border-radius: 18rpx;
   overflow: hidden;
+  background: #efe3cf;
 }

@@ -1,11 +1,11 @@
 /* components/book-cover/book-cover.wxss */
 .book-scene {
-  perspective: 1600rpx;
+  perspective: 1800rpx;
   width: 560rpx;
   height: 760rpx;
   margin: 0 auto;
-  filter: drop-shadow(0 24rpx 40rpx rgba(53, 37, 28, 0.18))
-          drop-shadow(0 4rpx 12rpx rgba(53, 37, 28, 0.1));
+  filter: drop-shadow(0 30rpx 48rpx rgba(53, 37, 28, 0.18))
+          drop-shadow(0 8rpx 18rpx rgba(53, 37, 28, 0.12));
   transition: filter 0.4s ease;
 }
 
@@ -29,7 +29,7 @@
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  border-radius: 10rpx;
+  border-radius: 8rpx 14rpx 14rpx 8rpx;
   backface-visibility: hidden;
   transform-origin: left center;
   transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
@@ -37,24 +37,47 @@
 
 .book-page-back {
   background:
+    linear-gradient(90deg, rgba(96, 67, 38, 0.14), transparent 9%),
     radial-gradient(ellipse at 30% 20%, rgba(212, 165, 116, 0.08), transparent 60%),
-    linear-gradient(180deg, #f8f3ea 0%, #ece3d3 100%);
+    linear-gradient(180deg, #fbf6eb 0%, #ecdfca 100%);
   z-index: 1;
-  box-shadow: inset 6rpx 0 20rpx rgba(0, 0, 0, 0.06);
+  box-shadow:
+    inset 8rpx 0 24rpx rgba(0, 0, 0, 0.06),
+    inset -1rpx 0 0 rgba(255,255,255,0.65);
 }
 
 .book-page-front {
   background:
-    radial-gradient(circle at 20% 25%, rgba(196, 30, 58, 0.06), transparent 50%),
-    linear-gradient(145deg, #faf6ef 0%, #ebe2d1 100%);
+    linear-gradient(90deg, rgba(94, 55, 33, 0.16), transparent 8%),
+    radial-gradient(circle at 20% 25%, rgba(196, 30, 58, 0.065), transparent 50%),
+    linear-gradient(145deg, #fcf8ef 0%, #eadcc7 100%);
   z-index: 14;
-  border: 1rpx solid rgba(212, 165, 116, 0.5);
-  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+  border: 1rpx solid rgba(156, 113, 68, 0.38);
+  box-shadow:
+    0 10rpx 34rpx rgba(0, 0, 0, 0.13),
+    inset 0 1rpx 0 rgba(255,255,255,0.86),
+    inset -10rpx 0 24rpx rgba(126, 90, 50, 0.08);
 }
 
 .book-open .book-page-front {
   transform: rotateY(-165deg);
   box-shadow: 0 12rpx 40rpx rgba(0, 0, 0, 0.2);
+}
+
+.book-riffling {
+  animation: book-riffle-body 0.72s cubic-bezier(0.18, 0.84, 0.28, 1);
+}
+
+.book-shrunk.book-riffling {
+  animation-name: book-riffle-body-shrunk;
+}
+
+.riffle-open {
+  animation-duration: 0.92s;
+}
+
+.riffle-close {
+  animation-duration: 0.78s;
 }
 
 .page-center {
@@ -71,7 +94,7 @@
 .cover-title {
   font-size: 44rpx;
   font-weight: 700;
-  color: #2C2C2C;
+  color: #2b241e;
   letter-spacing: 12rpx;
   margin-bottom: 10rpx;
   font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
@@ -79,7 +102,7 @@
 
 .cover-en {
   font-size: 15rpx;
-  color: #a0a8b4;
+  color: #7f8b92;
   letter-spacing: 4rpx;
   font-weight: 300;
 }
@@ -99,7 +122,7 @@
 
 .cover-hint {
   font-size: 22rpx;
-  color: #a0a8b4;
+  color: #7f8b92;
   margin-top: 6rpx;
 }
 
@@ -127,6 +150,92 @@
   pointer-events: none;
 }
 
+/* === 翻页掠影 === */
+.riffle-stack {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  z-index: 13;
+  opacity: 0;
+}
+
+.book-riffling .riffle-stack {
+  opacity: 1;
+}
+
+.flutter-page {
+  position: absolute;
+  top: 8rpx;
+  left: 7rpx;
+  width: calc(100% - 14rpx);
+  height: calc(100% - 16rpx);
+  border-radius: 8rpx 14rpx 14rpx 8rpx;
+  transform-origin: left center;
+  backface-visibility: hidden;
+  opacity: 0;
+  background:
+    linear-gradient(90deg, rgba(120, 88, 52, 0.18) 0, rgba(120, 88, 52, 0.03) 6%, transparent 18%),
+    linear-gradient(104deg, rgba(255, 255, 255, 0.98) 0%, #f8f1e4 48%, #eadac2 100%);
+  border-right: 1rpx solid rgba(166, 33, 33, 0.08);
+  box-shadow:
+    inset 12rpx 0 20rpx rgba(90, 60, 32, 0.08),
+    10rpx 0 24rpx rgba(60, 40, 24, 0.12);
+}
+
+.flutter-page::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 38%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.58), rgba(180,135,80,0.12));
+  opacity: 0.75;
+}
+
+.book-riffling .flutter-page {
+  animation-name: page-flutter-forward;
+  animation-duration: 0.68s;
+  animation-timing-function: cubic-bezier(0.2, 0.72, 0.22, 1);
+  animation-fill-mode: both;
+}
+
+.riffle-open .flutter-page {
+  animation-duration: 0.88s;
+}
+
+.riffle-back .flutter-page,
+.riffle-close .flutter-page {
+  animation-name: page-flutter-back;
+}
+
+.flutter-page-1 { animation-delay: 0.00s; }
+.flutter-page-2 { animation-delay: 0.045s; }
+.flutter-page-3 { animation-delay: 0.09s; }
+.flutter-page-4 { animation-delay: 0.135s; }
+.flutter-page-5 { animation-delay: 0.18s; }
+.flutter-page-6 { animation-delay: 0.225s; }
+.flutter-page-7 { animation-delay: 0.27s; }
+
+.riffle-back .flutter-page-1,
+.riffle-close .flutter-page-1 { animation-delay: 0.27s; }
+.riffle-back .flutter-page-2,
+.riffle-close .flutter-page-2 { animation-delay: 0.225s; }
+.riffle-back .flutter-page-3,
+.riffle-close .flutter-page-3 { animation-delay: 0.18s; }
+.riffle-back .flutter-page-4,
+.riffle-close .flutter-page-4 { animation-delay: 0.135s; }
+.riffle-back .flutter-page-5,
+.riffle-close .flutter-page-5 { animation-delay: 0.09s; }
+.riffle-back .flutter-page-6,
+.riffle-close .flutter-page-6 { animation-delay: 0.045s; }
+.riffle-back .flutter-page-7,
+.riffle-close .flutter-page-7 { animation-delay: 0.00s; }
+
 .spread-off-left {
   opacity: 0;
   transform: translateX(-20rpx) scale(0.98);
@@ -142,8 +251,9 @@
   justify-content: center;
   box-sizing: border-box;
   background:
-    radial-gradient(ellipse at 70% 30%, rgba(212, 165, 116, 0.06), transparent 50%),
-    linear-gradient(175deg, #faf6ef 0%, #f0e8d8 100%);
+    linear-gradient(90deg, rgba(90, 63, 34, 0.09), transparent 8%),
+    radial-gradient(ellipse at 70% 30%, rgba(212, 165, 116, 0.07), transparent 50%),
+    linear-gradient(175deg, #fffaf1 0%, #efe1cd 100%);
   padding: 40rpx 28rpx;
 }
 
@@ -154,8 +264,9 @@
 }
 
 .spread-emoji {
-  font-size: 56rpx;
+  font-size: 58rpx;
   margin-bottom: 14rpx;
+  filter: drop-shadow(0 4rpx 8rpx rgba(70, 48, 28, 0.08));
 }
 
 .spread-title {
@@ -169,4 +280,66 @@
   height: 2rpx;
   background: linear-gradient(90deg, transparent, #C41E3A, transparent);
   margin: 20rpx 0;
+}
+
+@keyframes book-riffle-body {
+  0% { transform: translateX(0) rotateZ(0); }
+  24% { transform: translateX(-3rpx) rotateZ(-0.35deg); }
+  48% { transform: translateX(3rpx) rotateZ(0.25deg); }
+  72% { transform: translateX(-1rpx) rotateZ(-0.12deg); }
+  100% { transform: translateX(0) rotateZ(0); }
+}
+
+@keyframes book-riffle-body-shrunk {
+  0% { transform: scale(0.55) translateX(0) rotateZ(0); }
+  24% { transform: scale(0.55) translateX(-3rpx) rotateZ(-0.35deg); }
+  48% { transform: scale(0.55) translateX(3rpx) rotateZ(0.25deg); }
+  72% { transform: scale(0.55) translateX(-1rpx) rotateZ(-0.12deg); }
+  100% { transform: scale(0.55) translateX(0) rotateZ(0); }
+}
+
+@keyframes page-flutter-forward {
+  0% {
+    opacity: 0;
+    transform: rotateY(-6deg) skewY(0deg) translateX(0);
+  }
+  14% {
+    opacity: 0.98;
+    transform: rotateY(-28deg) skewY(-1.6deg) translateX(3rpx);
+  }
+  46% {
+    opacity: 0.95;
+    transform: rotateY(-88deg) skewY(-4deg) translateX(12rpx);
+  }
+  72% {
+    opacity: 0.72;
+    transform: rotateY(-142deg) skewY(2.2deg) translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: rotateY(-176deg) skewY(0deg) translateX(-10rpx);
+  }
+}
+
+@keyframes page-flutter-back {
+  0% {
+    opacity: 0;
+    transform: rotateY(-176deg) skewY(0deg) translateX(-10rpx);
+  }
+  18% {
+    opacity: 0.78;
+    transform: rotateY(-136deg) skewY(2.4deg) translateX(0);
+  }
+  54% {
+    opacity: 0.96;
+    transform: rotateY(-72deg) skewY(-4deg) translateX(12rpx);
+  }
+  82% {
+    opacity: 0.92;
+    transform: rotateY(-24deg) skewY(-1deg) translateX(3rpx);
+  }
+  100% {
+    opacity: 0;
+    transform: rotateY(-4deg) skewY(0deg) translateX(0);
+  }
 }

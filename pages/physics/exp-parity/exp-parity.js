@@ -1,4 +1,6 @@
 // pages/physics/exp-parity/exp-parity.js
+const haptics = require('../../../utils/haptics.js');
+
 Page({
   data: {
     currentStep: 0,
@@ -592,12 +594,10 @@ Page({
 
   // ========== 交互反馈 ==========
   _triggerVibration(duration = 50) {
-    wx.vibrateShort({
-      type: 'medium',
-      success: () => {},
-      fail: () => {
-        // 如果不支持振动，静默失败
-      }
-    });
+    if (duration >= 80) {
+      haptics.confirm();
+    } else {
+      haptics.tap();
+    }
   }
 });

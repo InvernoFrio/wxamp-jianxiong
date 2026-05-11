@@ -2,10 +2,36 @@
 Page({
   data: {
     teams: [
-      { name: '张俊贤', role: '项目负责人', desc: '负责项目统筹与开发' },
-      { name: '黄亮哲', role: '团队成员', desc: '负责内容策划与编辑' },
-      { name: '陈钟宇', role: '团队成员', desc: '负责技术开发与实现' },
-      { name: '杨佳园', role: '团队成员', desc: '负责视觉设计与制作' }
+      {
+        name: '张俊贤',
+        role: '项目负责人',
+        desc: '负责项目统筹与开发',
+        avatar: '/assets/avatar/zjx.jpg'
+      },
+      {
+        name: '黄亮哲',
+        role: '团队成员',
+        desc: '负责内容策划与视觉设计',
+        avatar: '/assets/avatar/hlz.jpg'
+      },
+      {
+        name: '陈钟宇',
+        role: '团队成员',
+        desc: '负责实验设计与内容优化',
+        avatar: '/assets/avatar/czy.jpg'
+      },
+      {
+        name: '杨佳园',
+        role: '团队成员',
+        desc: '负责人工智能接入与视觉设计',
+        avatar: '/assets/avatar/yjy.jpg'
+      },
+      {
+        name: '贺天壮',
+        role: '项目指导',
+        desc: '负责项目方向指导、技术路线把关与成果质量优化',
+        avatar: '/assets/avatar/htz.jpg'
+      }
     ],
     principles: [
       {
@@ -25,7 +51,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '健雄书韵 - 吴健雄数字纪念馆',
+      title: '钴光拾遗 - 吴健雄数字纪念馆',
       path: '/pages/home/home'
     };
   }

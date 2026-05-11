@@ -1,10 +1,10 @@
 // components/map-canvas/map-canvas.js
-const { MAP_WIDTH, MAP_HEIGHT, NODE_TYPES, edges } = require('../../data/map-data.js');
+const { MAP_IMAGE, MAP_WIDTH, MAP_HEIGHT, START_NODE_ID, NODE_TYPES, edges } = require('../../data/map-data.js');
 
 Component({
   properties: {
     nodes: { type: Array, value: [] },
-    currentNodeId: { type: String, value: 'start' },
+    currentNodeId: { type: String, value: START_NODE_ID },
     visitedNodes: { type: Array, value: [] },
     reachableNodes: { type: Array, value: [] },
     canvasWidth: { type: Number, value: 350 },
@@ -14,8 +14,20 @@ Component({
   data: {
     _canvas: null,
     _ctx: null,
+    _mapImage: null,
+    _mapImageReady: false,
+    _canvasRect: null,
     _dpr: 1,
-    _scale: 1,
+    _scaleX: 1,
+    _scaleY: 1,
+    _zoom: 1,
+    _minZoom: 1,
+    _maxZoom: 3,
+    _offsetX: 0,
+    _offsetY: 0,
+    _lastTouch: null,
+    _gestureMoved: false,
+    _tapSuppressed: false,
     _animFrame: 0,
     _pulsePhase: 0
   },
@@ -54,11 +66,36 @@ Component({
           this.data._canvas = canvas;
           this.data._ctx = ctx;
           this.data._dpr = dpr;
-          this.data._scale = this.data.canvasWidth / MAP_WIDTH;
+          this.data._scaleX = this.data.canvasWidth / MAP_WIDTH;
+          this.data._scaleY = this.data.canvasHeight / MAP_HEIGHT;
 
+          this._refreshCanvasRect();
+          this._loadMapImage(canvas);
           this._draw();
           this._startPulseAnimation();
         });
+    },
+
+    _loadMapImage(canvas) {
+      const image = canvas.createImage();
+      image.onload = () => {
+        this.data._mapImage = image;
+        this.data._mapImageReady = true;
+        this._draw();
+      };
+      image.onerror = () => {
+        this.data._mapImage = null;
+        this.data._mapImageReady = false;
+        this._draw();
+      };
+      image.src = MAP_IMAGE;
+    },
+
+    _refreshCanvasRect() {
+      const query = wx.createSelectorQuery().in(this);
+      query.select('#mapCanvas').boundingClientRect(rect => {
+        if (rect) this.data._canvasRect = rect;
+      }).exec();
     },
 
     _startPulseAnimation() {
@@ -72,15 +109,27 @@ Component({
       const ctx = this.data._ctx;
       const w = this.data.canvasWidth;
       const h = this.data.canvasHeight;
-      const s = this.data._scale;
+      const scaleX = this.data._scaleX;
+      const scaleY = this.data._scaleY;
 
       ctx.clearRect(0, 0, w, h);
       this._drawBackground(ctx, w, h);
-      this._drawEdges(ctx, s);
-      this._drawNodes(ctx, s);
+      this._drawEdges(ctx, scaleX, scaleY);
+      this._drawNodes(ctx, scaleX, scaleY);
     },
 
     _drawBackground(ctx, w, h) {
+      if (this.data._mapImageReady && this.data._mapImage) {
+        ctx.drawImage(
+          this.data._mapImage,
+          this.data._offsetX,
+          this.data._offsetY,
+          w * this.data._zoom,
+          h * this.data._zoom
+        );
+        return;
+      }
+
       // 宣纸底色
       const grad = ctx.createLinearGradient(0, 0, 0, h);
       grad.addColorStop(0, '#f5eed8');
@@ -106,7 +155,7 @@ Component({
       ctx.strokeRect(8, 8, w - 16, h - 16);
     },
 
-    _drawEdges(ctx, s) {
+    _drawEdges(ctx, scaleX, scaleY) {
       const nodeMap = {};
       this.properties.nodes.forEach(n => { nodeMap[n.id] = n; });
 
@@ -115,10 +164,12 @@ Component({
         const to = nodeMap[edge.to];
         if (!from || !to) return;
 
-        const fx = from.x * s;
-        const fy = from.y * s;
-        const tx = to.x * s;
-        const ty = to.y * s;
+        const fromPos = this._mapToScreen(from.x, from.y, scaleX, scaleY);
+        const toPos = this._mapToScreen(to.x, to.y, scaleX, scaleY);
+        const fx = fromPos.x;
+        const fy = fromPos.y;
+        const tx = toPos.x;
+        const ty = toPos.y;
 
         // 判断是否为可达路径
         const reachable = this.properties.reachableNodes;
@@ -133,6 +184,7 @@ Component({
         const dx = tx - fx;
         const dy = ty - fy;
         const dist = Math.sqrt(dx * dx + dy * dy);
+        if (!dist) return;
         // 垂直偏移量，让曲线有弧度
         const curve = dist * 0.15;
         const cx = mx - dy / dist * curve;
@@ -179,18 +231,24 @@ Component({
       });
     },
 
-    _drawNodes(ctx, s) {
+    _drawNodes(ctx, scaleX, scaleY) {
       const { nodes, currentNodeId, visitedNodes, reachableNodes } = this.properties;
       const pulse = Math.sin(this.data._pulsePhase) * 0.5 + 0.5;
+      const s = Math.min(scaleX, scaleY) * this.data._zoom;
 
       nodes.forEach(node => {
-        const x = node.x * s;
-        const y = node.y * s;
+        const pos = this._mapToScreen(node.x, node.y, scaleX, scaleY);
+        const x = pos.x;
+        const y = pos.y;
         const typeConf = NODE_TYPES[node.type] || NODE_TYPES.story;
         const isCurrent = node.id === currentNodeId;
         const isVisited = visitedNodes.includes(node.id);
         const isReachable = reachableNodes.includes(node.id);
         const nodeRadius = 22 * s;
+        const labelFontSize = Math.max(10, 9 * s);
+        const labelY = y + nodeRadius + 13 * s;
+        const labelWidth = Math.max(48, node.title.length * labelFontSize + 18);
+        const labelHeight = Math.max(20, labelFontSize + 10);
 
         // 可达节点脉冲光晕
         if (isReachable) {
@@ -216,19 +274,21 @@ Component({
 
         // 节点阴影
         ctx.beginPath();
-        ctx.arc(x, y + 2, nodeRadius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+        ctx.ellipse(x, y + nodeRadius * 0.72, nodeRadius * 0.72, nodeRadius * 0.32, 0, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(35, 24, 16, 0.18)';
         ctx.fill();
 
         // 节点主体
         ctx.beginPath();
         ctx.arc(x, y, nodeRadius, 0, Math.PI * 2);
 
-        if (isVisited && !isCurrent) {
-          ctx.fillStyle = 'rgba(200, 190, 170, 0.7)';
-        } else {
-          ctx.fillStyle = '#fff';
-        }
+        const fillGrad = ctx.createRadialGradient(
+          x - nodeRadius * 0.35, y - nodeRadius * 0.35, nodeRadius * 0.1,
+          x, y, nodeRadius
+        );
+        fillGrad.addColorStop(0, '#ffffff');
+        fillGrad.addColorStop(1, isVisited && !isCurrent ? 'rgba(234, 224, 206, 0.92)' : '#fff7eb');
+        ctx.fillStyle = fillGrad;
         ctx.fill();
 
         // 节点边框
@@ -249,6 +309,11 @@ Component({
         }
         ctx.stroke();
 
+        ctx.beginPath();
+        ctx.arc(x - nodeRadius * 0.28, y - nodeRadius * 0.3, nodeRadius * 0.18, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.82)';
+        ctx.fill();
+
         // 节点图标
         ctx.font = `${14 * s}px sans-serif`;
         ctx.textAlign = 'center';
@@ -257,17 +322,167 @@ Component({
         ctx.fillText(typeConf.icon, x, y);
 
         // 节点名称（在节点下方）
-        ctx.font = `bold ${9 * s}px "PingFang SC", sans-serif`;
+        ctx.beginPath();
+        const labelX = x - labelWidth / 2;
+        const labelTop = labelY - labelHeight / 2;
+        this._roundRect(ctx, labelX, labelTop, labelWidth, labelHeight, 8);
+        ctx.fillStyle = isCurrent
+          ? 'rgba(255, 250, 244, 0.94)'
+          : 'rgba(255, 255, 255, 0.78)';
+        ctx.fill();
+        ctx.strokeStyle = isCurrent ? 'rgba(166, 33, 33, 0.22)' : 'rgba(84, 96, 107, 0.10)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        ctx.font = `bold ${labelFontSize}px "PingFang SC", sans-serif`;
         ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         ctx.fillStyle = isCurrent ? '#C41E3A' : (isVisited ? 'rgba(100,90,70,0.5)' : '#54606B');
-        ctx.fillText(node.title, x, y + nodeRadius + 12 * s);
+        ctx.fillText(node.title, x, labelY);
       });
     },
 
+    _mapToScreen(x, y, scaleX, scaleY) {
+      return {
+        x: x * scaleX * this.data._zoom + this.data._offsetX,
+        y: y * scaleY * this.data._zoom + this.data._offsetY
+      };
+    },
+
+    _roundRect(ctx, x, y, w, h, r) {
+      const radius = Math.min(r, w / 2, h / 2);
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + w - radius, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+      ctx.lineTo(x + w, y + h - radius);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+      ctx.lineTo(x + radius, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    },
+
+    _clampView() {
+      const w = this.data.canvasWidth;
+      const h = this.data.canvasHeight;
+      const zoom = Math.max(this.data._minZoom, Math.min(this.data._maxZoom, this.data._zoom));
+      const scaledW = w * zoom;
+      const scaledH = h * zoom;
+      const minX = Math.min(0, w - scaledW);
+      const minY = Math.min(0, h - scaledH);
+
+      this.data._zoom = zoom;
+      this.data._offsetX = Math.max(minX, Math.min(0, this.data._offsetX));
+      this.data._offsetY = Math.max(minY, Math.min(0, this.data._offsetY));
+    },
+
+    _getTouchDistance(touches) {
+      const dx = touches[0].clientX - touches[1].clientX;
+      const dy = touches[0].clientY - touches[1].clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    },
+
+    _getTouchCenter(touches) {
+      const rect = this.data._canvasRect;
+      const clientX = (touches[0].clientX + touches[1].clientX) / 2;
+      const clientY = (touches[0].clientY + touches[1].clientY) / 2;
+      return {
+        x: rect ? clientX - rect.left : clientX,
+        y: rect ? clientY - rect.top : clientY
+      };
+    },
+
+    onTouchStart(e) {
+      const touches = e.touches || [];
+      this.data._gestureMoved = false;
+      this.data._tapSuppressed = false;
+
+      if (touches.length === 1) {
+        this.data._lastTouch = {
+          mode: 'pan',
+          x: touches[0].clientX,
+          y: touches[0].clientY
+        };
+      } else if (touches.length >= 2) {
+        this._refreshCanvasRect();
+        this.data._lastTouch = {
+          mode: 'pinch',
+          distance: this._getTouchDistance(touches),
+          center: this._getTouchCenter(touches),
+          zoom: this.data._zoom,
+          offsetX: this.data._offsetX,
+          offsetY: this.data._offsetY
+        };
+        this.data._tapSuppressed = true;
+      }
+    },
+
+    onTouchMove(e) {
+      const touches = e.touches || [];
+      const last = this.data._lastTouch;
+      if (!last || touches.length === 0) return;
+
+      if (touches.length === 1 && last.mode === 'pan') {
+        const dx = touches[0].clientX - last.x;
+        const dy = touches[0].clientY - last.y;
+        if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {
+          this.data._gestureMoved = true;
+          this.data._tapSuppressed = true;
+        }
+        this.data._offsetX += dx;
+        this.data._offsetY += dy;
+        this.data._lastTouch = {
+          mode: 'pan',
+          x: touches[0].clientX,
+          y: touches[0].clientY
+        };
+        this._clampView();
+        this._draw();
+      } else if (touches.length >= 2) {
+        const distance = this._getTouchDistance(touches);
+        const center = this._getTouchCenter(touches);
+        if (!last.distance) return;
+
+        const nextZoom = last.zoom * distance / last.distance;
+        const clampedZoom = Math.max(this.data._minZoom, Math.min(this.data._maxZoom, nextZoom));
+        const prevZoom = last.zoom;
+        const anchorX = center.x - last.offsetX;
+        const anchorY = center.y - last.offsetY;
+        const zoomRatio = clampedZoom / prevZoom;
+
+        this.data._gestureMoved = true;
+        this.data._tapSuppressed = true;
+        this.data._zoom = clampedZoom;
+        this.data._offsetX = center.x - anchorX * zoomRatio;
+        this.data._offsetY = center.y - anchorY * zoomRatio;
+        this._clampView();
+        this._draw();
+      }
+    },
+
+    onTouchEnd(e) {
+      const touches = e.touches || [];
+      if (touches.length === 0) {
+        this.data._lastTouch = null;
+        setTimeout(() => { this.data._tapSuppressed = false; }, 80);
+      } else if (touches.length === 1) {
+        this.data._lastTouch = {
+          mode: 'pan',
+          x: touches[0].clientX,
+          y: touches[0].clientY
+        };
+      }
+    },
+
     onCanvasTap(e) {
+      if (this.data._tapSuppressed || this.data._gestureMoved) return;
       const { nodes, reachableNodes } = this.properties;
-      const s = this.data._scale;
-      const touch = e.touches[0];
+      const scaleX = this.data._scaleX;
+      const scaleY = this.data._scaleY;
+      const s = Math.min(scaleX, scaleY) * this.data._zoom;
+      const touch = (e.touches && e.touches[0]) || (e.changedTouches && e.changedTouches[0]);
+      if (!touch) return;
 
       // 获取canvas的屏幕位置
       const query = wx.createSelectorQuery().in(this);
@@ -279,8 +494,9 @@ Component({
         // 检测点击了哪个节点
         for (let i = 0; i < nodes.length; i++) {
           const node = nodes[i];
-          const nx = node.x * s;
-          const ny = node.y * s;
+          const pos = this._mapToScreen(node.x, node.y, scaleX, scaleY);
+          const nx = pos.x;
+          const ny = pos.y;
           const dist = Math.sqrt((tapX - nx) ** 2 + (tapY - ny) ** 2);
           const hitRadius = 28 * s; // 稍大的点击区域
 
