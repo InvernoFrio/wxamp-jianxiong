@@ -2,7 +2,7 @@
 // Keep this file in sync with map_points.json because Mini Program require() does not load JSON files.
 
 module.exports = {
-  image_path: 'map.jpg',
+  image_path: 'cloud://cloud1-d1g022q9nafce6169.636c-cloud1-d1g022q9nafce6169-1426049260/map/map.jpg',
   image_size: [
     1280,
     1745

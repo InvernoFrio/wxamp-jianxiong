@@ -10,7 +10,19 @@ Component({
     currentRoute: { type: Object, value: null },
     routeHistory: { type: Array, value: [] },
     canvasWidth: { type: Number, value: 350 },
-    canvasHeight: { type: Number, value: 513 }
+    canvasHeight: { type: Number, value: 513 },
+
+    // 新增 bgImageUrl 属性，接收从页面传进来的图片临时路径
+    bgImageUrl: {
+      type: String,
+      value: '',
+      observer: function(newVal) {
+        // 如果页面下载图片完毕传了过来，并且 canvas 已经准备好了，就立即加载图片
+        if (newVal && this.data._canvas) {
+          this._loadMapImage(this.data._canvas, newVal);
+        }
+      }
+    }
   },
 
   data: {
@@ -75,25 +87,29 @@ Component({
           this.data._scaleY = this.data.canvasHeight / MAP_HEIGHT;
 
           this._refreshCanvasRect();
-          this._loadMapImage(canvas);
+          if (this.properties.bgImageUrl) {
+            this._loadMapImage(canvas, this.properties.bgImageUrl);
+          }
           this._draw();
           this._startPulseAnimation();
         });
     },
 
-    _loadMapImage(canvas) {
+    _loadMapImage(canvas, src) {
+      if (!src) return;
       const image = canvas.createImage();
       image.onload = () => {
         this.data._mapImage = image;
         this.data._mapImageReady = true;
-        this._draw();
+        this._draw(); // 图片加载完成，触发重绘
       };
-      image.onerror = () => {
+      image.onerror = (err) => {
+        console.error('地图背景渲染失败:', err);
         this.data._mapImage = null;
         this.data._mapImageReady = false;
         this._draw();
       };
-      image.src = MAP_IMAGE;
+      image.src = src;
     },
 
     _refreshCanvasRect() {

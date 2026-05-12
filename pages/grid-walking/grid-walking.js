@@ -47,7 +47,9 @@ Page({
     // 内容内嵌弹窗
     showContentModal: false,
     contentModalTitle: '',
-    contentModalBody: []
+    contentModalBody: [],
+    // 存放解析后的真实地图背景图路径
+    bgImageTempPath: ''
   },
 
   onLoad(options) {
@@ -78,6 +80,30 @@ Page({
     this.setData({ showRouteSelect: true });
     // 底栏隐藏（加延迟确保生效）
     setTimeout(() => { wx.hideTabBar({ animation: false }); }, 100);
+    // 在 onLoad 的最后调用获取云端图片的方法
+    this._loadCloudMapImage(); 
+  },
+
+  // 处理云端图片下载的核心方法
+  _loadCloudMapImage() {
+    const cloudFileId = 'cloud://cloud1-d1g022q9nafce6169.636c-cloud1-d1g022q9nafce6169-1426049260/map/map.jpg'; // 链接
+
+    // 使用 downloadFile 获取本地临时路径，这对于 Canvas 绘制是最稳定的
+    wx.cloud.downloadFile({
+      fileID: cloudFileId,
+      success: res => {
+        if (res.statusCode === 200) {
+          // 获取到类似 http://tmp/... 的临时本地路径
+          this.setData({
+            bgImageTempPath: res.tempFilePath
+          });
+        }
+      },
+      fail: err => {
+        console.error('地图背景下载失败', err);
+        wx.showToast({ title: '地图加载失败', icon: 'error' });
+      }
+    });
   },
 
   onShow() {

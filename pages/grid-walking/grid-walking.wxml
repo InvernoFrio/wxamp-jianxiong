@@ -13,6 +13,7 @@
         routeHistory="{{routeHistory}}"
         canvasWidth="{{canvasWidth}}"
         canvasHeight="{{canvasHeight}}"
+        bgImageUrl="{{bgImageTempPath}}"
         bind:nodetap="onNodeTap"
       />
     </view>

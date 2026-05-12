@@ -6,6 +6,22 @@
       {
         "value": "scripts",
         "type": "folder"
+      },
+      {
+        "value": ".md",
+        "type": "suffix"
+      },
+      {
+        "value": "吴健雄传.txt",
+        "type": "file"
+      },
+      {
+        "value": "book.txt",
+        "type": "file"
+      },
+      {
+        "value": "map.jpg",
+        "type": "file"
       }
     ],
     "include": []
