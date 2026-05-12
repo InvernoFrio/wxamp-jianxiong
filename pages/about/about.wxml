@@ -19,10 +19,14 @@
   <view class="section">
     <text class="section-title">团队成员</text>
     <view class="team-list">
-      <view
+      <button
         wx:for="{{teams}}"
         wx:key="name"
-        class="team-card glass"
+        class="team-card glass team-button"
+        data-section="团队成员"
+        data-name="{{item.name}}"
+        data-index="{{index}}"
+        bindtap="showModal"
       >
         <view class="team-avatar">
           <image class="team-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
@@ -32,7 +36,7 @@
           <text class="team-role">{{item.role}}</text>
           <text class="team-desc">{{item.desc}}</text>
         </view>
-      </view>
+      </button>
     </view>
   </view>
 
@@ -40,15 +44,19 @@
   <view class="section">
     <text class="section-title">设计理念</text>
     <view class="principle-list">
-      <view
+      <button
         wx:for="{{principles}}"
         wx:key="title"
-        class="principle-card glass"
+        class="principle-card glass principle-button"
+        data-section="设计理念"
+        data-title="{{item.title}}"
+        data-index="{{index}}"
+        bindtap="showModal"
       >
         <text class="principle-icon">{{item.icon}}</text>
         <text class="principle-title">{{item.title}}</text>
         <text class="principle-desc">{{item.desc}}</text>
-      </view>
+      </button>
     </view>
   </view>
 
@@ -64,5 +72,20 @@
   <!-- 底部 -->
   <view class="about-footer">
     <text>© 2026 钴光拾遗团队</text>
+  </view>
+
+  <!-- 弹窗 -->
+  <view class="modal-overlay" wx:if="{{showModal}}" bindtap="closeModal"></view>
+  <view class="modal-container" wx:if="{{showModal}}">
+    <view class="modal-header">
+      <text class="modal-title">{{modalTitle}}</text>
+      <button class="modal-close" bindtap="closeModal">✕</button>
+    </view>
+    <view class="modal-body">
+      <text class="modal-text">{{modalContent}}</text>
+    </view>
+    <view class="modal-footer">
+      <button class="modal-button" bindtap="closeModal">关闭</button>
+    </view>
   </view>
 </view>

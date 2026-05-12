@@ -43,11 +43,45 @@ Page({
         icon: '⚛️',
         title: '实验可视化',
         desc: '用粒子动画再现宇称不守恒实验，让物理之美触手可及'
+      },
+      {
+        icon: '💬',
+        title: 'AI对话',
+        desc: '通过AI模拟与吴健雄先生的对话，提供沉浸式学习体验'
       }
-    ]
+    ],
+    showModal: false,
+    modalTitle: '',
+    modalContent: '占位符内容'
   },
 
   onLoad() {},
+
+  // 显示弹窗
+  showModal(e) {
+    const { section, name, title, index } = e.currentTarget.dataset;
+    let modalTitle = '';
+    
+    if (section === '团队成员') {
+      modalTitle = `${name}`;
+    } else if (section === '设计理念') {
+      modalTitle = `${title}`;
+    } else {
+      modalTitle = `${section} - 按钮 ${index + 1}`;
+    }
+    
+    this.setData({
+      showModal: true,
+      modalTitle: modalTitle
+    });
+  },
+
+  // 关闭弹窗
+  closeModal() {
+    this.setData({
+      showModal: false
+    });
+  },
 
   onShareAppMessage() {
     return {
