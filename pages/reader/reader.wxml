@@ -1,4 +1,5 @@
 <view class="reader-page page-enter {{theme === 'dark' ? 'dark' : ''}}">
+  <music-float track="{{musicTrack}}" compact="{{true}}" />
   <!-- 章节导航 -->
   <scroll-view class="chapter-nav" scroll-x="{{true}}" show-scrollbar="{{false}}">
     <view

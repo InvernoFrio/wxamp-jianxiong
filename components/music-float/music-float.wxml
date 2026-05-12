@@ -1,0 +1,15 @@
+<view
+  wx:if="{{visible}}"
+  class="music-float {{isPlaying ? 'playing' : 'paused'}} {{compact ? 'compact' : ''}}"
+  style="left: {{floatX}}px; top: {{floatY}}px; transition: {{isDragging ? 'none' : 'left 0.28s ease, top 0.28s ease, transform 0.16s ease'}};"
+  bindtouchstart="onDragStart"
+  catchtouchmove="onDragMove"
+  bindtouchend="onDragEnd"
+  bindtouchcancel="onDragEnd"
+  bindtap="onToggle"
+>
+  <view class="music-disc">
+    <text class="music-note">♪</text>
+    <view class="pause-slash"></view>
+  </view>
+</view>

@@ -1,8 +1,10 @@
 // pages/timeline/timeline.js
 const timelineData = require('../../data/timeline.js');
+const musicConfig = require('../../data/music-config.js');
 
 Page({
   data: {
+    musicTrack: musicConfig.timeline,
     items: [],
     filteredItems: [],
     expandedIndex: -1,

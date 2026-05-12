@@ -76,13 +76,22 @@
 
   <!-- 弹窗 -->
   <view class="modal-overlay" wx:if="{{showModal}}" bindtap="closeModal"></view>
-  <view class="modal-container" wx:if="{{showModal}}">
+  <view class="modal-container {{modalBgUrl ? 'modal-with-bg' : ''}}" wx:if="{{showModal}}">
+    <image wx:if="{{modalBgUrl}}" class="modal-bg-image" src="{{modalBgUrl}}" mode="aspectFill" />
+    <view wx:if="{{modalBgUrl}}" class="modal-bg-mask"></view>
+    <music-float
+      wx:if="{{modalMusicEnabled}}"
+      track="{{modalTrack}}"
+      autoplay="{{true}}"
+      stop-on-detach="{{true}}"
+      compact="{{true}}"
+    />
     <view class="modal-header">
       <text class="modal-title">{{modalTitle}}</text>
       <button class="modal-close" bindtap="closeModal">✕</button>
     </view>
     <view class="modal-body">
-      <text class="modal-text">{{modalContent}}</text>
+      <text class="modal-text" user-select="{{true}}">{{modalContent}}</text>
     </view>
     <view class="modal-footer">
       <button class="modal-button" bindtap="closeModal">关闭</button>

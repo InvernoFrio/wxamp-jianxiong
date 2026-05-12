@@ -62,6 +62,7 @@
   },
   "usingComponents": {
     "glass-button": "/components/glass-button/glass-button",
-    "book-cover": "/components/book-cover/book-cover"
+    "book-cover": "/components/book-cover/book-cover",
+    "music-float": "/components/music-float/music-float"
   }
 }

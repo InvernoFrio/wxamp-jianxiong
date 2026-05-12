@@ -1,6 +1,7 @@
 // pages/reader/reader.js
 const chaptersIndex = require('../../data/chapters/index.js');
 const storage = require('../../utils/storage.js');
+const musicConfig = require('../../data/music-config.js');
 
 // 静态引入所有章节数据
 const chapterDataMap = {};
@@ -12,6 +13,7 @@ CHAPTER_IDS.forEach(id => {
 Page({
   data: {
     chapters: chaptersIndex,
+    musicTrack: musicConfig.reader,
     activeChapter: 0,
     mode: 'list',
     currentSection: null,
@@ -376,7 +378,7 @@ Page({
   _updateReadingScrollHeight() {
     const sysInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
     const rpxRatio = sysInfo.windowWidth / 750;
-    const reserved = Math.round(190 * rpxRatio);
+    const reserved = Math.round(142 * rpxRatio);
     const h = Math.max(360, Math.floor(sysInfo.windowHeight - reserved));
     this.setData({ readingScrollHeight: h });
   },

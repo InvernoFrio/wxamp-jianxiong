@@ -1,4 +1,5 @@
 <view class="timeline-page page-enter">
+  <music-float track="{{musicTrack}}" compact="{{true}}" />
   <!-- 筛选标签 -->
   <scroll-view class="filter-bar" scroll-x="{{true}}" show-scrollbar="{{false}}">
     <view
