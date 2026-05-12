@@ -107,6 +107,7 @@ function getSettings() {
   return wx.getStorageSync(KEYS.SETTINGS) || {
     fontSize: 30,
     lineHeight: 2.2,
+    paragraphSpacing: 28,
     theme: 'paper'
   };
 }

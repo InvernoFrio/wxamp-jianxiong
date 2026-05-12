@@ -48,12 +48,28 @@
       </view>
     </view>
 
-    <scroll-view class="reading-scroll" style="height: {{readingScrollHeight}}px;" scroll-y="{{true}}" enhanced="{{true}}" bindscroll="onReadingScroll">
+    <view class="reading-progress-wrap">
       <view class="reading-progress-bar" style="width: {{readingProgress}}%;"></view>
+    </view>
+    <view class="reading-tip">
+      <text>可长按正文唤起笔记操作；也可按住文字使用系统选择复制</text>
+    </view>
+
+    <scroll-view
+      class="reading-scroll"
+      style="height: {{readingScrollHeight}}px;"
+      scroll-y="{{true}}"
+      enhanced="{{true}}"
+      scroll-top="{{readingScrollTop}}"
+      lower-threshold="16"
+      bindscroll="onReadingScroll"
+      bindscrolltolower="onReadingScrollToLower"
+    >
       <reader-view
         paragraphs="{{sectionParagraphs}}"
         fontSize="{{fontSize}}"
         lineHeight="{{lineHeight}}"
+        paragraphSpacing="{{paragraphSpacing}}"
         theme="{{theme}}"
         bind:highlight="onHighlight"
         bind:note="onNote"
@@ -62,7 +78,7 @@
 
     <view class="bottom-nav">
       <view class="bottom-nav-btn {{prevSection ? '' : 'disabled'}}" bindtap="onPrevSection"><text>‹ 上一节</text></view>
-      <view class="bottom-nav-progress"><text>{{readMinutes}}分钟读完</text></view>
+      <view class="bottom-nav-progress"><text>{{readingProgress}}% · {{readMinutes}}分钟读完</text></view>
       <view class="bottom-nav-btn {{nextSection ? '' : 'disabled'}}" bindtap="onNextSection"><text>下一节 ›</text></view>
     </view>
   </view>
@@ -86,7 +102,7 @@
         <view class="notes-tab {{notesTab === 'notes' ? 'active' : ''}}" data-tab="notes" bindtap="onNotesTabChange"><text>笔记 ({{notes.length}})</text></view>
       </view>
       <scroll-view class="notes-list" scroll-y="{{true}}" wx:if="{{notesTab === 'highlights'}}">
-        <view wx:if="{{highlights.length === 0}}" class="notes-empty"><text class="empty-icon">🖍</text><text>长按文字即可高亮</text></view>
+        <view wx:if="{{highlights.length === 0}}" class="notes-empty"><text class="empty-icon">🖍</text><text>长按正文即可高亮</text></view>
         <view wx:for="{{highlights}}" wx:key="id" class="note-item">
           <view class="note-item-content" data-chapter="{{item.chapterIndex}}" data-section="{{item.sectionId}}" bindtap="onJumpToHighlight">
             <text class="note-item-text" user-select="{{true}}">{{item.text}}</text>
@@ -96,7 +112,7 @@
         </view>
       </scroll-view>
       <scroll-view class="notes-list" scroll-y="{{true}}" wx:if="{{notesTab === 'notes'}}">
-        <view wx:if="{{notes.length === 0}}" class="notes-empty"><text class="empty-icon">📝</text><text>长按文字添加笔记</text></view>
+        <view wx:if="{{notes.length === 0}}" class="notes-empty"><text class="empty-icon">📝</text><text>长按正文添加笔记</text></view>
         <view wx:for="{{notes}}" wx:key="id" class="note-item">
           <view class="note-item-content" data-chapter="{{item.chapterIndex}}" data-section="{{item.sectionId}}" bindtap="onJumpToNote">
             <text class="note-item-note" user-select="{{true}}">{{item.note}}</text>
@@ -139,7 +155,11 @@
       </view>
       <view class="settings-group">
         <text class="settings-label">行高：{{lineHeight}}</text>
-        <slider class="settings-slider" min="16" max="28" step="1" value="{{lineHeight * 10}}" bindchange="onLineHeightChange" activeColor="#C41E3A" />
+        <slider class="settings-slider" min="16" max="28" step="1" value="{{lineHeightSlider}}" bindchange="onLineHeightChange" activeColor="#C41E3A" />
+      </view>
+      <view class="settings-group">
+        <text class="settings-label">段落间距：{{paragraphSpacing}}</text>
+        <slider class="settings-slider" min="16" max="48" step="2" value="{{paragraphSpacing}}" bindchange="onParagraphSpacingChange" activeColor="#C41E3A" />
       </view>
       <view class="settings-group">
         <text class="settings-label">主题</text>

@@ -4,6 +4,7 @@ Component({
     paragraphs: { type: Array, value: [] },
     fontSize: { type: Number, value: 30 },
     lineHeight: { type: Number, value: 2.2 },
+    paragraphSpacing: { type: Number, value: 28 },
     theme: { type: String, value: 'paper' }
   },
 
@@ -19,8 +20,13 @@ Component({
     onLongPress(e) {
       const paraIndex = e.currentTarget.dataset.index;
       const text = this.properties.paragraphs[paraIndex] || '';
-      let x = e.touches[0].clientX;
-      let y = e.touches[0].clientY;
+      this._openMenu(e, paraIndex, text);
+    },
+
+    _openMenu(e, paraIndex, text) {
+      const touch = (e.touches && e.touches[0]) || (e.changedTouches && e.changedTouches[0]) || {};
+      let x = touch.clientX || e.detail.x || 180;
+      let y = touch.clientY || e.detail.y || 220;
 
       const sysInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
       const menuW = sysInfo.windowWidth * 0.45;

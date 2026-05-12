@@ -1,6 +1,4 @@
-// data/chapters/ch08.js - 自动生成，请勿手动编辑
-
-const chapter = {
+{
   "id": "ch08",
   "title": "情系祖国",
   "subtitle": "爱国情怀",
@@ -306,6 +304,4 @@ const chapter = {
     }
   ],
   "totalParagraphs": 245
-};
-
-module.exports = chapter;
+}

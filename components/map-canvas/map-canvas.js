@@ -7,6 +7,8 @@ Component({
     currentNodeId: { type: String, value: START_NODE_ID },
     visitedNodes: { type: Array, value: [] },
     reachableNodes: { type: Array, value: [] },
+    currentRoute: { type: Object, value: null },
+    routeHistory: { type: Array, value: [] },
     canvasWidth: { type: Number, value: 350 },
     canvasHeight: { type: Number, value: 513 }
   },
@@ -29,7 +31,9 @@ Component({
     _gestureMoved: false,
     _tapSuppressed: false,
     _animFrame: 0,
-    _pulsePhase: 0
+    _pulsePhase: 0,
+    _pathReveal: 1,
+    _lastSegmentKey: ''
   },
 
   lifetimes: {
@@ -43,7 +47,8 @@ Component({
   },
 
   observers: {
-    'nodes, currentNodeId, visitedNodes, reachableNodes': function() {
+    'nodes, currentNodeId, visitedNodes, reachableNodes, currentRoute, routeHistory': function() {
+      this._preparePathReveal();
       if (this.data._ctx) this._draw();
     }
   },
@@ -101,8 +106,23 @@ Component({
     _startPulseAnimation() {
       this._animTimer = setInterval(() => {
         this.data._pulsePhase = (this.data._pulsePhase + 0.08) % (Math.PI * 2);
+        if (this.data._pathReveal < 1) {
+          this.data._pathReveal = Math.min(1, this.data._pathReveal + 0.085);
+        }
         if (this.data._ctx) this._draw();
       }, 50);
+    },
+
+    _preparePathReveal() {
+      const history = this.properties.routeHistory || [];
+      if (history.length < 2) return;
+      const from = history[history.length - 2];
+      const to = history[history.length - 1];
+      const key = `${from}->${to}`;
+      if (key !== this.data._lastSegmentKey) {
+        this.data._lastSegmentKey = key;
+        this.data._pathReveal = 0;
+      }
     },
 
     _draw() {
@@ -158,77 +178,186 @@ Component({
     _drawEdges(ctx, scaleX, scaleY) {
       const nodeMap = {};
       this.properties.nodes.forEach(n => { nodeMap[n.id] = n; });
+      const routeEdgeKeys = this._getRouteEdgeKeys();
+      const historyEdgeKeys = this._getHistoryEdgeKeys();
 
       edges.forEach(edge => {
         const from = nodeMap[edge.from];
         const to = nodeMap[edge.to];
         if (!from || !to) return;
 
-        const fromPos = this._mapToScreen(from.x, from.y, scaleX, scaleY);
-        const toPos = this._mapToScreen(to.x, to.y, scaleX, scaleY);
-        const fx = fromPos.x;
-        const fy = fromPos.y;
-        const tx = toPos.x;
-        const ty = toPos.y;
-
-        // 判断是否为可达路径
+        const key = this._edgeKey(from.id, to.id);
+        const routeOn = routeEdgeKeys[key];
+        const historyOn = historyEdgeKeys[key];
+        const isLastSegment = this._isLastSegment(from.id, to.id);
         const reachable = this.properties.reachableNodes;
         const current = this.properties.currentNodeId;
         const isReachablePath =
           (from.id === current && reachable.includes(to.id)) ||
           (to.id === current && reachable.includes(from.id));
 
-        // 贝塞尔曲线控制点（让路径有弧度）
-        const mx = (fx + tx) / 2;
-        const my = (fy + ty) / 2;
-        const dx = tx - fx;
-        const dy = ty - fy;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (!dist) return;
-        // 垂直偏移量，让曲线有弧度
-        const curve = dist * 0.15;
-        const cx = mx - dy / dist * curve;
-        const cy = my + dx / dist * curve;
-
-        ctx.beginPath();
-        ctx.moveTo(fx, fy);
-        ctx.quadraticCurveTo(cx, cy, tx, ty);
-
-        if (isReachablePath) {
-          ctx.strokeStyle = 'rgba(166, 33, 33, 0.6)';
-          ctx.lineWidth = 2.5;
-          ctx.setLineDash([]);
-        } else {
-          ctx.strokeStyle = 'rgba(160, 130, 80, 0.25)';
-          ctx.lineWidth = 1.5;
-          ctx.setLineDash([6, 4]);
+        if (!routeOn && !historyOn && !isReachablePath) {
+          this._drawTreasureEdge(ctx, from, to, scaleX, scaleY, {
+            stroke: 'rgba(92, 70, 44, 0.18)',
+            width: 1.4,
+            dash: [2, 8],
+            progress: 1
+          });
+          return;
         }
-        ctx.stroke();
-        ctx.setLineDash([]);
 
-        // 路径方向箭头（在曲线中点附近）
-        if (isReachablePath) {
-          const t = 0.5;
-          const ax = (1-t)*(1-t)*fx + 2*(1-t)*t*cx + t*t*tx;
-          const ay = (1-t)*(1-t)*fy + 2*(1-t)*t*cy + t*t*ty;
-          // 切线方向
-          const tdx = 2*(1-t)*(cx-fx) + 2*t*(tx-cx);
-          const tdy = 2*(1-t)*(cy-fy) + 2*t*(ty-cy);
-          const angle = Math.atan2(tdy, tdx);
+        if (routeOn) {
+          this._drawTreasureEdge(ctx, from, to, scaleX, scaleY, {
+            stroke: 'rgba(255, 250, 238, 0.82)',
+            width: 6.8,
+            dash: [],
+            progress: 1
+          });
+          this._drawTreasureEdge(ctx, from, to, scaleX, scaleY, {
+            stroke: 'rgba(118, 76, 34, 0.82)',
+            width: 3.8,
+            dash: [8, 9],
+            progress: 1
+          });
+        }
 
-          ctx.save();
-          ctx.translate(ax, ay);
-          ctx.rotate(angle);
-          ctx.fillStyle = 'rgba(166, 33, 33, 0.6)';
-          ctx.beginPath();
-          ctx.moveTo(8, 0);
-          ctx.lineTo(-4, -4);
-          ctx.lineTo(-4, 4);
-          ctx.closePath();
-          ctx.fill();
-          ctx.restore();
+        if (isReachablePath && !historyOn) {
+          this._drawTreasureEdge(ctx, from, to, scaleX, scaleY, {
+            stroke: 'rgba(255, 250, 238, 0.9)',
+            width: 7.4,
+            dash: [],
+            progress: 1
+          });
+          this._drawTreasureEdge(ctx, from, to, scaleX, scaleY, {
+            stroke: 'rgba(166, 33, 33, 0.86)',
+            width: 4.2,
+            dash: [9, 8],
+            progress: 1
+          });
+        }
+
+        if (historyOn) {
+          this._drawTreasureEdge(ctx, from, to, scaleX, scaleY, {
+            stroke: 'rgba(255, 246, 228, 0.95)',
+            width: 8.4,
+            dash: [],
+            progress: isLastSegment ? this.data._pathReveal : 1
+          });
+          this._drawTreasureEdge(ctx, from, to, scaleX, scaleY, {
+            stroke: 'rgba(166, 33, 33, 0.95)',
+            width: 5,
+            dash: [10, 7],
+            progress: isLastSegment ? this.data._pathReveal : 1,
+            drawMarks: true
+          });
         }
       });
+    },
+
+    _drawTreasureEdge(ctx, from, to, scaleX, scaleY, options) {
+      const fromPos = this._mapToScreen(from.x, from.y, scaleX, scaleY);
+      const toPos = this._mapToScreen(to.x, to.y, scaleX, scaleY);
+      const fx = fromPos.x;
+      const fy = fromPos.y;
+      const tx = toPos.x;
+      const ty = toPos.y;
+      const mx = (fx + tx) / 2;
+      const my = (fy + ty) / 2;
+      const dx = tx - fx;
+      const dy = ty - fy;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (!dist) return;
+
+      const curve = dist * 0.18;
+      const cx = mx - dy / dist * curve;
+      const cy = my + dx / dist * curve;
+      const rawProgress = typeof options.progress === 'number' ? options.progress : 1;
+      const progress = Math.max(0, Math.min(1, rawProgress));
+
+      ctx.save();
+      ctx.strokeStyle = options.stroke;
+      ctx.lineWidth = options.width;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.setLineDash(options.dash || []);
+      ctx.beginPath();
+      this._drawPartialQuadratic(ctx, fx, fy, cx, cy, tx, ty, progress);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      if (options.drawMarks && progress > 0.15) {
+        this._drawRouteMarks(ctx, fx, fy, cx, cy, tx, ty, progress, options.stroke);
+      }
+      ctx.restore();
+    },
+
+    _drawPartialQuadratic(ctx, fx, fy, cx, cy, tx, ty, progress) {
+      const steps = Math.max(2, Math.ceil(26 * progress));
+      ctx.moveTo(fx, fy);
+      for (let i = 1; i <= steps; i++) {
+        const t = progress * i / steps;
+        const p = this._quadraticPoint(fx, fy, cx, cy, tx, ty, t);
+        ctx.lineTo(p.x, p.y);
+      }
+    },
+
+    _drawRouteMarks(ctx, fx, fy, cx, cy, tx, ty, progress, color) {
+      const marks = [0.34, 0.67];
+      marks.forEach(t => {
+        if (t > progress) return;
+        const p = this._quadraticPoint(fx, fy, cx, cy, tx, ty, t);
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(Math.sin(t * 12) * 0.6);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(-3, -3);
+        ctx.lineTo(3, 3);
+        ctx.moveTo(3, -3);
+        ctx.lineTo(-3, 3);
+        ctx.stroke();
+        ctx.restore();
+      });
+    },
+
+    _quadraticPoint(fx, fy, cx, cy, tx, ty, t) {
+      const a = (1 - t) * (1 - t);
+      const b = 2 * (1 - t) * t;
+      const c = t * t;
+      return {
+        x: a * fx + b * cx + c * tx,
+        y: a * fy + b * cy + c * ty
+      };
+    },
+
+    _getRouteEdgeKeys() {
+      const keys = {};
+      const route = this.properties.currentRoute;
+      const routeNodes = route && route.nodes ? route.nodes : [];
+      for (let i = 1; i < routeNodes.length; i++) {
+        keys[this._edgeKey(routeNodes[i - 1], routeNodes[i])] = true;
+      }
+      return keys;
+    },
+
+    _getHistoryEdgeKeys() {
+      const keys = {};
+      const history = this.properties.routeHistory || [];
+      for (let i = 1; i < history.length; i++) {
+        keys[this._edgeKey(history[i - 1], history[i])] = true;
+      }
+      return keys;
+    },
+
+    _edgeKey(a, b) {
+      return [a, b].sort().join('__');
+    },
+
+    _isLastSegment(a, b) {
+      const history = this.properties.routeHistory || [];
+      if (history.length < 2) return false;
+      return this._edgeKey(history[history.length - 2], history[history.length - 1]) === this._edgeKey(a, b);
     },
 
     _drawNodes(ctx, scaleX, scaleY) {

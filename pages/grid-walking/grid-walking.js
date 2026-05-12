@@ -114,8 +114,13 @@ Page({
   },
 
   _updateAvailableRoutes() {
-    const { completedRoutes } = this.data;
-    const available = routes.map(r => ({ ...r, completed: completedRoutes.includes(r.id) }));
+    const { completedRoutes, currentRoute } = this.data;
+    const currentRouteId = currentRoute ? currentRoute.id : '';
+    const available = routes.map(r => ({
+      ...r,
+      completed: completedRoutes.includes(r.id),
+      selected: r.id === currentRouteId
+    }));
     const allCompleted = available.every(r => r.completed);
     this.setData({ availableRoutes: available, allRoutesCompleted: allCompleted });
   },
@@ -216,6 +221,8 @@ Page({
           wx.navigateTo({ url: '/pages/physics/exp-parity/exp-parity' });
         } else if (mapping.experiment === 'diffusion') {
           wx.navigateTo({ url: '/pages/physics/exp-diffusion/exp-diffusion' });
+        } else if (mapping.experiment === 'entanglement') {
+          wx.navigateTo({ url: '/pages/physics/exp-entanglement/exp-entanglement' });
         } else {
           wx.showToast({ title: '实验内容开发中', icon: 'none' });
         }
@@ -320,6 +327,7 @@ Page({
       contentBtnText: '',
       progressPercent: Math.round(1 / nodes.length * 100)
     });
+    this._updateAvailableRoutes();
   },
 
   onCloseRouteSelect() {

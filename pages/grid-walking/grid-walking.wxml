@@ -9,6 +9,8 @@
         currentNodeId="{{currentNodeId}}"
         visitedNodes="{{visitedNodes}}"
         reachableNodes="{{reachableNodes}}"
+        currentRoute="{{currentRoute}}"
+        routeHistory="{{routeHistory}}"
         canvasWidth="{{canvasWidth}}"
         canvasHeight="{{canvasHeight}}"
         bind:nodetap="onNodeTap"
@@ -17,6 +19,7 @@
     <!-- 路线标签 -->
     <view class="route-tag" wx:if="{{currentRoute}}">
       <text class="route-dot" style="background: {{currentRoute.color}}"></text>
+      <text class="route-label">已选择</text>
       <text class="route-name">{{currentRoute.name}}</text>
     </view>
   </view>
@@ -116,13 +119,15 @@
       <view class="route-divider"></view>
       <view
         wx:for="{{availableRoutes}}" wx:key="id"
-        class="route-option {{item.completed ? 'route-completed' : ''}}"
+        class="route-option {{item.completed ? 'route-completed' : ''}} {{item.selected ? 'route-selected' : ''}}"
+        style="border-left-color: {{item.color}}"
         bindtap="onSelectRoute"
         data-route-id="{{item.id}}"
       >
         <view class="route-option-header">
           <text class="route-option-dot" style="background: {{item.color}}"></text>
           <text class="route-option-name serif-title">{{item.name}}</text>
+          <text class="route-option-selected" wx:if="{{item.selected}}">当前</text>
           <text class="route-option-check" wx:if="{{item.completed}}">✓</text>
         </view>
         <text class="route-option-desc">{{item.desc}}</text>

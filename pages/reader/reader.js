@@ -18,9 +18,12 @@ Page({
     sectionParagraphs: [],
     fontSize: 30,
     lineHeight: 2.2,
+    lineHeightSlider: 22,
+    paragraphSpacing: 28,
     theme: 'paper',
     readMinutes: 0,
     readingProgress: 0,
+    readingScrollTop: 0,
     readingScrollHeight: 0,
     showNotesPanel: false,
     showNoteEditor: false,
@@ -45,9 +48,12 @@ Page({
   onLoad() {
     const progress = storage.getReadingProgress();
     const settings = storage.getSettings();
+    const lineHeight = this._normalizeLineHeight(settings.lineHeight);
     this.setData({
-      fontSize: settings.fontSize || 30,
-      lineHeight: settings.lineHeight || 2.2,
+      fontSize: this._normalizeFontSize(settings.fontSize),
+      lineHeight: lineHeight,
+      lineHeightSlider: Math.round(lineHeight * 10),
+      paragraphSpacing: this._normalizeParagraphSpacing(settings.paragraphSpacing),
       theme: settings.theme || 'paper',
       highlights: storage.getHighlights(),
       notes: storage.getNotes(),
@@ -108,8 +114,13 @@ Page({
     const { scrollTop, scrollHeight } = e.detail;
     if (!scrollHeight || scrollHeight <= 0) return;
     const visibleHeight = this.data.readingScrollHeight || 400;
-    const totalScrollable = Math.max(1, scrollHeight - visibleHeight);
+    const totalScrollable = Math.max(0, scrollHeight - visibleHeight);
+    if (totalScrollable <= 2) {
+      this.setData({ readingProgress: 100 });
+      return;
+    }
     const progress = Math.min(100, Math.round((scrollTop / totalScrollable) * 100));
+    this._lastReadingScrollTop = scrollTop;
     this.setData({ readingProgress: progress });
     if (this._scrollTimer) clearTimeout(this._scrollTimer);
     this._scrollTimer = setTimeout(() => {
@@ -118,6 +129,14 @@ Page({
         storage.saveReadingProgress(this.data.activeChapter, progress, section.id, scrollTop);
       }
     }, 2000);
+  },
+
+  onReadingScrollToLower() {
+    this.setData({ readingProgress: 100 });
+    const section = this.data.currentSection;
+    if (section) {
+      storage.saveReadingProgress(this.data.activeChapter, 100, section.id, this._lastReadingScrollTop || this.data.readingScrollTop);
+    }
   },
 
   // ── 高亮与笔记 ──────────────────────────────
@@ -213,7 +232,7 @@ Page({
   onCloseSettings() { this.setData({ showSettings: false }); },
 
   onFontSizeChange(e) {
-    const fontSize = e.detail.value;
+    const fontSize = this._normalizeFontSize(e.detail.value);
     this.setData({ fontSize });
     const settings = storage.getSettings();
     settings.fontSize = fontSize;
@@ -221,10 +240,18 @@ Page({
   },
 
   onLineHeightChange(e) {
-    const lineHeight = e.detail.value;
-    this.setData({ lineHeight });
+    const lineHeight = this._normalizeLineHeight(Number(e.detail.value) / 10);
+    this.setData({ lineHeight, lineHeightSlider: Math.round(lineHeight * 10) });
     const settings = storage.getSettings();
     settings.lineHeight = lineHeight;
+    storage.saveSettings(settings);
+  },
+
+  onParagraphSpacingChange(e) {
+    const paragraphSpacing = this._normalizeParagraphSpacing(e.detail.value);
+    this.setData({ paragraphSpacing });
+    const settings = storage.getSettings();
+    settings.paragraphSpacing = paragraphSpacing;
     storage.saveSettings(settings);
   },
 
@@ -309,6 +336,11 @@ Page({
     const charCount = paragraphs.reduce(function(sum, p) { return sum + p.length; }, 0);
     const readMinutes = Math.max(1, Math.ceil(charCount / 400));
     const adj = this._getAdjacentSections(chapterIndex, sectionId);
+    const progress = storage.getReadingProgress();
+    const shouldRestore = progress.chapterIndex === chapterIndex && progress.sectionId === sectionId;
+    const restoredProgress = shouldRestore ? (progress.percent || 0) : 0;
+    const restoredScrollTop = shouldRestore ? (progress.scrollOffset || 0) : 0;
+    this._lastReadingScrollTop = restoredScrollTop;
 
     this.setData({
       activeChapter: chapterIndex,
@@ -316,12 +348,13 @@ Page({
       currentSection: section,
       sectionParagraphs: paragraphs,
       readMinutes: readMinutes,
-      readingProgress: 0,
+      readingProgress: restoredProgress,
+      readingScrollTop: restoredScrollTop,
       prevSection: adj.prev,
       nextSection: adj.next,
       isCurrentBookmarked: storage.isBookmarked(sectionId)
     });
-    storage.saveReadingProgress(chapterIndex, 0, sectionId);
+    storage.saveReadingProgress(chapterIndex, restoredProgress, sectionId, restoredScrollTop);
     setTimeout(() => this._updateReadingScrollHeight(), 0);
   },
 
@@ -343,9 +376,27 @@ Page({
   _updateReadingScrollHeight() {
     const sysInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
     const rpxRatio = sysInfo.windowWidth / 750;
-    const reserved = Math.round(180 * rpxRatio);
+    const reserved = Math.round(258 * rpxRatio);
     const h = Math.max(360, Math.floor(sysInfo.windowHeight - reserved));
     this.setData({ readingScrollHeight: h });
+  },
+
+  _normalizeFontSize(value) {
+    const fontSize = parseInt(value, 10);
+    if (!fontSize || fontSize < 24) return 30;
+    return Math.min(40, Math.max(24, fontSize));
+  },
+
+  _normalizeLineHeight(value) {
+    const lineHeight = Number(value);
+    if (!lineHeight || lineHeight < 1.6 || lineHeight > 2.8) return 2.2;
+    return Math.round(lineHeight * 10) / 10;
+  },
+
+  _normalizeParagraphSpacing(value) {
+    const spacing = parseInt(value, 10);
+    if (!spacing && spacing !== 0) return 28;
+    return Math.min(48, Math.max(16, spacing));
   },
 
   _computeSectionProgress() {

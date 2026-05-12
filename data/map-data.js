@@ -59,26 +59,26 @@ const pointConfig = {
   '北大楼': {
     id: 'north_building',
     type: 'end',
-    desc: '到达北大楼，本轮路线探索完成。',
-    contentId: null
+    desc: '到达北大楼，本轮路线探索完成。回望吴健雄科学人生中的关键节点。',
+    contentId: 'timeline-1950'
   },
   '逸夫楼': {
     id: 'yifu_building',
     type: 'story',
-    desc: '沿真实地图标点继续探索校园空间。',
-    contentId: null
+    desc: '在逸夫楼停留，查看吴健雄远赴美国后展开科研道路的年表片段。',
+    contentId: 'timeline-1936'
   },
   '知行楼': {
     id: 'zhixing_building',
-    type: 'branch',
-    desc: '这里连接多条探索路线，请选择下一处真实标点。',
-    contentId: null
+    type: 'interact',
+    desc: '这里不只是路线分岔点，也是一处互动节点。体验量子纠缠实验，继续选择下一处真实标点。',
+    contentId: 'exp-entanglement'
   },
   '树华楼': {
     id: 'shuhua_building',
-    type: 'story',
-    desc: '沿真实地图标点继续探索校园空间。',
-    contentId: null
+    type: 'read',
+    desc: '在树华楼阅读吴健雄科研贡献相关章节，补全探索线索。',
+    contentId: 'ch03-research'
   }
 };
 
@@ -154,6 +154,7 @@ const contentMap = {
   'timeline-1950': { type: 'timeline', year: 1950 },
   'exp-parity': { type: 'physics', experiment: 'parity' },
   'exp-diffusion': { type: 'physics', experiment: 'diffusion' },
+  'exp-entanglement': { type: 'physics', experiment: 'entanglement' },
   'reader': { type: 'reader', chapterId: 1 }
 };
 
