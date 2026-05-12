@@ -30,7 +30,7 @@
   word-break: break-all;
   overflow-wrap: anywhere;
   white-space: normal;
-  text-indent: 2em;
+  text-indent: 0;
 }
 
 .paragraph-text {
@@ -43,11 +43,7 @@
   text-align: left;
   word-break: break-all;
   overflow-wrap: anywhere;
-  text-indent: inherit;
-}
-
-.paragraph:first-child {
-  text-indent: 2em;
+  text-indent: 0;
 }
 
 .empty-tip {

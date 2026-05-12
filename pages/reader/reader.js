@@ -376,7 +376,7 @@ Page({
   _updateReadingScrollHeight() {
     const sysInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
     const rpxRatio = sysInfo.windowWidth / 750;
-    const reserved = Math.round(258 * rpxRatio);
+    const reserved = Math.round(190 * rpxRatio);
     const h = Math.max(360, Math.floor(sysInfo.windowHeight - reserved));
     this.setData({ readingScrollHeight: h });
   },

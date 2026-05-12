@@ -51,9 +51,6 @@
     <view class="reading-progress-wrap">
       <view class="reading-progress-bar" style="width: {{readingProgress}}%;"></view>
     </view>
-    <view class="reading-tip">
-      <text>可长按正文唤起笔记操作；也可按住文字使用系统选择复制</text>
-    </view>
 
     <scroll-view
       class="reading-scroll"
