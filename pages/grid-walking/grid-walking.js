@@ -1,6 +1,6 @@
 // pages/grid-walking/grid-walking.js
 const {
-  MAP_WIDTH, MAP_HEIGHT, START_NODE_ID, NODE_TYPES,
+  MAP_IMAGE, MAP_WIDTH, MAP_HEIGHT, START_NODE_ID, NODE_TYPES,
   nodes, edges, routes, contentMap
 } = require('../../data/map-data.js');
 const chapterIndex = require('../../data/chapters/index.js');
@@ -86,7 +86,7 @@ Page({
 
   // 处理云端图片下载的核心方法
   _loadCloudMapImage() {
-    const cloudFileId = 'cloud://cloud1-d1g022q9nafce6169.636c-cloud1-d1g022q9nafce6169-1426049260/map/map.jpg'; // 链接
+    const cloudFileId = MAP_IMAGE; // 链接
 
     // 使用 downloadFile 获取本地临时路径，这对于 Canvas 绘制是最稳定的
     wx.cloud.downloadFile({

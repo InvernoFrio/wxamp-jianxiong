@@ -12,6 +12,14 @@
         "type": "suffix"
       },
       {
+        "value": ".jpg.jpg",
+        "type": "suffix"
+      },
+      {
+        "value": ".tmp.jpg",
+        "type": "suffix"
+      },
+      {
         "value": "吴健雄传.txt",
         "type": "file"
       },
@@ -21,6 +29,94 @@
       },
       {
         "value": "map.jpg",
+        "type": "file"
+      },
+      {
+        "value": "versions",
+        "type": "folder"
+      },
+      {
+        "value": "data/chapters/ch00.txt",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch01.txt",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch02.txt",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch03.txt",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch04.txt",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch05.txt",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch06.txt",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch07.txt",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch08.txt",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch09.txt",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch00.json",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch01.json",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch02.json",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch03.json",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch04.json",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch05.json",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch06.json",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch07.json",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch08.json",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/ch09.json",
+        "type": "file"
+      },
+      {
+        "value": "data/chapters/index.json",
         "type": "file"
       }
     ],

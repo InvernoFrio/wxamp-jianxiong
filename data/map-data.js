@@ -3,7 +3,7 @@
 
 const mapPoints = require('../map_points.js');
 
-const MAP_IMAGE = '/map.jpg';
+const MAP_IMAGE = 'cloud://cloud1-d1g022q9nafce6169.636c-cloud1-d1g022q9nafce6169-1426049260/map/map.jpg';
 const MAP_WIDTH = mapPoints.image_size[0];
 const MAP_HEIGHT = mapPoints.image_size[1];
 const START_NODE_ID = 'zhengmen';
