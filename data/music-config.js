@@ -23,7 +23,7 @@ const musicConfig = {
       id: 'team-hlz',
       title: '黄亮哲主题音乐',
       url: 'cloud://cloud1-d1g022q9nafce6169.636c-cloud1-d1g022q9nafce6169-1426049260/music/↑THE HIGH-LOWS↓ - 胸がドキドキ.mp3',
-      backgroundUrl: 'cloud://cloud1-d1g022q9nafce6169.636c-cloud1-d1g022q9nafce6169-1426049260/background/hlz.jpeg'
+      backgroundUrl: 'cloud://cloud1-d1g022q9nafce6169.636c-cloud1-d1g022q9nafce6169-1426049260/background/hlz.jpg'
     },
     chenzhongyu: {
       id: 'team-czy',

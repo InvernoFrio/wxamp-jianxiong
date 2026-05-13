@@ -16,10 +16,10 @@ Page({
       {
         name: '黄亮哲',
         role: '团队成员',
-        desc: '负责内容策划与视觉设计',
+        desc: '负责后端服务管理，数据库搭建，影音模块页面开发，以及小程序页面结构维护',
         avatar: '/assets/avatar/hlz.jpg',
         musicKey: 'huangliangzhe',
-        detail: '真相只有一个'
+        detail: '“真相永远只有一个！” ——江户川柯南\n「真実はいつも一つ！」 ——江戸川コナン'
       },
       {
         name: '陈钟宇',
@@ -27,7 +27,7 @@ Page({
         desc: '负责实验设计与内容优化',
         avatar: '/assets/avatar/czy.jpg',
         musicKey: 'chenzhongyu',
-        detail: '负责物理实验交互方案、知识点转译与文本内容优化，让用户在操作与观察中理解吴健雄先生的科学贡献。'
+        detail: 'Good morning, good afternoon, good evening, and good night!联系我：QQ：847837795'
       },
       {
         name: '杨佳园',
