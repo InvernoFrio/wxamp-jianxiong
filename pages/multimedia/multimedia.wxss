@@ -309,7 +309,7 @@ section {
 .ctrl-icon {
   width: 25rpx;    /* 根据你的视觉需求调整大小 */
   height: 25rpx;
-  margin: 0 15rpx;
+  margin: 0 10rpx;
   display: inline-block;
   vertical-align: middle;
 }
