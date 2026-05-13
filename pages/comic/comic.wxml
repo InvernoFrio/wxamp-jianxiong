@@ -1,10 +1,8 @@
 <!-- pages/comic/comic.wxml -->
-<!-- pages/comic/comic.wxml -->
 <scroll-view scroll-y="true" class="page-container">
   <main class="main-content">
-    <block wx:for="{{comicGroups}}" wx:key="_id">
-      <article class="comic-article">
-        <!-- 电影放映视窗标题框 -->
+    <block wx:for="{{comicGroups}}" wx:for-index="groupIndex" wx:key="_id">
+      <article class="comic-article" wx:if="{{item.hasImages}}">
         <view class="entry-header">
           <view class="header-left">
             <text class="font-headline-md text-headline-md section-index">#{{item.order < 10 ? '0' + item.order : item.order}}</text>
@@ -16,23 +14,24 @@
             <text class="font-caption text-caption text-outline date-text">{{item.date}}</text>
           </view>
         </view>
-        
+
         <view class="font-caption text-caption description-box" wx:if="{{item.description}}">
           {{item.description}}
         </view>
 
-        <!-- 电影胶卷带 -->
         <scroll-view scroll-x="true" class="film-strip" style="height: {{item.filmHeight || 520}}rpx;" enable-flex="true">
           <view class="film-spacer"></view>
-          <block wx:for="{{item.images}}" wx:for-item="img" wx:key="*this">
+          <block wx:for="{{item.images}}" wx:for-item="img" wx:for-index="imgIndex" wx:key="*this">
             <view class="film-frame image-tactile" bindtap="previewImage" data-current="{{img}}" data-urls="{{item.images}}">
               <image
                 class="comic-image"
                 src="{{img}}"
                 mode="aspectFill"
                 lazy-load
-                data-group-index="{{index}}"
+                data-group-index="{{groupIndex}}"
+                data-image-index="{{imgIndex}}"
                 bindload="onComicImageLoad"
+                binderror="onComicImageError"
               />
             </view>
           </block>
@@ -40,5 +39,9 @@
         </scroll-view>
       </article>
     </block>
+
+    <view class="comic-empty" wx:if="{{!comicGroups.length}}">
+      暂无可展示的漫画图片
+    </view>
   </main>
 </scroll-view>

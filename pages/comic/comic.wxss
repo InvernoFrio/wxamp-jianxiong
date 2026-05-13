@@ -91,3 +91,16 @@ page {
 .font-caption { font-family: "Georgia", serif; font-weight: 400; }
 .text-caption { font-size: 22rpx; opacity: 0.7; }
 .text-outline { color: #8D706D; }
+
+.comic-empty {
+  margin: 120rpx auto 0;
+  padding: 36rpx 28rpx;
+  max-width: 560rpx;
+  text-align: center;
+  color: #8D706D;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1rpx solid rgba(141, 112, 109, 0.18);
+  border-radius: 20rpx;
+  box-shadow: 0 18rpx 50rpx rgba(38, 24, 23, 0.08);
+  box-sizing: border-box;
+}
