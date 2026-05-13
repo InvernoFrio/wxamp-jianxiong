@@ -584,6 +584,11 @@ glass-card {
   color: #4FC3F7;
 }
 
+.ctrl-btn.disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
 /* =========================
    结果面板（保持原有）
 ========================= */

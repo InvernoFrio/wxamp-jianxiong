@@ -1,5 +1,6 @@
 // pages/about/about.js
 const musicConfig = require('../../data/music-config.js');
+const musicPlayer = require('../../utils/music-player.js');
 
 Page({
   data: {
@@ -109,15 +110,28 @@ Page({
       modalBgUrl,
       modalMusicEnabled
     });
+
+    if (modalMusicEnabled) {
+      musicPlayer.setTrack(modalTrack, { autoplay: true });
+    }
   },
 
   closeModal() {
+    if (this.data.modalMusicEnabled) {
+      musicPlayer.stop();
+    }
     this.setData({
       showModal: false,
       modalTrack: null,
       modalBgUrl: '',
       modalMusicEnabled: false
     });
+  },
+
+  onHide() {
+    if (this.data.modalMusicEnabled) {
+      musicPlayer.stop();
+    }
   },
 
   onShareAppMessage() {

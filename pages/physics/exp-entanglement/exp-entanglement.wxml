@@ -287,7 +287,7 @@
         <view class="ctrl-btn share-btn" bindtap="onSaveCanvas">
           <text>📷 截图</text>
         </view>
-        <view class="ctrl-btn share-btn" open-type="share">
+        <view class="ctrl-btn share-btn {{shareBusy ? 'disabled' : ''}}" bindtap="onShareExperiment">
           <text>↗ 分享</text>
         </view>
       </view>

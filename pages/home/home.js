@@ -7,6 +7,7 @@ Page({
     currentQuote: 0,
     bookOpen: false,
     bookPage: 0,
+    bookClosing: false,
     pageReady: false,
     ballX: 300,      // 初始横坐标
     ballY: 500,      // 初始纵坐标
@@ -132,8 +133,12 @@ Page({
 
   onPageChange(e) {
     const page = e.detail.page;
+    if (e.detail.closing) {
+      this.setData({ bookPage: page, bookOpen: true, bookClosing: true });
+      return;
+    }
     const isOpen = page > 0;
-    this.setData({ bookPage: page, bookOpen: isOpen });
+    this.setData({ bookPage: page, bookOpen: isOpen, bookClosing: false });
     if (isOpen) {
       this._showTabBar();
     } else {

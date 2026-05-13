@@ -12,6 +12,10 @@
         "type": "suffix"
       },
       {
+        "value": ".tmp.png",
+        "type": "suffix"
+      },
+      {
         "value": ".jpg.jpg",
         "type": "suffix"
       },

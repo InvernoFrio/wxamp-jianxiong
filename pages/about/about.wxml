@@ -1,13 +1,11 @@
 <view class="about-page page-enter">
-  <!-- 头部 -->
   <view class="about-header">
-    <text class="about-logo">⚛️</text>
+    <image class="about-logo-img" src="/assets/avatar/ampavatra.jpg" mode="aspectFill" />
     <text class="about-title">钴光拾遗</text>
     <text class="about-subtitle">吴健雄数字纪念馆</text>
     <text class="about-version">v1.0.0</text>
   </view>
 
-  <!-- 项目介绍 -->
   <view class="section">
     <text class="section-title">项目介绍</text>
     <glass-card>
@@ -15,7 +13,6 @@
     </glass-card>
   </view>
 
-  <!-- 团队成员 -->
   <view class="section">
     <text class="section-title">团队成员</text>
     <view class="team-list">
@@ -40,7 +37,6 @@
     </view>
   </view>
 
-  <!-- 设计理念 -->
   <view class="section">
     <text class="section-title">设计理念</text>
     <view class="principle-list">
@@ -60,7 +56,6 @@
     </view>
   </view>
 
-  <!-- 致谢 -->
   <view class="section">
     <text class="section-title">致谢</text>
     <glass-card>
@@ -69,32 +64,20 @@
     </glass-card>
   </view>
 
-  <!-- 底部 -->
   <view class="about-footer">
     <text>© 2026 钴光拾遗团队</text>
   </view>
 
-  <!-- 弹窗 -->
   <view class="modal-overlay" wx:if="{{showModal}}" bindtap="closeModal"></view>
   <view class="modal-container {{modalBgUrl ? 'modal-with-bg' : ''}}" wx:if="{{showModal}}">
     <image wx:if="{{modalBgUrl}}" class="modal-bg-image" src="{{modalBgUrl}}" mode="aspectFill" />
     <view wx:if="{{modalBgUrl}}" class="modal-bg-mask"></view>
-    <music-float
-      wx:if="{{modalMusicEnabled}}"
-      track="{{modalTrack}}"
-      autoplay="{{true}}"
-      stop-on-detach="{{true}}"
-      compact="{{true}}"
-    />
     <view class="modal-header">
       <text class="modal-title">{{modalTitle}}</text>
-      <button class="modal-close" bindtap="closeModal">✕</button>
+      <button class="modal-close" bindtap="closeModal">×</button>
     </view>
     <view class="modal-body">
       <text class="modal-text" user-select="{{true}}">{{modalContent}}</text>
-    </view>
-    <view class="modal-footer">
-      <button class="modal-button" bindtap="closeModal">关闭</button>
     </view>
   </view>
 </view>

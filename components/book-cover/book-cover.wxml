@@ -12,7 +12,7 @@
       </view>
     </view>
 
-    <!-- 第二页：直接阅读（缩小后只显示标题图标） -->
+    <!-- 第二页：直接阅读 -->
     <view class="book-spread {{bookPage === 2 ? 'spread-on' : 'spread-off'}}">
       <view class="page-fill">
         <view class="spread-head">
@@ -24,12 +24,17 @@
     </view>
 
     <!-- 第一页：探索地图 -->
-    <view class="book-spread {{bookPage === 1 ? 'spread-on' : (bookPage === 0 ? 'spread-off' : 'spread-off-left')}}">
+    <view class="book-spread {{bookPage === 1 ? 'spread-on' : (bookPage === 0 ? 'spread-off' : 'spread-off-left')}}" catchtap="onGridWalkingTap">
       <view class="page-fill page-fill-map">
         <view class="spread-head">
-          <text class="spread-emoji">🗺️</text>
+          <image class="spread-logo" src="/assets/campus_logo.png" mode="aspectFit" />
           <text class="spread-title serif-title">探索地图</text>
           <view class="spread-line"></view>
+          <view class="explore-guide">
+            <view class="explore-guide-pulse"></view>
+            <text class="explore-guide-main">点击书页进入探索</text>
+            <text class="explore-guide-sub">沿真实地图寻找钴光足迹</text>
+          </view>
         </view>
       </view>
     </view>

@@ -23,19 +23,19 @@ const musicConfig = {
       id: 'team-hlz',
       title: '黄亮哲主题音乐',
       url: 'cloud://cloud1-d1g022q9nafce6169.636c-cloud1-d1g022q9nafce6169-1426049260/music/↑THE HIGH-LOWS↓ - 胸がドキドキ.mp3',
-      backgroundUrl: 'cloud://cloud1-d1g022q9nafce6169.636c-cloud1-d1g022q9nafce6169-1426049260/music/08f87bf491d37fbf5ae1352627ddeffd.jpeg'
+      backgroundUrl: 'cloud://cloud1-d1g022q9nafce6169.636c-cloud1-d1g022q9nafce6169-1426049260/background/hlz.jpeg'
     },
     chenzhongyu: {
       id: 'team-czy',
       title: '陈钟宇主题音乐',
-      url: '',
-      backgroundUrl: ''
+      url: 'cloud://cloud1-d1g022q9nafce6169.636c-cloud1-d1g022q9nafce6169-1426049260/music/三澤秋 - For Your Pieces feat. 三澤秋.mp3',
+      backgroundUrl: 'cloud://cloud1-d1g022q9nafce6169.636c-cloud1-d1g022q9nafce6169-1426049260/background/czy.jpg'
     },
     yangjiayuan: {
       id: 'team-yjy',
       title: '杨佳园主题音乐',
       url: 'cloud://cloud1-d1g022q9nafce6169.636c-cloud1-d1g022q9nafce6169-1426049260/music/群青 - YOASOBI.mp3',
-      backgroundUrl: 'cloud://cloud1-d1g022q9nafce6169.636c-cloud1-d1g022q9nafce6169-1426049260/music/1d4e7f2fe29b044473217ae69154119c.jpg'
+      backgroundUrl: 'cloud://cloud1-d1g022q9nafce6169.636c-cloud1-d1g022q9nafce6169-1426049260/background/yjy.jpg'
     },
     hetianzhuang: {
       id: 'team-htz',

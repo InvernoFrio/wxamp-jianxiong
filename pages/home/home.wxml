@@ -22,17 +22,12 @@
       </view>
 
       <!-- 灵动岛风格操作栏 -->
-      <view class="action-island {{bookOpen ? 'island-show' : 'island-hide'}}">
+      <view class="action-island {{bookOpen && !bookClosing ? 'island-show' : 'island-hide'}}">
         <!-- 第1页：探索地图 -->
         <block wx:if="{{bookPage === 1}}">
           <view class="island-btn" bindtap="onBarClose">
             <text class="island-icon">📕</text>
             <text class="island-text">合上</text>
-          </view>
-          <view class="island-divider"></view>
-          <view class="island-btn primary" bindtap="onBarExplore">
-            <text class="island-icon">🗺️</text>
-            <text class="island-text">开始探索</text>
           </view>
           <view class="island-divider"></view>
           <view class="island-btn" bindtap="onBarReader">
@@ -56,7 +51,7 @@
     </view>
 
     <!-- 章节列表 -->
-    <view class="chapter-list {{bookPage === 2 ? 'list-show' : 'list-hide'}}">
+    <view class="chapter-list {{bookPage === 2 && !bookClosing ? 'list-show' : 'list-hide'}}">
       <view
         wx:for="{{chapters}}" wx:key="page"
         class="chapter-item"
@@ -74,13 +69,13 @@
   </view>
 
   <!-- 底部标语 -->
-  <view class="footer-slogan {{bookOpen ? 'slogan-fade' : ''}}">
+  <view class="footer-slogan {{bookOpen || bookClosing ? 'slogan-fade' : ''}}">
     <text>科学是没有国界的，但科学家有自己的祖国。</text>
   </view>
 
   <!-- 悬浮 AI 对话球 -->
   <view 
-    wx:if="{{bookOpen}}"
+    wx:if="{{bookOpen && !bookClosing}}"
     class="floating-chat-ball"
     style="left: {{ballX}}px; top: {{ballY}}px; transition: {{isDragging ? 'none' : 'all 0.3s ease-out'}};"
     catchtouchmove="handleBallMove"

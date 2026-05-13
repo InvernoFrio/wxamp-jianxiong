@@ -3,10 +3,13 @@ const db = wx.cloud.database()
 
 Page({
   data: {
-    comicGroups: []
+    comicGroups: [],
+    windowWidth: 375
   },
 
   onLoad() {
+    const info = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
+    this.setData({ windowWidth: info.windowWidth || 375 });
     // 延迟 100ms 执行，确保 app.js 的 wx.cloud.init 彻底完成
     setTimeout(() => {
       this.fetchComicData();
@@ -33,5 +36,24 @@ Page({
       current: current,
       urls: urls
     });
+  },
+
+  onComicImageLoad(e) {
+    const groupIndex = e.currentTarget.dataset.groupIndex;
+    const width = e.detail.width;
+    const height = e.detail.height;
+    if (groupIndex === undefined || !width || !height) return;
+
+    const contentWidthRpx = 670;
+    const frameWidthRpx = contentWidthRpx * 0.7;
+    const imageHeightRpx = Math.round(frameWidthRpx * height / width);
+    const nextHeight = Math.max(420, Math.min(860, imageHeightRpx + 140));
+    const current = this.data.comicGroups[groupIndex] && this.data.comicGroups[groupIndex].filmHeight;
+
+    if (!current || nextHeight > current) {
+      this.setData({
+        [`comicGroups[${groupIndex}].filmHeight`]: nextHeight
+      });
+    }
   }
 })

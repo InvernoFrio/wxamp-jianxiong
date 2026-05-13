@@ -15,3 +15,6 @@ Thumbs.db
 # 临时
 *.tmp
 *.log
+*.tmp.jpg
+*.jpg.jpg
+*.tmp.png

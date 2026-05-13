@@ -269,6 +269,13 @@
   filter: drop-shadow(0 4rpx 8rpx rgba(70, 48, 28, 0.08));
 }
 
+.spread-logo {
+  width: 116rpx;
+  height: 116rpx;
+  margin-bottom: 16rpx;
+  filter: drop-shadow(0 8rpx 14rpx rgba(70, 48, 28, 0.12));
+}
+
 .spread-title {
   font-size: 32rpx;
   color: #2C2C2C;
@@ -280,6 +287,77 @@
   height: 2rpx;
   background: linear-gradient(90deg, transparent, #C41E3A, transparent);
   margin: 20rpx 0;
+}
+
+.page-fill-map {
+  position: relative;
+}
+
+.page-fill-map::after {
+  content: '';
+  position: absolute;
+  left: 54rpx;
+  right: 54rpx;
+  bottom: 82rpx;
+  height: 2rpx;
+  background: linear-gradient(90deg, transparent, rgba(166, 33, 33, 0.28), transparent);
+}
+
+.explore-guide {
+  position: relative;
+  margin-top: 36rpx;
+  min-width: 300rpx;
+  padding: 22rpx 30rpx 24rpx;
+  border-radius: 22rpx;
+  background: rgba(255, 250, 240, 0.78);
+  border: 2rpx solid rgba(166, 33, 33, 0.22);
+  box-shadow:
+    0 12rpx 26rpx rgba(92, 62, 36, 0.12),
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.92);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.explore-guide::before {
+  content: '';
+  position: absolute;
+  inset: 6rpx;
+  border-radius: 18rpx;
+  border: 1rpx dashed rgba(166, 33, 33, 0.22);
+}
+
+.explore-guide-main {
+  position: relative;
+  z-index: 2;
+  font-size: 27rpx;
+  font-weight: 700;
+  color: #A62121;
+  line-height: 1.35;
+}
+
+.explore-guide-sub {
+  position: relative;
+  z-index: 2;
+  margin-top: 8rpx;
+  font-size: 20rpx;
+  color: #8B6F50;
+  line-height: 1.35;
+}
+
+.explore-guide-pulse {
+  position: absolute;
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  background: rgba(196, 30, 58, 0.10);
+  animation: explore-pulse 1.8s ease-in-out infinite;
+}
+
+.page-fill-map:active .explore-guide {
+  transform: scale(0.96);
+  background: rgba(255, 247, 232, 0.92);
 }
 
 @keyframes book-riffle-body {
@@ -341,5 +419,20 @@
   100% {
     opacity: 0;
     transform: rotateY(-4deg) skewY(0deg) translateX(0);
+  }
+}
+
+@keyframes explore-pulse {
+  0% {
+    transform: scale(0.72);
+    opacity: 0.68;
+  }
+  55% {
+    transform: scale(1.36);
+    opacity: 0.08;
+  }
+  100% {
+    transform: scale(0.72);
+    opacity: 0.34;
   }
 }

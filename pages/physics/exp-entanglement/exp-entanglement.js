@@ -48,6 +48,8 @@ Page({
 
     // ── 截图提示 ──
     showSaveHint: false,
+    shareBusy: false,
+    shareImagePath: '',
   },
 
   _ctx: null,
@@ -272,30 +274,69 @@ Page({
   //   截图/分享
   // ════════════════════════════════════
   onSaveCanvas() {
-    wx.canvasToTempFilePath({
-      canvas: this._canvas,
-      success: res => {
+    this._captureExperimentImage({
+      success: tempFilePath => {
         wx.saveImageToPhotosAlbum({
-          filePath: res.tempFilePath,
+          filePath: tempFilePath,
           success: () => wx.showToast({ title: '已保存到相册', icon: 'success' }),
           fail: () => wx.showToast({ title: '保存失败，请授权相册权限', icon: 'none' })
         })
       },
       fail: () => wx.showToast({ title: '截图失败', icon: 'none' })
-    }, this)
+    })
   },
 
   onShareExperiment() {
-    // 触发页面分享（需在 onShareAppMessage 中配置）
-    wx.showShareMenu({ withShareTicket: true })
+    if (this.data.shareBusy) return
+    this.setData({ shareBusy: true })
+    wx.showLoading({ title: '生成截图...' })
+
+    this._captureExperimentImage({
+      success: tempFilePath => {
+        this.setData({ shareBusy: false, shareImagePath: tempFilePath })
+        wx.hideLoading()
+
+        if (wx.showShareImageMenu) {
+          wx.showShareImageMenu({
+            path: tempFilePath,
+            fail: () => wx.showToast({ title: '分享已取消', icon: 'none' })
+          })
+        } else {
+          wx.previewImage({ current: tempFilePath, urls: [tempFilePath] })
+          wx.showToast({ title: '请长按图片分享', icon: 'none' })
+        }
+      },
+      fail: () => {
+        this.setData({ shareBusy: false })
+        wx.hideLoading()
+        wx.showToast({ title: '截图失败', icon: 'none' })
+      }
+    })
   },
 
   onShareAppMessage() {
     return {
       title: `量子纠缠实验：符合率 ${this.data.coincRate}%，贝尔 S=${this.data.bellS}`,
       path: '/pages/physics/exp-entanglement/exp-entanglement',
-      imageUrl: ''   // 可替换为实验截图路径
+      imageUrl: this.data.shareImagePath || ''
     }
+  },
+
+  _captureExperimentImage(options) {
+    if (!this._canvas) {
+      if (options && options.fail) options.fail()
+      return
+    }
+
+    wx.canvasToTempFilePath({
+      canvas: this._canvas,
+      success: res => {
+        if (options && options.success) options.success(res.tempFilePath)
+      },
+      fail: () => {
+        if (options && options.fail) options.fail()
+      }
+    }, this)
   },
 
   // ════════════════════════════════════
