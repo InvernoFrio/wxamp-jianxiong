@@ -122,9 +122,20 @@ Page({
     wx.showToast({ title: '重置播放', icon: 'none' });
   },
 
+  onHide() {
+    if (audioCtx) {
+      audioCtx.pause();
+      console.log("页面隐藏，音乐暂停");
+    }
+  },
+
   onUnload() {
-    // 页面关掉时销毁播放器，省电省内存
-    if (audioCtx) audioCtx.destroy();
+    if (audioCtx) {
+      audioCtx.stop();    // 先停止播放
+      audioCtx.destroy(); // 销毁实例，释放资源
+      audioCtx = null;    // 清空引用
+      console.log("页面销毁，播放器已移除");
+    }
   },
 
   // 跳转函数
